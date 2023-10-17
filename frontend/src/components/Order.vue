@@ -11,7 +11,7 @@
           <v-toolbar-title>Order</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 New Item
@@ -25,16 +25,16 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idorder"
                         label="ID Order"
                       ></v-text-field>
-                    </v-col>
+                    </v-col> -->
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idcustomer"
-                        label="ID Customer"
+                        label="Name Customer"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -46,7 +46,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idproduct"
-                        label="ID Product"
+                        label="Product Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -93,10 +93,21 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      </template>
+      <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
       </template>
@@ -110,14 +121,14 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
-      {
-        text: "ID Order",
-        align: "start",
-        sortable: true,
-        value: "idorder",
-      },
-      { text: "ID Customer", value: "idcustomer" },
-      { text: "ID Product", value: "idproduct" },
+      // {
+      //   text: "ID Order",
+      //   align: "start",
+      //   sortable: true,
+      //   value: "idorder",
+      // },
+      { text: "Name Customer", value: "idcustomer" },
+      { text: "Product Name", value: "idproduct" },
       { text: "Jumlah Barang", value: "jumlah" },
       { text: "No tanggal", value: "tanggal" },
       { text: "Status", value: "status" },

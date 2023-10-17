@@ -35,8 +35,8 @@
                       </div>
                     </v-col>
                     <div class="ocean">
-                      <v-card-text class="white--text text-center mt-16 pt-13">
-                        <v-img class="mt-16" width="250px" src="../assets/image 2.png" />
+                      <v-card-text class="white--text text-center mt-16 pt-13 px-2">
+                        <v-img class="mt-12" width="270px" src="../public/image 2.png" />
                         <h5
                           class="text-center"
                         >Enter your personal details and start journay with us</h5>
@@ -50,10 +50,10 @@
                 </div>
                 <v-window-item :value="2">
                   <v-row>
-                    <v-col cols="12" md="4" class="py-0 px-0">
+                    <v-col cols="12" md="4" class="py-0 px-2">
                       <div class="ocean2">
                       <v-card-text class="white--text">
-                        <v-img class="mt-16" width="250px" src="../assets/image 2.png" />
+                        <v-img class="mt-12" width="250px" src="../public/image 2.png" />
                         <h5
                           class="text-center"
                         >To Keep connected with us please login with your personnel info</h5>
@@ -138,7 +138,7 @@ export default {
 }
 .ocean{
   height: 500px;
-  background-image: url("../assets/Rectangle 2.png");
+  background-image: url("../public/Rectangle 2.png");
   background-size: cover;
   background-repeat: no-repeat;
   margin-top: 0px;
@@ -146,7 +146,7 @@ export default {
 }
 .ocean2{
   height: 500px;
-  background-image: url("../assets/Rectangle 2.png");
+  background-image: url("../public/Rectangle 2.png");
   background-size: cover;
   background-repeat: no-repeat;
   margin-top: 0px;

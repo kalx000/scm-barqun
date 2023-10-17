@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Navbar />
     <LeftBar />
     <v-card>
       <v-tabs v-model="tab" bg-color="primary" class="ml-8">
@@ -47,19 +48,19 @@
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idproduct"
-                                label="ID Product"
+                                label="Product Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idstock"
-                                label="ID Stock"
+                                label="Jumlah Stock"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idsupplier"
-                                label="ID Supplier"
+                                label="Supplier Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
@@ -162,19 +163,19 @@
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idproduct"
-                                label="ID Product"
+                                label="Product Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idstock"
-                                label="ID Stock"
+                                label="Jumlah Stock"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idsupplier"
-                                label="ID Supplier"
+                                label="Supplier Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
@@ -277,19 +278,19 @@
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idproduct"
-                                label="ID Product"
+                                label="Product Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idstock"
-                                label="ID Stock"
+                                label="Jumlah Stock"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.idsupplier"
-                                label="ID Supplier"
+                                label="Supplier Name"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
@@ -365,10 +366,12 @@
 <script>
 import LeftBar from "@/components/LeftBar.vue";
 import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/NavBar.vue"
 export default {
   components: {
     LeftBar,
     Footer,
+    Navbar
   },
   data: () => ({
     tab:null,
@@ -376,13 +379,13 @@ export default {
     dialogDelete: false,
     headers: [
       {
-        text: "ID Product",
+        text: "Product Name",
         align: "start",
         sortable: true,
         value: "idproduct",
       },
-      { text: "ID Stock", value: "idstock" },
-      { text: "ID Supplier", value: "idsupplier" },
+      { text: "Jumlah Stock", value: "idstock" },
+      { text: "Supplier Name", value: "idsupplier" },
       { text: "Jumlah Masuk", value: "jumlah" },
       { text: "Tanggal Masuk", value: "tanggal" },
       { text: "actions", value: "actions", sortable: false },

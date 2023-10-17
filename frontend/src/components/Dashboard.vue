@@ -42,6 +42,9 @@
                 <v-list-item-title>
                   <h3>Warehouse</h3>
                 </v-list-item-title>
+                <v-list-item-subtitle>
+                <h1>10</h1>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
         </v-card>
@@ -76,19 +79,19 @@
       </router-link>
       </v-col> 
 
-      <!-- <v-col cols="12" sm="4" > 
+      <v-col cols="12" sm="4" > 
       <router-link style="text-transform:none; text-decoration:none;" to="/distributor">
         <v-card flat class="rounded-lg distributor" height="200" width="AUTO">
           <v-list-item >
               <v-list-item-content>
                 <v-list-item-title>
-                  <h3>Distributor </h3>
+                  <h3>User </h3>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
         </v-card>
       </router-link>
-      </v-col> -->
+      </v-col>
     </v-row>
   </div>
 </template>

@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "@mdi/font": "^7.3.67",
     "axios": "^1.5.1",
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
@@ -16,10 +19,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@fortawesome/fontawesome-free": "^6.4.2",
-    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
@@ -29,6 +29,9 @@
     "material-design-icons-iconfont": "^6.7.0",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.11",
+    "vite-plugin-vue2": "^2.0.3",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.0"

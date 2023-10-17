@@ -11,7 +11,7 @@
           <v-toolbar-title>Supplier</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 New Item
@@ -25,36 +25,41 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idsupplier"
                         label="ID Supplier"
                       ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    </v-col> -->
+                    <v-row>  
+                    <v-col cols="6">
                       <v-text-field
                         v-model="editedItem.name"
                         label="Name Supplier"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6">
                       <v-text-field
                         v-model="editedItem.email"
                         label="Email"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    </v-row>
+  
+                    <v-row >
+                    <v-col cols="6">
                       <v-text-field
                         v-model="editedItem.telepon"
                         label="No Telepon"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6">
                       <v-text-field
                         v-model="editedItem.alamat"
                         label="Alamat"
                       ></v-text-field>
                     </v-col>
+                    </v-row>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -88,8 +93,8 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)"> fa-solid fa-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> fa-solid fa-trash </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -104,12 +109,12 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
-      {
-        text: "ID Supplier",
-        align: "start",
-        sortable: true,
-        value: "idsupplier",
-      },
+      // {
+      //   text: "ID Supplier",
+      //   align: "start",
+      //   sortable: true,
+      //   value: "idsupplier",
+      // },
       { text: "Name Supplier", value: "name" },
       { text: "Email", value: "email" },
       { text: "No Telepon", value: "telepon" },

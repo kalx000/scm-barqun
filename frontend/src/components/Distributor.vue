@@ -1,6 +1,5 @@
 <template>
-<div></div>
-  <!-- <v-app>
+  <v-app>
     <v-data-table
       :headers="headers"
       :items="desserts"
@@ -9,7 +8,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Distributor</v-toolbar-title>
+          <v-toolbar-title>Order</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -28,32 +27,38 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idDistributor"
-                        label="ID Distributor"
+                        v-model="editedItem.idorder"
+                        label="ID Order"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.name"
-                        label="Name Distributor"
+                        v-model="editedItem.idcustomer"
+                        label="ID Customer"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.email"
-                        label="Email"
+                        v-model="editedItem.jumlah"
+                        label="Jumlah Barang"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.telepon"
-                        label="No Telepon"
+                        v-model="editedItem.idproduct"
+                        label="ID Product"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.alamat"
-                        label="Alamat"
+                        v-model="editedItem.tanggal"
+                        label="Tanggal Pemesanan"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.status"
+                        label="Status Pemesanan"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -96,155 +101,172 @@
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
-  </v-app> -->
+  </v-app>
 </template>
 <script>
-// export default {
-//   data: () => ({
-//     tab: null,
-//     dialog: false,
-//     dialogDelete: false,
-//     headers: [
-//       {
-//         text: "ID Distributor",
-//         align: "start",
-//         sortable: true,
-//         value: "idDistributor",
-//       },
-//       { text: "Name Distributor", value: "name" },
-//       { text: "Email", value: "email" },
-//       { text: "No Telepon", value: "telepon" },
-//       { text: "Alamat", value: "alamat" },
-//       { text: "actions", value: "actions", sortable: false },
-//     ],
-//     desserts: [],
-//     editedIndex: -1,
-//     editedItem: {
-//       idDistributor: "",
-//       name: "",
-//       email: "",
-//       telepon: "",
-//       alamat: "",
-//     },
-//     defaultItem: {
-//       idDistributor: "",
-//       name: "",
-//       email: "",
-//       telepon: "",
-//       alamat: "",
-//     },
-//   }),
+export default {
+  data: () => ({
+    tab: null,
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      {
+        text: "ID Order",
+        align: "start",
+        sortable: true,
+        value: "idorder",
+      },
+      { text: "ID Customer", value: "idcustomer" },
+      { text: "ID Product", value: "idproduct" },
+      { text: "Jumlah Barang", value: "jumlah" },
+      { text: "No tanggal", value: "tanggal" },
+      { text: "Status", value: "status" },
+      { text: "actions", value: "actions", sortable: false },
+    ],
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      idorder: "",
+      idcustomer: "",
+      jumlah: "",
+      idproduct: "",
+      tanggal: "",
+      status: "",
+    },
+    defaultItem: {
+      idorder: "",
+      idcustomer: "",
+      jumlah: "",
+      idproduct: "",
+      tanggal: "",
+      status: "",
+    },
+  }),
 
-//   computed: {
-//     formTitle() {
-//       return this.editedIndex === -1 ? "New Item" : "Edit Item";
-//     },
-//   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+  },
 
-//   watch: {
-//     dialog(val) {
-//       val || this.close();
-//     },
-//     dialogDelete(val) {
-//       val || this.closeDelete();
-//     },
-//   },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
 
-//   created() {
-//     this.initialize();
-//   },
+  created() {
+    this.initialize();
+  },
 
-//   methods: {
-//     initialize() {
-//       this.desserts = [
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//         {
-//           idDistributor: "91290928",
-//           name: 'Barqun Digital Teknologi',
-//           email: "marketing@barqun.com",
-//           telepon: "081387229453",
-//           alamat: "Jl. Kadrie Oening No. 1",
-//         },
-//       ];
-//     },
+  methods: {
+    initialize() {
+      this.desserts = [
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: '54321',
+          jumlah: '10',
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+      ];
+    },
 
-//     editItem(item) {
-//       this.editedIndex = this.desserts.indexOf(item);
-//       this.editedItem = Object.assign({}, item);
-//       this.dialog = true;
-//     },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
 
-//     deleteItem(item) {
-//       this.editedIndex = this.desserts.indexOf(item);
-//       this.editedItem = Object.assign({}, item);
-//       this.dialogDelete = true;
-//     },
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
 
-//     deleteItemConfirm() {
-//       this.desserts.splice(this.editedIndex, 1);
-//       this.closeDelete();
-//     },
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
 
-//     close() {
-//       this.dialog = false;
-//       this.$nextTick(() => {
-//         this.editedItem = Object.assign({}, this.defaultItem);
-//         this.editedIndex = -1;
-//       });
-//     },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
 
-//     closeDelete() {
-//       this.dialogDelete = false;
-//       this.$nextTick(() => {
-//         this.editedItem = Object.assign({}, this.defaultItem);
-//         this.editedIndex = -1;
-//       });
-//     },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
 
-//     save() {
-//       if (this.editedIndex > -1) {
-//         Object.assign(this.desserts[this.editedIndex], this.editedItem);
-//       } else {
-//         this.desserts.push(this.editedItem);
-//       }
-//       this.close();
-//     },
-//   },
-// };
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+  },
+};
 </script>
 
 <style>

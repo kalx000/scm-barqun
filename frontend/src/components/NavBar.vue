@@ -2,7 +2,7 @@
   <v-app-bar :elevation="10" border="rounded-0">
   <div class="darkmode">
         <v-icon class="mr-1 sun">fa-solid fa-sun</v-icon>
-        <v-switch class="mt-4 mx-1" v-model="$vuetify.theme.dark"></v-switch>
+        <v-switch  class="mt-4 mx-1" v-model="$vuetify.theme.dark"></v-switch>
         <v-icon class="mr-2 moon">fa-solid fa-moon</v-icon>
       </div>
       <v-divider
@@ -24,9 +24,15 @@
 
 <script>
 export default {
-
+  
+  computed: {
+    isDarkMode() {
+      return this.$vuetify.theme.dark 
+    }
+  },
 }
 </script>
+
 
 <style>
 .profile{

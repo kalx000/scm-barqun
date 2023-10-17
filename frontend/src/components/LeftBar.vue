@@ -5,61 +5,62 @@
     height="100%"
     width="200"
     :mini-variant.sync="mini"
-    permanent
+    color="primary"
   >
     <v-list-item>
       <v-list-item-avatar class="ml-n2">
-        <v-img src="barqunBlack.png"></v-img>
+        <v-img v-if="$vuetify.theme.dark " src="barqun.png"></v-img>
+        <v-img v-else src="barqunBlack.png"></v-img>
       </v-list-item-avatar>
-      <v-list-item-title><h5>Supply Chain</h5></v-list-item-title>
+      <v-list-item-title><h5 >Supply Chain</h5></v-list-item-title>
       <v-btn icon @click.stop="mini = !mini">
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
     </v-list-item>
     <v-divider></v-divider>
     <v-list dense nav>
-      <v-list-item-group class="mt-4" active-class="nyala">
+      <v-list-item-group class="mt-4" active-class="active1">
         <v-list-item to="/home" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fas fa-gauge</v-icon>
+            <v-icon size="x-large">fat fa-home</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Dashboard</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Dashboard</h3></v-list-item-subtitle>
         </v-list-item>
         <v-list-item to="/product" class="mb-4">
           <v-list-item-icon>
             <v-icon>fas fa-box</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Product</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Product</h3></v-list-item-subtitle>
         </v-list-item>
         <v-list-item to="/supplier" class="mb-4">
           <v-list-item-icon>
             <v-icon>fas fa-industry</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Supplier</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Supplier</h3></v-list-item-subtitle>
         </v-list-item>
         <v-list-item to="/warehouse" class="mb-4">
           <v-list-item-icon>
             <v-icon>fas fa-warehouse</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Warehouse</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Warehouse</h3></v-list-item-subtitle>
         </v-list-item>
         <v-list-item to="/customers" class="mb-4">
           <v-list-item-icon>
             <v-icon>fas fa-user</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Customer</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Customer</h3></v-list-item-subtitle>
         </v-list-item>
         <v-list-item to="/order" class="mb-4">
           <v-list-item-icon>
             <v-icon>fas fa-inbox</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Order</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Order</h3></v-list-item-subtitle>
         </v-list-item>
         <!-- <v-list-item to="/distributor" class="mb-2">
           <v-list-item-icon>
             <v-icon>fas fa-truck</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle><h3>Distributor</h3></v-list-item-subtitle>
+          <v-list-item-subtitle class="teks"><h3>Distributor</h3></v-list-item-subtitle>
         </v-list-item> -->
       </v-list-item-group>
       
@@ -82,12 +83,19 @@ export default {
   bottom: 50px;
   color: white !important;
 }
-.nyala {
-  background-color: #191d88 !important;
+.active1 {
+  background-color: #1565C0 !important;
+  color: white !important;
+}
+.active1 .teks{
   color: white !important;
 }
 
 .darkmode {
   display: flex;
+}
+
+.teks{
+  color: "font1";
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
     <v-app>
+        <Navbar />
         <LeftBar/>
         <Order/>
         <Footer/>
@@ -10,11 +11,13 @@
 import LeftBar from '@/components/LeftBar.vue'
 import Order from '@/components/Order.vue'
 import Footer from '@/components/Footer.vue'
+import Navbar from '@/components/NavBar.vue'
 export default {
     components:{
         LeftBar,
         Order,
-        Footer
+        Footer,
+        Navbar
     }
 }
 </script>
