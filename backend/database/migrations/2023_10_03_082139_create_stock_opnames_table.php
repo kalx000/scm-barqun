@@ -14,9 +14,9 @@ class CreateStockOpnamesTable extends Migration
     public function up()
     {
         Schema::create('stock_opnames', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id');
-            $table->foreignId('inventory_id');
+            $table->uuid('id')->primary();
+            $table->uuid('product_id');
+            $table->uuid('inventory_id');
             $table->date('tanggal_opname');
             $table->string('hasil_opname');
             $table->timestamps();

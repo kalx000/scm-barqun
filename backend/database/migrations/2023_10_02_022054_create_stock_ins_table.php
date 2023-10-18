@@ -14,10 +14,10 @@ class CreateStockInsTable extends Migration
     public function up()
     {
         Schema::create('stock_ins', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('supplier_id');
-            $table->foreignId('product_id');
-            $table->foreignId('inventory_id');
+            $table->uuid('id')->primary();
+            $table->uuid('supplier_id');
+            $table->uuid('product_id');
+            $table->uuid('inventory_id');
             $table->date('tanggal_masuk');
             $table->integer('jumlah_masuk');
             $table->timestamps();
