@@ -9,11 +9,9 @@
         <v-tab>Stock Opname</v-tab>
       </v-tabs>
 
-<v-tabs-items v-model="tab">
-
-
-    <v-tab-item>
-      <v-card-text>
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <v-card-text>
             <v-data-table
               :headers="headers"
               :items="desserts"
@@ -34,7 +32,8 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        New Item
+                        <v-icon>fas fa-plus</v-icon>
+                        Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -81,10 +80,10 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">
+                        <v-btn color="secondary" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="blue darken-1" text @click="save">
+                        <v-btn color="secondary" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
@@ -98,13 +97,10 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn color="secondary" text @click="closeDelete"
                           >Cancel</v-btn
                         >
-                        <v-btn
-                          color="blue darken-1"
-                          text
-                          @click="deleteItemConfirm"
+                        <v-btn color="secondary" text @click="deleteItemConfirm"
                           >OK</v-btn
                         >
                         <v-spacer></v-spacer>
@@ -123,12 +119,11 @@
                 <v-btn color="primary" @click="initialize"> Reset </v-btn>
               </template>
             </v-data-table>
-            </v-card-text>
+          </v-card-text>
         </v-tab-item>
 
-
-    <v-tab-item>
-      <v-card-text>
+        <v-tab-item>
+          <v-card-text>
             <v-data-table
               :headers="headers"
               :items="desserts"
@@ -238,12 +233,11 @@
                 <v-btn color="primary" @click="initialize"> Reset </v-btn>
               </template>
             </v-data-table>
-            </v-card-text>
+          </v-card-text>
         </v-tab-item>
 
-
-    <v-tab-item>
-      <v-card-text>
+        <v-tab-item>
+          <v-card-text>
             <v-data-table
               :headers="headers"
               :items="desserts"
@@ -353,11 +347,9 @@
                 <v-btn color="primary" @click="initialize"> Reset </v-btn>
               </template>
             </v-data-table>
-            </v-card-text>
+          </v-card-text>
         </v-tab-item>
-
-
-</v-tabs-items>
+      </v-tabs-items>
     </v-card>
     <Footer />
   </div>
@@ -366,15 +358,15 @@
 <script>
 import LeftBar from "@/components/LeftBar.vue";
 import Footer from "@/components/Footer.vue";
-import Navbar from "@/components/NavBar.vue"
+import Navbar from "@/components/NavBar.vue";
 export default {
   components: {
     LeftBar,
     Footer,
-    Navbar
+    Navbar,
   },
   data: () => ({
-    tab:null,
+    tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [

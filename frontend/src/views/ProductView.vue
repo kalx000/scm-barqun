@@ -18,7 +18,8 @@
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
+                <v-icon>fas fa-plus</v-icon>
+                Add
               </v-btn>
             </template>
             <v-card>
@@ -75,10 +76,8 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
+                <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -89,10 +88,10 @@
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="secondary" text @click="closeDelete"
                   >Cancel</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn color="secondary" text @click="deleteItemConfirm"
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -126,12 +125,12 @@ export default {
     Navbar,
   },
   data: () => ({
-      item: [
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-      ],
+    item: [
+      { item: "fab fa-github" },
+      { item: "fab fa-github" },
+      { item: "fab fa-github" },
+      { item: "fab fa-github" },
+    ],
     dialog: false,
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],

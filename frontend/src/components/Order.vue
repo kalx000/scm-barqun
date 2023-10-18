@@ -14,7 +14,8 @@
           <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
+                <v-icon>fas fa-plus</v-icon>
+                Add
               </v-btn>
             </template>
             <v-card>
@@ -67,10 +68,8 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
+                <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -81,10 +80,10 @@
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="secondary" text @click="closeDelete"
                   >Cancel</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn color="secondary" text @click="deleteItemConfirm"
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -94,20 +93,9 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
       </template>
@@ -178,56 +166,56 @@ export default {
       this.desserts = [
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
@@ -280,5 +268,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

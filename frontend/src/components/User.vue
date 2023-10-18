@@ -8,10 +8,10 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Customer</v-toolbar-title>
+          <v-toolbar-title>/User Sementara/</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
@@ -25,43 +25,43 @@
 
               <v-card-text>
                 <v-container>
-                  <!-- <ModuleForm :form="editedItem" />  -->
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="form.idcustomer"
+                        v-model="editedItem.idorder"
+                        label="ID Order"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.idcustomer"
                         label="ID Customer"
                       ></v-text-field>
-                    </v-col> -->
-                    <v-row>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.name"
-                          label="Name Customer"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.telepon"
-                          label="No Telepon"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.alamat"
-                          label="Alamat"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.jumlah"
+                        label="Jumlah Barang"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.idproduct"
+                        label="ID Product"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.tanggal"
+                        label="Tanggal Pemesanan"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.status"
+                        label="Status Pemesanan"
+                      ></v-text-field>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -103,46 +103,42 @@
   </v-app>
 </template>
 <script>
-// import ModuleForm from "./Form.vue";
 export default {
-  // components: { ModuleForm },
   data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID Customer",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idcustomer",
-      // },
       {
-        text: "Name Customer",
+        text: "ID Order",
         align: "start",
-        sortable: "true",
-        value: "name",
+        sortable: true,
+        value: "idorder",
       },
-      { text: "Email", value: "email" },
-      { text: "No Telepon", value: "telepon" },
-      { text: "Alamat", value: "alamat" },
+      { text: "ID Customer", value: "idcustomer" },
+      { text: "ID Product", value: "idproduct" },
+      { text: "Jumlah Barang", value: "jumlah" },
+      { text: "No tanggal", value: "tanggal" },
+      { text: "Status", value: "status" },
       { text: "actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
+      idorder: "",
       idcustomer: "",
-      name: "",
-      email: "",
-      telepon: "",
-      alamat: "",
+      jumlah: "",
+      idproduct: "",
+      tanggal: "",
+      status: "",
     },
     defaultItem: {
+      idorder: "",
       idcustomer: "",
-      name: "",
-      email: "",
-      telepon: "",
-      alamat: "",
+      jumlah: "",
+      idproduct: "",
+      tanggal: "",
+      status: "",
     },
   }),
 
@@ -169,46 +165,60 @@ export default {
     initialize() {
       this.desserts = [
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
+        },
+        {
+          idorder: "12345",
+          idcustomer: "54321",
+          jumlah: "10",
+          idproduct: "09876",
+          tanggal: "02/10/2023",
+          status: "-",
         },
       ];
     },
@@ -233,7 +243,6 @@ export default {
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        ``;
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
@@ -259,5 +268,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
