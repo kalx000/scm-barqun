@@ -7,7 +7,7 @@ import Warehouse from '../views/Warehouse.vue'
 import SupplierView from '../views/SupplierView.vue'
 import CustomerView from '../views/CustomerView.vue'
 import OrderView from '../views/OrderView.vue'
-import DistributorView from '../views/DistributorView.vue'
+import UserView from '../views/UserView.vue'
 
 Vue.use(VueRouter)
 
@@ -48,9 +48,9 @@ const routes = [
     component: OrderView
   },
   {
-    path: '/distributor',
-    name: 'distributor',
-    component: DistributorView
+    path: '/user',
+    name: 'user',
+    component: UserView
   },
   {
     path: '/about',
