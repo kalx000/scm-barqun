@@ -13,14 +13,15 @@ export default new Vuetify({
     theme: {
         themes: {
           light: {
-            primary: colors.orange,
-            secondary: colors.grey.darken1,
-            font1: colors.white,
+            primary: colors.teal.lighten1,
+            secondary: colors.teal.lighten1,
+            navbar: colors.teal.lighten2,
             accent: colors.shades.black,
             error: colors.red.accent3,
           },
           dark: {
             primary: colors.grey.darken3,
+            secondary: colors.blue.darken1,
             font2: colors.white,
             biru: colors.blue,
           },

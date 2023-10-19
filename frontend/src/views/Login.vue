@@ -26,9 +26,9 @@
                             color="#0284D0"
                           />
                         </v-form>
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                         <v-btn rounded color="#0284D0" class=" mt-4" dark>Forgot your password ?</v-btn>
-                        </div>
+                        </div> -->
                       </v-card-text>
                       <div class="text-center mt-3">
                         <v-btn rounded color="#0284D0" dark to="/home">SIGN IN</v-btn>
@@ -152,5 +152,6 @@ export default {
   margin-top: 0px;
   margin-bottom: 0px;
 }
+
 
 </style>

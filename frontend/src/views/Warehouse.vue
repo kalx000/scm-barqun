@@ -3,7 +3,7 @@
     <Navbar />
     <LeftBar />
     <v-card>
-      <v-tabs v-model="tab" bg-color="primary" class="ml-8">
+      <v-tabs v-model="tab" color="secondary" class="ml-8">
         <v-tab>Stock In</v-tab>
         <v-tab>Stock Out</v-tab>
         <v-tab>Stock Opname</v-tab>
@@ -25,7 +25,7 @@
                   <v-toolbar-title>Stock In</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="500px">
+                  <v-dialog v-model="dialog" max-width="550px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="primary"
@@ -34,7 +34,8 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        New Item
+                      <v-icon>fa-solid fa-plus</v-icon>
+                        Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -81,10 +82,10 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">
+                        <v-btn color="secondary" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="blue darken-1" text @click="save">
+                        <v-btn color="secondary" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
@@ -98,11 +99,11 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn color="secondary" text @click="closeDelete"
                           >Cancel</v-btn
                         >
                         <v-btn
-                          color="blue darken-1"
+                          color="secondary"
                           text
                           @click="deleteItemConfirm"
                           >OK</v-btn
@@ -140,7 +141,7 @@
                   <v-toolbar-title>Stock Out</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="500px">
+                  <v-dialog v-model="dialog" max-width="550px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="primary"
@@ -149,7 +150,8 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        New Item
+                      <v-icon>fas fa-plus</v-icon>
+                        Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -196,10 +198,10 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">
+                        <v-btn color="secondary" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="blue darken-1" text @click="save">
+                        <v-btn color="secondary" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
@@ -213,11 +215,11 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn color="secondary" text @click="closeDelete"
                           >Cancel</v-btn
                         >
                         <v-btn
-                          color="blue darken-1"
+                          color="secondary"
                           text
                           @click="deleteItemConfirm"
                           >OK</v-btn
@@ -255,7 +257,7 @@
                   <v-toolbar-title>Stock Opname</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="500px">
+                  <v-dialog v-model="dialog" max-width="550px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="primary"
@@ -264,7 +266,8 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        New Item
+                      <v-icon>fas fa-plus</v-icon>
+                      Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -311,10 +314,10 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">
+                        <v-btn color="secondary" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="blue darken-1" text @click="save">
+                        <v-btn color="secondary" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
@@ -328,11 +331,11 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn color="secondary" text @click="closeDelete"
                           >Cancel</v-btn
                         >
                         <v-btn
-                          color="blue darken-1"
+                          color="secondary"
                           text
                           @click="deleteItemConfirm"
                           >OK</v-btn
@@ -388,7 +391,7 @@ export default {
       { text: "Supplier Name", value: "idsupplier" },
       { text: "Jumlah Masuk", value: "jumlah" },
       { text: "Tanggal Masuk", value: "tanggal" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,

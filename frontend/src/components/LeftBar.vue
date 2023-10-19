@@ -9,12 +9,12 @@
   >
     <v-list-item>
       <v-list-item-avatar class="ml-n2">
-        <v-img v-if="$vuetify.theme.dark " src="barqun.png"></v-img>
-        <v-img v-else src="barqunBlack.png"></v-img>
+        <v-img src="barqun.png"></v-img>
+        <!-- <v-img v-else src="barqunBlack.png"></v-img> -->
       </v-list-item-avatar>
-      <v-list-item-title><h5 >Supply Chain</h5></v-list-item-title>
+      <v-list-item-title class="teks"><h5>Supply Chain</h5></v-list-item-title>
       <v-btn icon @click.stop="mini = !mini">
-        <v-icon>mdi-chevron-left</v-icon>
+        <v-icon class="teks">fas fa-chevron-left</v-icon>
       </v-btn>
     </v-list-item>
     <v-divider></v-divider>
@@ -22,7 +22,7 @@
       <v-list-item-group class="mt-4" active-class="active1">
         <v-list-item to="/home" class="mb-4">
           <v-list-item-icon>
-            <v-icon size="x-large">fat fa-home</v-icon>
+            <v-icon>fat fa-home</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"><h3>Dashboard</h3></v-list-item-subtitle>
         </v-list-item>
@@ -56,12 +56,12 @@
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"><h3>Order</h3></v-list-item-subtitle>
         </v-list-item>
-        <!-- <v-list-item to="/distributor" class="mb-2">
+        <v-list-item to="/distributor" class="mb-2">
           <v-list-item-icon>
-            <v-icon>fas fa-truck</v-icon>
+            <v-icon>fas fa-user</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"><h3>Distributor</h3></v-list-item-subtitle>
-        </v-list-item> -->
+        </v-list-item>
       </v-list-item-group>
       
     </v-list>
@@ -84,7 +84,6 @@ export default {
   color: white !important;
 }
 .active1 {
-  background-color: #1565C0 !important;
   color: white !important;
 }
 .active1 .teks{
@@ -96,6 +95,6 @@ export default {
 }
 
 .teks{
-  color: "font1";
+  color: white !important;
 }
 </style>
