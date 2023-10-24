@@ -5,6 +5,7 @@
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -13,7 +14,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="650px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -68,9 +69,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" text @click="close">
-                  Cancel
-                </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
@@ -95,22 +94,11 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
@@ -128,8 +116,8 @@ export default {
       //   sortable: true,
       //   value: "idorder",
       // },
-      { text: "Name Customer", value: "idcustomer" },
-      { text: "Product Name", value: "idproduct" },
+      { text: "Nama Customer", value: "idcustomer" },
+      { text: "Nama Product", value: "idproduct" },
       { text: "Jumlah Barang", value: "jumlah" },
       { text: "No tanggal", value: "tanggal" },
       { text: "Status", value: "status" },
@@ -179,56 +167,56 @@ export default {
       this.desserts = [
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
         {
           idorder: "12345",
-          idcustomer: '54321',
-          jumlah: '10',
+          idcustomer: "54321",
+          jumlah: "10",
           idproduct: "09876",
           tanggal: "02/10/2023",
           status: "-",
@@ -281,5 +269,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

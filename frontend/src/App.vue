@@ -15,11 +15,15 @@ export default {
 };
 </script>
 <style>
+
 html {
-  overflow-y: auto;
+  overflow-y: scroll !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 html::-webkit-scrollbar {
-  display: none;
+  width: 0;
+  height: 0;
 }
 </style>

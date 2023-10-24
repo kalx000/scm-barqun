@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :elevation="10" border="rounded-0" color="navbar" class="navbar">
+  <v-app-bar :elevation="10" border="rounded-0" style="width:2000px;" color="secondary" class="navbar">
   <div class="darkmode">
         <v-icon class="mr-1 sun">fa-solid fa-sun</v-icon>
         <v-switch  class="mt-4 mx-1" v-model="$vuetify.theme.dark"></v-switch>
@@ -36,7 +36,10 @@ export default {
 
 <style>
 .navbar{
-  position:sticky;
+  position:fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
 }
 .profile{
 position:absolute;

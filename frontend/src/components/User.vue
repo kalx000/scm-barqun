@@ -1,5 +1,3 @@
-INDEX.VUE
-
 <template>
   <v-app>
     <v-data-table
@@ -11,12 +9,12 @@ INDEX.VUE
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Customer</v-toolbar-title>
+          <v-toolbar-title>User Sementara</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -28,47 +26,28 @@ INDEX.VUE
 
               <v-card-text>
                 <v-container>
-                  <!-- <ModuleForm :form="editedItem" />  -->
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="form.idcustomer"
-                        label="ID Customer"
+                        v-model="editedItem.name"
+                        label="Name"
                       ></v-text-field>
-                    </v-col> -->
-                    <v-row>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.name"
-                          label="Name Customer"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.telepon"
-                          label="No Telepon"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.alamat"
-                          label="Alamat"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.email"
+                        label="Email"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.status"
+                        label="Status"
+                      ></v-text-field>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
@@ -95,57 +74,45 @@ INDEX.VUE
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:`item.actions`="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
+        <v-btn color="primary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
 </template>
+
 <script>
-// import ModuleForm from "./Form.vue";
 export default {
-  // components: { ModuleForm },
-  data: () => ({
+ data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID Customer",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idcustomer",
-      // },
       {
-        text: "Nama Customer",
+        text: "Nama",
         align: "start",
-        sortable: "true",
+        sortable: true,
         value: "name",
       },
       { text: "Email", value: "email" },
-      { text: "No Telepon", value: "telepon" },
-      { text: "Alamat", value: "alamat" },
+      { text: "Status", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      idcustomer: "",
       name: "",
       email: "",
-      telepon: "",
-      alamat: "",
+      status: "",
     },
     defaultItem: {
-      idcustomer: "",
       name: "",
       email: "",
-      telepon: "",
-      alamat: "",
+      status: "",
     },
   }),
 
@@ -166,52 +133,43 @@ export default {
 
   created() {
     this.initialize();
-  },
-
-  methods: {
+  },methods: {
     initialize() {
       this.desserts = [
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
         },
         {
-          idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
+          status: "-",
+        },
+        {
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
+          status: "-",
         },
       ];
     },
@@ -236,7 +194,6 @@ export default {
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        ``;
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });

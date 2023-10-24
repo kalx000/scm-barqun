@@ -5,6 +5,7 @@
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -13,7 +14,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -32,34 +33,34 @@
                         label="ID Supplier"
                       ></v-text-field>
                     </v-col> -->
-                    <v-row>  
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Name Supplier"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="editedItem.email"
-                        label="Email"
-                      ></v-text-field>
-                    </v-col>
+                    <v-row>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Name Supplier"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="editedItem.email"
+                          label="Email"
+                        ></v-text-field>
+                      </v-col>
                     </v-row>
-  
-                    <v-row >
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="editedItem.telepon"
-                        label="No Telepon"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="editedItem.alamat"
-                        label="Alamat"
-                      ></v-text-field>
-                    </v-col>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="editedItem.telepon"
+                          label="No Telepon"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="editedItem.alamat"
+                          label="Alamat"
+                        ></v-text-field>
+                      </v-col>
                     </v-row>
                   </v-row>
                 </v-container>
@@ -67,9 +68,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" text @click="close">
-                  Cancel
-                </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
@@ -94,11 +93,13 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> fa-solid fa-pencil </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)">
+          fa-solid fa-pencil
+        </v-icon>
         <v-icon small @click="deleteItem(item)"> fa-solid fa-trash </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
@@ -164,42 +165,42 @@ export default {
       this.desserts = [
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idsupplier: "91290928",
-          name: 'Barqun Digital Teknologi',
+          name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",

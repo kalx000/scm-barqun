@@ -1,14 +1,13 @@
 <template>
-  <v-app>
-    <div>
+<v-app>
       <Navbar />
-    </div>
     <LeftBar />
     <v-data-table
       :headers="headers"
       :items="desserts"
       sort-by="price"
-      class="elevation-5 pa-4"
+      class="pa-4"
+      style="margin-top:80px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -17,7 +16,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -105,6 +104,7 @@
       <template v-slot:[`item.actions`]="{ item }">
         <v-btn icon>
           <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
+          
         </v-btn>
         <v-list>
           <v-list-item v-for="(item, index) in items" :key="index">
@@ -127,12 +127,7 @@ export default {
     Navbar,
   },
   data: () => ({
-      item: [
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-      ],
+    
     dialog: false,
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
