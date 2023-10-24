@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="dashboard">
   <!-- <div class="greetings"> -->
   
@@ -108,61 +108,73 @@ export default {
   background-image: url("@/assets/1.png");
   /* background-image: url("../assets/1b.png");  */
   background-size: cover;
+  background-position: top right ;
 }
 .total-items2{
   /* background-image: url("@/assets/1.png"); */
   background-image: url("../assets/1b.png"); 
   background-size: cover;
+  background-position: top right ;
 }
 .supplier { 
   background-image: url("../assets/2.png");
   /* background-image: url("../assets/2b.png"); */
   background-size: cover;
+  background-position: top right ;
 }
 .supplier2 { 
   /* background-image: url("../assets/2.png"); */
   background-image: url("../assets/2b.png");
   background-size: cover;
+  background-position: top right ;
 }
 .warehouse {
   background-image: url("../assets/3.png");
   /* background-image: url("../assets/3b.png"); */
   background-size: cover;
+  background-position: top right ;
 }
 .warehouse2 {
   /* background-image: url("../assets/3.png"); */
   background-image: url("../assets/3b.png");
   background-size: cover;
+  background-position: top right ;
 }
 .customer {
   background-image: url("../assets/4.png");
   /* background-image: url("../assets/4b.png"); */
   background-size: cover;
+  background-position: top right ;
 }
 .customer2 {
   /* background-image: url("../assets/4.png"); */
   background-image: url("../assets/4b.png");
   background-size: cover;
+  background-position: top right ;
 }
 .order {
   background-image: url("../assets/5.png");
   /* background-image: url("../assets/5b.png"); */
   background-size: cover;
+  background-position: top right ;
 }
 .order2 {
   /* background-image: url("../assets/5.png"); */
   background-image: url("../assets/5b.png");
   background-size: cover;
+  background-position: top right ;
 }
 .user {
   background-image: url("../assets/6.png");
   /* background-image: url("../assets/6b.png"); */
   background-size: cover;
+  background-position: top right ;
 }
 .user2 {
   /* background-image: url("../assets/6.png"); */
   background-image: url("../assets/6b.png");
   background-size: cover;
+  background-position: top right ;
 }
 .dashboard {
     height: 92vh;
@@ -174,7 +186,6 @@ export default {
 .rounded-lg:hover {
     scale: 1.02;
 }
-
 .greetings{
 margin-left: 5rem;
 margin-top: 2rem;

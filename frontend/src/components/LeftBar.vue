@@ -59,8 +59,9 @@
         </v-list-item>
         <v-list-item to="/user" class="mb-2">
           <v-list-item-icon>
-            <v-icon>fas fa-user</v-icon>
+            <v-icon>fas fa-circle-user</v-icon>
           </v-list-item-icon>
+          
           <v-list-item-subtitle class="teks"><h3>User</h3></v-list-item-subtitle>
         </v-list-item>
       </v-list-item-group>

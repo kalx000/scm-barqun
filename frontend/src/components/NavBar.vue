@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :elevation="10" border="rounded-0" style="width:2000px;" color="secondary">
+  <v-app-bar :elevation="5" border="rounded-0" style="width:2000px;" color="secondary">
   <div class="darkmode">
         <v-icon class="mr-1 sun">fa-solid fa-sun</v-icon>
         <v-switch  class="mt-4 mx-1" v-model="$vuetify.theme.dark"></v-switch>

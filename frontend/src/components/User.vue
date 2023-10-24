@@ -28,38 +28,20 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idorder"
-                        label="ID Order"
+                        v-model="editedItem.name"
+                        label="Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idcustomer"
-                        label="ID Customer"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.jumlah"
-                        label="Jumlah Barang"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idproduct"
-                        label="ID Product"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.tanggal"
-                        label="Tanggal Pemesanan"
+                        v-model="editedItem.email"
+                        label="Email"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.status"
-                        label="Status Pemesanan"
+                        label="Status"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -110,34 +92,25 @@ export default {
     dialogDelete: false,
     headers: [
       {
-        text: "ID Order",
+        text: "Name",
         align: "start",
         sortable: true,
-        value: "idorder",
+        value: "name",
       },
-      { text: "ID Customer", value: "idcustomer" },
-      { text: "ID Product", value: "idproduct" },
-      { text: "Jumlah Barang", value: "jumlah" },
-      { text: "No tanggal", value: "tanggal" },
+      { text: "Email", value: "email" },
       { text: "Status", value: "status" },
       { text: "actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      idorder: "",
-      idcustomer: "",
-      jumlah: "",
-      idproduct: "",
-      tanggal: "",
+      name: "",
+      email: "",
       status: "",
     },
     defaultItem: {
-      idorder: "",
-      idcustomer: "",
-      jumlah: "",
-      idproduct: "",
-      tanggal: "",
+      name: "",
+      email: "",
       status: "",
     },
   }),
@@ -165,59 +138,13 @@ export default {
     initialize() {
       this.desserts = [
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi - 2",
+          email: "marketing@barqun.com - 2",
           status: "-",
         },
       ];

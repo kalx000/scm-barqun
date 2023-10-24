@@ -81,7 +81,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
                 >Are you sure you want to delete this item?</v-card-title
@@ -97,7 +97,7 @@
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
@@ -110,6 +110,29 @@
           </v-list-item>
         </v-list>
       </template>
+      <!-- <i
+        id="more"
+        class="fa-solid fa-ellipsis-vertical ml-3 more"
+        size="15px"
+        @click="showDetails(task)"
+        v-click-outside="() => remove(task)"
+      ></i>
+      <div v-if="task.id" v-bind:id="details - ${task.id}" class="details">
+        <v-btn
+          @click="sendDetails(task)"
+          class="btn-detail"
+          style="text-transform: none; letter-spacing: 0"
+          ><i style="font-size: 0.8rem" class="fa-solid fa-circle-info mr-1"></i
+          >Detail</v-btn
+        >
+        <v-btn
+          @click="deleteTask(task)"
+          class="btn-delete"
+          style="text-transform: none; letter-spacing: 0"
+          ><i style="font-size: 0.7rem" class="fa-solid fa-trash mr-1"></i
+          >Delete</v-btn
+        >
+      </div> -->
     </v-data-table>
     <Footer />
   </v-app>
@@ -274,6 +297,25 @@ export default {
       }
       this.close();
     },
+    // showDetails(task) {
+    //   const detailsElement = document.getElementById(details-${task.id});
+    //   detailsElement.classList.toggle("details-show");
+    // },
+    // remove(task) {
+    //   const detailsElement = document.getElementById(details-${task.id});
+    //   const clickTarget = event.target;
+
+    //   // Check if the click target is a descendant of the .details element
+    //   if (
+    //     clickTarget === detailsElement ||
+    //     detailsElement.contains(clickTarget)
+    //   ) {
+    //     return;
+    //   }
+
+    //   // Remove the .details-show class from the .details element
+    //   detailsElement.classList.remove("details-show");
+    // },
   },
 };
 </script>
