@@ -18,7 +18,8 @@
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
+                <v-icon>fas fa-plus</v-icon>
+                Add
               </v-btn>
             </template>
             <v-card>
@@ -73,12 +74,10 @@
                 </v-container>
               </v-card-text>
 
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
+                <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -89,17 +88,64 @@
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="secondary" text @click="closeDelete"
                   >Cancel</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn color="secondary" text @click="deleteItemConfirm"
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
-              </v-card-actions>
+              </v-card-actions> -->
             </v-card>
           </v-dialog>
         </v-toolbar>
+      </template>
+      <template>
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-card height="200px">
+              <v-card-title class="bg-blue">
+                <span class="text-h5">Menu</span>
+
+                <v-spacer></v-spacer>
+
+                <v-menu>
+                  <template v-slot:activator="{ props }">
+                    <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item v-for="(item, i) in items" :key="i">
+                      <v-icon>{{item.icon}}</v-icon>
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-card-title>
+
+              <v-card-text>Lorem Ipsum</v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <!-- <i
+        id="more"
+        class="fa-solid fa-ellipsis-vertical ml-5 more"
+        size="15px"
+      ></i>
+      <div class="details">
+        <v-btn
+          class="btn-pencil"
+          style="text-transform: none; letter-spacing: 0"
+          ><i style="font-size: 0.9rem" class="fa-solid fa-pencil mr-2"></i
+          >Edit</v-btn
+        >
+        <v-btn
+          class="btn-delete"
+          style="text-transform: none; letter-spacing: 0"
+          ><i style="font-size: 0.9rem" class="fa-solid fa-trash mr-1"></i
+          >Delete</v-btn
+        >
+      </div> -->
       </template>
     </v-data-table>
     <Footer />
@@ -116,12 +162,10 @@ export default {
     Navbar,
   },
   data: () => ({
-      items: [
-        { icon: 'fab fa-tiktok',
-          title: 'delete'
-        },
-        { icon: 'fab fa-tiktok' },
-      ],
+    items: [
+      { icon: "fab fa-tiktok", title: "delete" },
+      { icon: "fab fa-tiktok" },
+    ],
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -223,46 +267,65 @@ export default {
       ];
     },
 
-    // editItem(item) {
-    //   this.editedIndex = this.desserts.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialog = true;
-    // },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
 
-    // deleteItem(item) {
-    //   this.editedIndex = this.desserts.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialogDelete = true;
-    // },
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
 
-    // deleteItemConfirm() {
-    //   this.desserts.splice(this.editedIndex, 1);
-    //   this.closeDelete();
-    // },
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
 
-    // close() {
-    //   this.dialog = false;
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem);
-    //     this.editedIndex = -1;
-    //   });
-    // },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
 
-    // closeDelete() {
-    //   this.dialogDelete = false;
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem);
-    //     this.editedIndex = -1;
-    //   });
-    // },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
 
-    // save() {
-    //   if (this.editedIndex > -1) {
-    //     Object.assign(this.desserts[this.editedIndex], this.editedItem);
-    //   } else {
-    //     this.desserts.push(this.editedItem);
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+    // showDetails(task) {
+    //   const detailsElement = document.getElementById(details-${task.id});
+    //   detailsElement.classList.toggle("details-show");
+    // },
+    // remove(task) {
+    //   const detailsElement = document.getElementById(details-${task.id});
+    //   const clickTarget = event.target;
+
+    //   // Check if the click target is a descendant of the .details element
+    //   if (
+    //     clickTarget === detailsElement ||
+    //     detailsElement.contains(clickTarget)
+    //   ) {
+    //     return;
     //   }
-    //   this.close();
+
+    //   // Remove the .details-show class from the .details element
+    //   detailsElement.classList.remove("details-show");
     // },
   },
 };
