@@ -91,7 +91,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <!-- <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">
           fa-solid fa-pencil
         </v-icon>
@@ -99,7 +99,7 @@
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
-      </template> -->
+      </template>
     </v-data-table>
   </v-app>
 </template>

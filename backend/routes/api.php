@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\api\CustomerController;
-use App\Http\Controllers\api\InventoryController;
+use App\Models\Inventory;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\StockOpnameRequest;
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\StockInController;
-use App\Http\Controllers\api\StockOpnameController;
+use App\Http\Controllers\api\CustomerController;
 use App\Http\Controllers\api\StockOutController;
 use App\Http\Controllers\api\SupplierController;
-use App\Http\Requests\StockOpnameRequest;
-use App\Models\Inventory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\InventoryController;
+use App\Http\Controllers\api\StockOpnameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +27,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', function (Request $request) {
+        return auth()->user();
+    });
+    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
 });
 
 Route::get('products', [ProductController::class, 'index']);

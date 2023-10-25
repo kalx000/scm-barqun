@@ -14,9 +14,9 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id');
-            $table->foreignId('customer_id');
+            $table->uuid('id')->primary();
+            $table->uuid('product_id');
+            $table->uuid('customer_id');
             $table->date('tanggal_pemesanan');
             $table->integer('jumlah_barang');
             $table->string('status_pemesanan');
