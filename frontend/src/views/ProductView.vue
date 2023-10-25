@@ -101,7 +101,7 @@
         </v-toolbar>
       </template>
       <template>
-        <v-row>
+        <!-- <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-card height="200px">
               <v-card-title class="bg-blue">
@@ -126,8 +126,8 @@
               <v-card-text>Lorem Ipsum</v-card-text>
             </v-card>
           </v-col>
-        </v-row>
-        <!-- <i
+        </v-row> -->
+        <i
         id="more"
         class="fa-solid fa-ellipsis-vertical ml-5 more"
         size="15px"
@@ -145,7 +145,7 @@
           ><i style="font-size: 0.9rem" class="fa-solid fa-trash mr-1"></i
           >Delete</v-btn
         >
-      </div> -->
+      </div>
       </template>
     </v-data-table>
     <Footer />
