@@ -12,9 +12,9 @@
           <v-toolbar-title>User Sementara</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -30,7 +30,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.name"
-                        label="Name"
+                        label="User Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -42,7 +42,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.status"
-                        label="Status"
+                        label="User Status"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -55,10 +55,10 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="550px">
             <v-card>
               <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
+                >Are you sure you want to delete this user?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -79,7 +79,7 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
@@ -93,13 +93,13 @@ export default {
     dialogDelete: false,
     headers: [
       {
-        text: "Nama",
+        text: "User Name",
         align: "start",
         sortable: true,
         value: "name",
       },
       { text: "Email", value: "email" },
-      { text: "Status", value: "status" },
+      { text: "User Status", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -118,7 +118,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New User" : "Edit User";
     },
   },
 
@@ -133,7 +133,9 @@ export default {
 
   created() {
     this.initialize();
-  },methods: {
+  },
+  
+  methods: {
     initialize() {
       this.desserts = [
         {

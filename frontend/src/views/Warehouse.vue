@@ -9,41 +9,43 @@
         <v-tab>Stock Opname</v-tab>
       </v-tabs>
 
-<v-tabs-items v-model="tab">
+      <v-tabs-items v-model="tab">
 
-    <v-tab-item>
-      <StockIn />
+        <v-tab-item>
+         <StockIn />
         </v-tab-item>
 
-    <v-tab-item>
-      <StockOut/>
+        <v-tab-item>
+          <StockOut />
         </v-tab-item>
 
-    <v-tab-item>
-     <StockOpName />
+        <v-tab-item>
+          <StockOpName />
         </v-tab-item>
 
-</v-tabs-items>
+      </v-tabs-items>
     </v-card>
   </div>
 </template>
 
 <script>
 import LeftBar from "@/components/LeftBar.vue";
-import Navbar from "@/components/NavBar.vue"
-import StockOut from "../components/warehouse/StockOut.vue"
-import StockIn from "../components/warehouse/StockIn.vue"
-import StockOpName from "../components/warehouse/StockOpName.vue"
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/NavBar.vue";
+import StockIn from "@/components/warehouse/StockIn.vue"
+import StockOut from "@/components/warehouse/StockOut.vue"
+import StockOpName from "@/components/warehouse/StockOpName.vue"
 export default {
   components: {
     LeftBar,
+    Footer,
     Navbar,
-    StockOut,
     StockIn,
-    StockOpName
+    StockOut,
+    StockOpName,
   },
   data: () => ({
-    tab:null,
+    tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [

@@ -40,7 +40,7 @@ INDEX.VUE
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.name"
-                          label="Name Customer"
+                          label="Customer Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
@@ -54,14 +54,15 @@ INDEX.VUE
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
+                        @keypress="filter(event)"
                           v-model="editedItem.telepon"
-                          label="No Telepon"
+                          label="Phone Number"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.alamat"
-                          label="Alamat"
+                          label="Address"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -121,14 +122,14 @@ export default {
       //   value: "idcustomer",
       // },
       {
-        text: "Nama Customer",
+        text: "Customer Name",
         align: "start",
         sortable: "true",
         value: "name",
       },
       { text: "Email", value: "email" },
-      { text: "No Telepon", value: "telepon" },
-      { text: "Alamat", value: "alamat" },
+      { text: "Phone Number", value: "telepon" },
+      { text: "Address", value: "alamat" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -215,6 +216,17 @@ export default {
         },
       ];
     },
+
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

@@ -36,31 +36,33 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idcustomer"
-                        label="Name Customer"
+                        label="Customer Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.jumlah"
-                        label="Jumlah Barang"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idproduct"
+                        v-model="editedItem.productname"
                         label="Product Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                      @keypress="filter(event)"
+                        v-model="editedItem.productName"
+                        label="Amount of items"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                      @keypress="filter(event)"
                         v-model="editedItem.tanggal"
-                        label="Tanggal Pemesanan"
+                        label="Date Order"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.status"
-                        label="Status Pemesanan"
+                        label="Status Order"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -116,11 +118,11 @@ export default {
       //   sortable: true,
       //   value: "idorder",
       // },
-      { text: "Nama Customer", value: "idcustomer" },
-      { text: "Nama Product", value: "idproduct" },
-      { text: "Jumlah Barang", value: "jumlah" },
-      { text: "No tanggal", value: "tanggal" },
-      { text: "Status", value: "status" },
+      { text: "Customer Name", value: "idcustomer" },
+      { text: "Product Name", value: "productName" },
+      { text: "Amount of Items", value: "jumlah" },
+      { text: "Date Order", value: "tanggal" },
+      { text: "Status Order", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -129,7 +131,7 @@ export default {
       idorder: "",
       idcustomer: "",
       jumlah: "",
-      idproduct: "",
+      productName: "",
       tanggal: "",
       status: "",
     },
@@ -137,7 +139,7 @@ export default {
       idorder: "",
       idcustomer: "",
       jumlah: "",
-      idproduct: "",
+      productName: "",
       tanggal: "",
       status: "",
     },
@@ -145,7 +147,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New Order" : "Edit Order";
     },
   },
 
@@ -169,7 +171,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -177,7 +179,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -185,7 +187,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -193,7 +195,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -201,7 +203,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -209,7 +211,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -217,12 +219,23 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
       ];
     },
+
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

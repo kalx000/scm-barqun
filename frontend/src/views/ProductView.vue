@@ -6,7 +6,7 @@
       :headers="headers"
       :items="desserts"
       sort-by="price"
-      class="pa-4"
+      class="elevation-5 pa-4"
       style="margin-top:80px;"
     >
       <template v-slot:top>
@@ -37,12 +37,14 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                        @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                      @keypress="filter(event)"
                         v-model="editedItem.qty"
                         label="Quantity"
                       ></v-text-field>
@@ -101,16 +103,31 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon>
-          <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
-          
+      <template v-slot:[`item.actions`]>
+        <div class="align-center">
+    <v-menu   
+    transition="slide-y-transition"
+    offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          color="secondary"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>fas fa-ellipsis-vertical</v-icon>
         </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in itemss"
+          :key="index"
+        >
+        <v-icon small style="margin-right: 3px;">{{ item.icon }}</v-icon>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
       </template>
     </v-data-table>
     <Footer />
@@ -127,10 +144,12 @@ export default {
     Navbar,
   },
   data: () => ({
-    
+    itemss: [
+        { icon: "fa-solid fa-trash", text: "Delete" },
+        { icon: "fa-solid fa-pencil", text: "Edit" },
+      ],
     dialog: false,
     dialogDelete: false,
-    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
       {
         text: "Product Name",
@@ -229,6 +248,17 @@ export default {
         },
       ];
     },
+
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

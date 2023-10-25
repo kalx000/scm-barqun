@@ -1,5 +1,5 @@
 <template>
-   <v-card-text>
+  <v-card-text>
             <v-data-table
               :headers="headers"
               :items="desserts"
@@ -21,7 +21,7 @@
                         v-on="on"
                       >
                       <v-icon>fas fa-plus</v-icon>
-                      Add
+                        Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -40,8 +40,9 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.idstock"
-                                label="Jumlah Stock"
+                                label="Stock"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
@@ -52,14 +53,16 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.jumlah"
-                                label="Jumlah Masuk"
+                                label="Incoming Amount"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.tanggal"
-                                label="Tanggal Masuk"
+                                label="Date Of Entry"
                               ></v-text-field>
                             </v-col>
                           </v-row>
@@ -68,10 +71,10 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="secondary" text @click="close">
+                        <v-btn color="blue darken-1" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="secondary" text @click="save">
+                        <v-btn color="blue darken-1" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
@@ -85,11 +88,11 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="secondary" text @click="closeDelete"
+                        <v-btn color="blue darken-1" text @click="closeDelete"
                           >Cancel</v-btn
                         >
                         <v-btn
-                          color="secondary"
+                          color="blue darken-1"
                           text
                           @click="deleteItemConfirm"
                           >OK</v-btn
@@ -104,19 +107,19 @@
                 <v-icon small class="mr-2" @click="editItem(item)">
                   mdi-pencil
                 </v-icon>
-                <v-icon small @click="deleteItem(item)"> fas fa-delete </v-icon>
+                <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
               </template>
               <template v-slot:no-data>
-                <v-btn color="secondary" @click="initialize"> Reset </v-btn>
+                <v-btn color="primary" @click="initialize"> Reset </v-btn>
               </template>
             </v-data-table>
-            </v-card-text>
+          </v-card-text>
 </template>
 
 <script>
 export default {
- data: () => ({
-    tab:null,
+     data: () => ({
+    tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -126,10 +129,10 @@ export default {
         sortable: true,
         value: "idproduct",
       },
-      { text: "Jumlah Stock", value: "idstock" },
+      { text: "Stock", value: "idstock" },
       { text: "Supplier Name", value: "idsupplier" },
-      { text: "Jumlah Masuk", value: "jumlah" },
-      { text: "Tanggal Masuk", value: "tanggal" },
+      { text: "Incoming Amount", value: "jumlah" },
+      { text: "Date Of Entry", value: "tanggal" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -176,47 +179,57 @@ export default {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130205",
+          jumlah: "1",
+          tanggal: "13-02-05",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
       ];
-      
     },
+
+     filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
