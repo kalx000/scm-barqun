@@ -100,20 +100,23 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template>
-        <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon style="color:#000;">
-          <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
-        </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index"> 
-            <v-icon>{{item.icon}}</v-icon>
-            <v-list-item-title>{{item.title}}</v-list-item-title>
-          </v-list-item>
-        </v-list>
+      <template v-slot:[item.actions]="{ items }">
+        <div class="align-center">
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-for="(item, index) in items" :key="index">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </template>
-
-        <!-- <i
+      <!-- <i
         id="more"
         class="fa-solid fa-ellipsis-vertical ml-5 more"
         size="15px"
@@ -150,8 +153,10 @@ export default {
     dialog: false,
     dialogDelete: false,
     items: [
-      { icon: "fab fa-tiktok", title: "delete" },
-      { icon: "fab fa-tiktok" },
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Click Me 2" },
     ],
     headers: [
       {
