@@ -101,16 +101,6 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon>
-          <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </template>
     </v-data-table>
     <Footer />
   </v-app>
@@ -126,15 +116,14 @@ export default {
     Navbar,
   },
   data: () => ({
-      item: [
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
+      items: [
+        { icon: 'fab fa-tiktok',
+          title: 'delete'
+        },
+        { icon: 'fab fa-tiktok' },
       ],
     dialog: false,
     dialogDelete: false,
-    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
       {
         text: "Product Name",
@@ -234,47 +223,47 @@ export default {
       ];
     },
 
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+    // editItem(item) {
+    //   this.editedIndex = this.desserts.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialog = true;
+    // },
 
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
+    // deleteItem(item) {
+    //   this.editedIndex = this.desserts.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialogDelete = true;
+    // },
 
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
+    // deleteItemConfirm() {
+    //   this.desserts.splice(this.editedIndex, 1);
+    //   this.closeDelete();
+    // },
 
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    // close() {
+    //   this.dialog = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
 
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    // closeDelete() {
+    //   this.dialogDelete = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
+    // save() {
+    //   if (this.editedIndex > -1) {
+    //     Object.assign(this.desserts[this.editedIndex], this.editedItem);
+    //   } else {
+    //     this.desserts.push(this.editedItem);
+    //   }
+    //   this.close();
+    // },
   },
 };
 </script>
