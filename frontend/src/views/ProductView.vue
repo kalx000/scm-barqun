@@ -74,14 +74,14 @@
                 </v-container>
               </v-card-text>
 
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
                 >Are you sure you want to delete this item?</v-card-title
@@ -95,44 +95,57 @@
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
-              </v-card-actions>
+              </v-card-actions> -->
             </v-card>
-          </v-dialog> -->
+          </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon>
-          <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </template>
-      <!-- <i
+      <template>
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-card height="200px">
+              <v-card-title class="bg-blue">
+                <span class="text-h5">Menu</span>
+
+                <v-spacer></v-spacer>
+
+                <v-menu>
+                  <template v-slot:activator="{ props }">
+                    <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item v-for="(item, i) in items" :key="i">
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-card-title>
+
+              <v-card-text>Lorem Ipsum</v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <!-- <i
         id="more"
-        class="fa-solid fa-ellipsis-vertical ml-3 more"
+        class="fa-solid fa-ellipsis-vertical ml-5 more"
         size="15px"
-        @click="showDetails(task)"
-        v-click-outside="() => remove(task)"
       ></i>
-      <div v-if="task.id" v-bind:id="details - ${task.id}" class="details">
+      <div class="details">
         <v-btn
-          @click="sendDetails(task)"
-          class="btn-detail"
+          class="btn-pencil"
           style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.8rem" class="fa-solid fa-circle-info mr-1"></i
-          >Detail</v-btn
+          ><i style="font-size: 0.9rem" class="fa-solid fa-pencil mr-2"></i
+          >Edit</v-btn
         >
         <v-btn
-          @click="deleteTask(task)"
           class="btn-delete"
           style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.7rem" class="fa-solid fa-trash mr-1"></i
+          ><i style="font-size: 0.9rem" class="fa-solid fa-trash mr-1"></i
           >Delete</v-btn
         >
       </div> -->
+      </template>
     </v-data-table>
     <Footer />
   </v-app>
@@ -148,12 +161,6 @@ export default {
     Navbar,
   },
   data: () => ({
-    item: [
-      { item: "fab fa-github" },
-      { item: "fab fa-github" },
-      { item: "fab fa-github" },
-      { item: "fab fa-github" },
-    ],
     dialog: false,
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
