@@ -5,6 +5,7 @@
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -13,7 +14,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -36,7 +37,7 @@
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.name"
-                          label="Name Supplier"
+                          label="Supplier Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
@@ -50,14 +51,15 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
+                        @keypress="filter(event)"
                           v-model="editedItem.telepon"
-                          label="No Telepon"
+                          label="Phone Number"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.alamat"
-                          label="Alamat"
+                          label="Address"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -98,7 +100,7 @@
         <v-icon small @click="deleteItem(item)"> fa-solid fa-trash </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
@@ -116,11 +118,11 @@ export default {
       //   sortable: true,
       //   value: "idsupplier",
       // },
-      { text: "Name Supplier", value: "name" },
+      { text: "Supplier Name", value: "name" },
       { text: "Email", value: "email" },
-      { text: "No Telepon", value: "telepon" },
-      { text: "Alamat", value: "alamat" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Phone Number", value: "telepon" },
+      { text: "Address", value: "alamat" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -206,6 +208,17 @@ export default {
         },
       ];
     },
+
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

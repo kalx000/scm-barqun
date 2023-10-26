@@ -11,16 +11,17 @@
                   <v-toolbar-title>Stock Out</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="500px">
+                  <v-dialog v-model="dialog" max-width="550px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
-                        color="primary"
+                        color="secondary"
                         dark
                         class="mb-2"
                         v-bind="attrs"
                         v-on="on"
                       >
-                        New Item
+                        <v-icon>fas fa-plus</v-icon>
+                        Add
                       </v-btn>
                     </template>
                     <v-card>
@@ -39,8 +40,9 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.idstock"
-                                label="Jumlah Stock"
+                                label="Stock"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
@@ -51,14 +53,16 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.jumlah"
-                                label="Jumlah Masuk"
+                                label="Incoming Amount"
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                               <v-text-field
+                              @keypress="filter(event)"
                                 v-model="editedItem.tanggal"
-                                label="Tanggal Masuk"
+                                label="Date Of Enrty"
                               ></v-text-field>
                             </v-col>
                           </v-row>
@@ -125,11 +129,11 @@ export default {
         sortable: true,
         value: "idproduct",
       },
-      { text: "Jumlah Stock", value: "idstock" },
+      { text: "Stock", value: "idstock" },
       { text: "Supplier Name", value: "idsupplier" },
-      { text: "Jumlah Masuk", value: "jumlah" },
-      { text: "Tanggal Masuk", value: "tanggal" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Incoming Amount", value: "jumlah" },
+      { text: "Date Of Entry", value: "tanggal" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -175,46 +179,57 @@ export default {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130205",
+          jumlah: "1",
+          tanggal: "13-02-05",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
-          jumlah: "Gudang",
-          tanggal: "130206",
+          jumlah: "1",
+          tanggal: "13-02-06",
         },
       ];
     },
+
+     filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

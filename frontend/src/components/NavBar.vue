@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :elevation="5" border="rounded-0" style="width:2000px;" color="secondary">
+  <v-app-bar :elevation="10" border="rounded-0" style="width:2000px;" color="secondary" class="navbar">
   <div class="darkmode">
         <v-icon class="mr-1 sun">fa-solid fa-sun</v-icon>
         <v-switch  class="mt-4 mx-1" v-model="$vuetify.theme.dark"></v-switch>
@@ -13,9 +13,9 @@
           <v-list-item-avatar class="ml-n2">
             <v-img src="bongo.gif"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title><h5>Fransiscus</h5></v-list-item-title>
+          <v-list-item-title><h5 class="teks">Fransiscus</h5></v-list-item-title>
           <v-btn icon to="/">
-            <v-icon sm>fa-solid fa-arrow-right-from-bracket</v-icon>
+            <v-icon class="teks">fa-solid fa-arrow-right-from-bracket</v-icon>
           </v-btn>
         </v-list-item>
       </div>
@@ -25,16 +25,22 @@
 <script>
 export default {
   
-  computed: {
-    isDarkMode() {
-      return this.$vuetify.theme.dark 
-    }
-  },
+  // computed: {
+  //   isDarkMode() {
+  //     return this.$vuetify.theme.dark 
+  //   }
+  // },
 }
 </script>
 
 
 <style>
+.navbar{
+  position:fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
 .profile{
 position:absolute;
 font-size: 13px;

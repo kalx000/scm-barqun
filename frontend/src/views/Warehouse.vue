@@ -3,7 +3,7 @@
     <Navbar />
     <LeftBar />
     <v-card>
-      <v-tabs v-model="tab" bg-color="primary" class="ml-8">
+      <v-tabs v-model="tab" color="secondary" class="ml-8" style="margin-top:70px;">
         <v-tab>Stock In</v-tab>
         <v-tab>Stock Out</v-tab>
         <v-tab>Stock Opname</v-tab>
@@ -25,7 +25,6 @@
 
       </v-tabs-items>
     </v-card>
-    <Footer />
   </div>
 </template>
 
@@ -60,7 +59,7 @@ export default {
       { text: "Supplier Name", value: "idsupplier" },
       { text: "Jumlah Masuk", value: "jumlah" },
       { text: "Tanggal Masuk", value: "tanggal" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -145,6 +144,7 @@ export default {
           tanggal: "130206",
         },
       ];
+      
     },
 
     editItem(item) {

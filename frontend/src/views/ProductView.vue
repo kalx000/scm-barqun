@@ -1,14 +1,13 @@
 <template>
-  <v-app>
-    <div>
+<v-app>
       <Navbar />
-    </div>
     <LeftBar />
     <v-data-table
       :headers="headers"
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:80px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -18,8 +17,7 @@
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-plus</v-icon>
-                Add
+                New Item
               </v-btn>
             </template>
             <v-card>
@@ -38,12 +36,14 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                        @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                      @keypress="filter(event)"
                         v-model="editedItem.qty"
                         label="Quantity"
                       ></v-text-field>
@@ -76,8 +76,10 @@
 
               <!-- <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
-                <v-btn color="secondary" text @click="save"> Save </v-btn>
+                <v-btn color="blue darken-1" text @click="close">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -100,21 +102,15 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[item.actions]="{ items }">
-        <div class="align-center">
-          <v-menu transition="slide-y-transition" offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-ellipsis-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-for="(item, index) in items" :key="index">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-btn icon>
+          <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
       </template>
       <!-- <i
         id="more"
@@ -150,14 +146,15 @@ export default {
     Navbar,
   },
   data: () => ({
+      item: [
+        { item: 'fab fa-github' },
+        { item: 'fab fa-github' },
+        { item: 'fab fa-github' },
+        { item: 'fab fa-github' },
+      ],
     dialog: false,
     dialogDelete: false,
-    items: [
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me 2" },
-    ],
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
       {
         text: "Product Name",
@@ -170,7 +167,7 @@ export default {
       { text: "Unit", value: "unit" },
       { text: "Warehouse", value: "warehouse" },
       // { text: 'ID Product', value: 'id' },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -257,6 +254,17 @@ export default {
       ];
     },
 
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
+
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -334,4 +342,6 @@ export default {
   text-transform: none;
   cursor: pointer;
 }
+
+
 </style>
