@@ -1,14 +1,13 @@
 <template>
   <v-app>
-    <div>
-      <Navbar />
-    </div>
+    <Navbar />
     <LeftBar />
     <v-data-table
       :headers="headers"
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top: 80px"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -17,7 +16,13 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -38,12 +43,14 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                        @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                        @keypress="filter(event)"
                         v-model="editedItem.qty"
                         label="Quantity"
                       ></v-text-field>
@@ -74,7 +81,7 @@
                 </v-container>
               </v-card-text>
 
-              <!-- <v-card-actions>
+              <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
@@ -95,57 +102,35 @@
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
-              </v-card-actions> -->
+              </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
-      <template>
-        <!-- <v-row>
-          <v-col cols="12" sm="6" offset-sm="3">
-            <v-card height="200px">
-              <v-card-title class="bg-blue">
-                <span class="text-h5">Menu</span>
-
-                <v-spacer></v-spacer>
-
-                <v-menu>
-                  <template v-slot:activator="{ props }">
-                    <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
-                  </template>
-
-                  <v-list>
-                    <v-list-item v-for="(item, i) in items" :key="i">
-                      <v-icon>{{item.icon}}</v-icon>
-                      <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-card-title>
-
-              <v-card-text>Lorem Ipsum</v-card-text>
-            </v-card>
-          </v-col>
-        </v-row> -->
-        <i
-        id="more"
-        class="fa-solid fa-ellipsis-vertical ml-5 more"
-        size="15px"
-      ></i>
-      <div class="details">
-        <v-btn
-          class="btn-pencil"
-          style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.9rem" class="fa-solid fa-pencil mr-2"></i
-          >Edit</v-btn
-        >
-        <v-btn
-          class="btn-delete"
-          style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.9rem" class="fa-solid fa-trash mr-1"></i
-          >Delete</v-btn
-        >
-      </div>
+      <template v-slot:[`item.actions`]="{ item }">
+        <div class="align-center">
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="success" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item>
+                <v-icon @click="editItem(item)" small style="margin-right: 3px"
+                  >fas fa-pencil</v-icon>
+              </v-list-item>
+              <v-list-item>
+                <v-icon @click="deleteItem(item)" small style="margin-right: 3px"
+                  >fas fa-trash</v-icon>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+            <template v-slot:no-data>
+              <v-btn color="secondary" @click="initialize"> Reset </v-btn>
+            </template>
+          </v-menu>
+        </div>
       </template>
     </v-data-table>
     <Footer />
@@ -162,10 +147,10 @@ export default {
     Navbar,
   },
   data: () => ({
-    items: [
-      { icon: "fab fa-tiktok", title: "delete" },
-      { icon: "fab fa-tiktok" },
-    ],
+    // items: [
+    //   { icon1: "fa-solid fa-pencil", text: "Edit" },
+    //   { icon2: "fa-solid fa-trash", text: "Delete" },
+    // ],
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -180,7 +165,7 @@ export default {
       { text: "Unit", value: "unit" },
       { text: "Warehouse", value: "warehouse" },
       // { text: 'ID Product', value: 'id' },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -265,6 +250,17 @@ export default {
           id: "444",
         },
       ];
+    },
+
+    filter: function (evt) {
+      evt = evt ? evt : window.event;
+      let expect = evt.target.value.toString() + evt.key.toString();
+
+      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
     },
 
     editItem(item) {

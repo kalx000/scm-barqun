@@ -5,15 +5,16 @@
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Order</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="650px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -35,31 +36,33 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idcustomer"
-                        label="Name Customer"
+                        label="Customer Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.jumlah"
-                        label="Jumlah Barang"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idproduct"
+                        v-model="editedItem.productname"
                         label="Product Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                      @keypress="filter(event)"
+                        v-model="editedItem.productName"
+                        label="Amount of items"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                      @keypress="filter(event)"
                         v-model="editedItem.tanggal"
-                        label="Tanggal Pemesanan"
+                        label="Date Order"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.status"
-                        label="Status Pemesanan"
+                        label="Status Order"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -97,7 +100,7 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
@@ -115,12 +118,12 @@ export default {
       //   sortable: true,
       //   value: "idorder",
       // },
-      { text: "Name Customer", value: "idcustomer" },
-      { text: "Product Name", value: "idproduct" },
-      { text: "Jumlah Barang", value: "jumlah" },
-      { text: "No tanggal", value: "tanggal" },
-      { text: "Status", value: "status" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Customer Name", value: "idcustomer" },
+      { text: "Product Name", value: "productName" },
+      { text: "Amount of Items", value: "jumlah" },
+      { text: "Date Order", value: "tanggal" },
+      { text: "Status Order", value: "status" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -128,7 +131,7 @@ export default {
       idorder: "",
       idcustomer: "",
       jumlah: "",
-      idproduct: "",
+      productName: "",
       tanggal: "",
       status: "",
     },
@@ -136,7 +139,7 @@ export default {
       idorder: "",
       idcustomer: "",
       jumlah: "",
-      idproduct: "",
+      productName: "",
       tanggal: "",
       status: "",
     },
@@ -144,7 +147,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New Order" : "Edit Order";
     },
   },
 
@@ -168,7 +171,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -176,7 +179,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -184,7 +187,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -192,7 +195,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -200,7 +203,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -208,7 +211,7 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
@@ -216,12 +219,23 @@ export default {
           idorder: "12345",
           idcustomer: "54321",
           jumlah: "10",
-          idproduct: "09876",
+          productName: "09876",
           tanggal: "02/10/2023",
           status: "-",
         },
       ];
     },
+
+    filter: function (evt) {
+    evt = evt ? evt : window.event;
+    let expect = evt.target.value.toString() + evt.key.toString();
+
+    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+      evt.preventDefault();
+    } else {
+      return true;
+    }
+  },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);

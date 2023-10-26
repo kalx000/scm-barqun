@@ -5,15 +5,16 @@
       :items="desserts"
       sort-by="price"
       class="elevation-5 pa-4"
+      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>/User Sementara/</v-toolbar-title>
+          <v-toolbar-title>User Sementara</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -28,44 +29,25 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idorder"
-                        label="ID Order"
+                        v-model="editedItem.name"
+                        label="User Name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idcustomer"
-                        label="ID Customer"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.jumlah"
-                        label="Jumlah Barang"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idproduct"
-                        label="ID Product"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.tanggal"
-                        label="Tanggal Pemesanan"
+                        v-model="editedItem.email"
+                        label="Email"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.status"
-                        label="Status Pemesanan"
+                        label="User Status"
                       ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
@@ -73,10 +55,10 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="550px">
             <v-card>
               <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
+                >Are you sure you want to delete this user?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -92,59 +74,51 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:`item.actions`="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-app>
 </template>
+
 <script>
 export default {
-  data: () => ({
+ data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
       {
-        text: "ID Order",
+        text: "User Name",
         align: "start",
         sortable: true,
-        value: "idorder",
+        value: "name",
       },
-      { text: "ID Customer", value: "idcustomer" },
-      { text: "ID Product", value: "idproduct" },
-      { text: "Jumlah Barang", value: "jumlah" },
-      { text: "No tanggal", value: "tanggal" },
-      { text: "Status", value: "status" },
-      { text: "actions", value: "actions", sortable: false },
+      { text: "Email", value: "email" },
+      { text: "User Status", value: "status" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      idorder: "",
-      idcustomer: "",
-      jumlah: "",
-      idproduct: "",
-      tanggal: "",
+      name: "",
+      email: "",
       status: "",
     },
     defaultItem: {
-      idorder: "",
-      idcustomer: "",
-      jumlah: "",
-      idproduct: "",
-      tanggal: "",
+      name: "",
+      email: "",
       status: "",
     },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New User" : "Edit User";
     },
   },
 
@@ -160,64 +134,43 @@ export default {
   created() {
     this.initialize();
   },
-
+  
   methods: {
     initialize() {
       this.desserts = [
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
         {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          idproduct: "09876",
-          tanggal: "02/10/2023",
+          name: "Barqun Digital Teknologi",
+          email: "marketing@barqun.com",
           status: "-",
         },
       ];
@@ -268,4 +221,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

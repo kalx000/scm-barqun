@@ -7,6 +7,7 @@
     :mini-variant.sync="mini"
     color="primary"
     class="teks"
+    style="z-index:101;"
   >
     <v-list-item>
       <v-list-item-avatar class="ml-n2">
@@ -23,7 +24,7 @@
       <v-list-item-group class="mt-4" active-class="active1">
         <v-list-item to="/home" class="mb-4">
           <v-list-item-icon>
-            <v-icon size="x-large">fat fa-home</v-icon>
+            <v-icon>fat fa-home</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"><h3>Dashboard</h3></v-list-item-subtitle>
         </v-list-item>
@@ -85,7 +86,6 @@ export default {
   color: white !important;
 }
 .active1 {
-  background-color: #1565C0 !important;
   color: white !important;
 }
 .active1 .teks{
