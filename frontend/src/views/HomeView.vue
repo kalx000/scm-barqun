@@ -25,3 +25,9 @@ export default {
  
 };
 </script>
+
+<style scoped>
+.body::-webkit-scrollbar{
+  display: none;
+}
+</style>

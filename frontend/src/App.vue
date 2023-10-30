@@ -15,8 +15,9 @@ export default {
 };
 </script>
 <style>
+
 html {
-  overflow: hidden !important;
+  overflow-y: scroll !important;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
