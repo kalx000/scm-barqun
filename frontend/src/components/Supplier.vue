@@ -27,12 +27,6 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idsupplier"
-                        label="ID Supplier"
-                      ></v-text-field>
-                    </v-col> -->
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -113,7 +107,7 @@
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -130,12 +124,6 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID Supplier",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idsupplier",
-      // },
       { text: "Supplier Name", value: "name" },
       { text: "Email", value: "email" },
       { text: "Phone Number", value: "telepon" },

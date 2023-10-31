@@ -28,14 +28,7 @@ INDEX.VUE
 
               <v-card-text>
                 <v-container>
-                  <!-- <ModuleForm :form="editedItem" />  -->
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="form.idcustomer"
-                        label="ID Customer"
-                      ></v-text-field>
-                    </v-col> -->
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -47,7 +40,6 @@ INDEX.VUE
                         <v-text-field
                           v-model="editedItem.email"
                           label="Email"
-                          suffix="@gmail.com"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -117,7 +109,7 @@ INDEX.VUE
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -128,20 +120,12 @@ INDEX.VUE
   </v-app>
 </template>
 <script>
-// import ModuleForm from "./Form.vue";
 export default {
-  // components: { ModuleForm },
   data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID Customer",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idcustomer",
-      // },
       {
         text: "Customer Name",
         align: "start",

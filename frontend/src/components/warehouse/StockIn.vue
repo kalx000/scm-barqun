@@ -120,7 +120,7 @@
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>

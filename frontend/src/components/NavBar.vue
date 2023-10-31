@@ -23,14 +23,7 @@
 </template>
 
 <script>
-export default {
-  
-  // computed: {
-  //   isDarkMode() {
-  //     return this.$vuetify.theme.dark 
-  //   }
-  // },
-}
+export default {}
 </script>
 
 

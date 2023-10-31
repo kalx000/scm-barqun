@@ -61,44 +61,9 @@
                         label="Warehouse"
                       ></v-text-field>
                     </v-col>
-                    <!-- <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.id"
-                      label="ID Product"
-                    ></v-text-field>
-                  </v-col> -->
                   </v-row>
                 </v-container>
               </v-card-text>
-
-              <!-- <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="secondary" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="secondary" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions> -->
             </v-card>
           </v-dialog>
         </v-toolbar>
@@ -116,11 +81,6 @@
         >
           <v-icon>fas fa-ellipsis-vertical</v-icon>
         </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
       </template>
       <v-list>
         <v-list-item @click="deleteItem(item)">
@@ -128,7 +88,7 @@
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -325,25 +285,6 @@ export default {
       }
       this.close();
     },
-    // showDetails(task) {
-    //   const detailsElement = document.getElementById(details-${task.id});
-    //   detailsElement.classList.toggle("details-show");
-    // },
-    // remove(task) {
-    //   const detailsElement = document.getElementById(details-${task.id});
-    //   const clickTarget = event.target;
-
-    //   // Check if the click target is a descendant of the .details element
-    //   if (
-    //     clickTarget === detailsElement ||
-    //     detailsElement.contains(clickTarget)
-    //   ) {
-    //     return;
-    //   }
-
-    //   // Remove the .details-show class from the .details element
-    //   detailsElement.classList.remove("details-show");
-    // },
   },
 };
 </script>

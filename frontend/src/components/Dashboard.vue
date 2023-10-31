@@ -1,16 +1,9 @@
 <template>
   <div class="dashboard" style="margin-top:70px;">
-  <!-- <div class="greetings"> -->
-  
-  <!-- <h1>Hello there, Nice to meet you Fransiscus 😎🤙</h1> -->
-  <!-- <v-divider :thickness="100" color="white" style="width:55%;"></v-divider> -->
-  <!-- </div> -->
     <v-row class="px-12 py-12">
       <v-col cols="12" sm="4">
       <router-link style="text-transform:none; text-decoration:none;" to="/product">
         <v-card flat class="rounded-lg" :class="$vuetify.theme.dark ===true ? 'total-items':'total-items2'" height="200" width="auto">
-          <!-- <v-img v-if="$vuetify.theme.dark" src="@/assets/1.png"></v-img>
-          <v-img v-else src="@/assets/1b.png"></v-img> -->
           <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
