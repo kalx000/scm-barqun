@@ -16,15 +16,8 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="secondary"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon>fas fa-plus</v-icon>
-                Add
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+                New Item
               </v-btn>
             </template>
             <v-card>
@@ -82,7 +75,7 @@
                 </v-container>
               </v-card-text>
 
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
@@ -103,7 +96,7 @@
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
-              </v-card-actions>
+              </v-card-actions> -->
             </v-card>
           </v-dialog>
         </v-toolbar>
@@ -121,6 +114,11 @@
         >
           <v-icon>fas fa-ellipsis-vertical</v-icon>
         </v-btn>
+        <v-list>
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
       </template>
       <v-list>
         <v-list-item @click="deleteItem(item)">
@@ -152,6 +150,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
       {
         text: "Product Name",

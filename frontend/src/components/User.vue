@@ -108,7 +108,7 @@
 
 <script>
 export default {
- data: () => ({
+  data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,

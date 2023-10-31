@@ -189,5 +189,4 @@ export default {
 .rounded-lg:hover {
     scale: 1.02;
 }
-
 </style>
