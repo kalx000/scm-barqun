@@ -12,7 +12,7 @@
           <v-toolbar-title>User Sementara</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="600px">
+          <v-dialog v-model="dialog" max-width="900px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
                 <v-icon>fas fa-plus</v-icon>
@@ -36,6 +36,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.email"
+                        suffix="@gmail.com"
                         label="Email"
                       ></v-text-field>
                     </v-col>
@@ -74,12 +75,32 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:`item.actions`="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <template v-slot:[`item.actions`]="{ item }">
+        <div class="align-center">
+    <v-menu   
+    transition="slide-y-transition"
+    offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          color="secondary"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>fas fa-ellipsis-vertical</v-icon>
+        </v-btn>
       </template>
-      <template v-slot:no-data>
-        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
+      <v-list>
+        <v-list-item @click="deleteItem(item)">
+            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
+            <v-list-item-title>Delete</v-list-item-title>  
+        </v-list-item>
+        <v-list-item @click="editItem(item)">
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
       </template>
     </v-data-table>
   </v-app>

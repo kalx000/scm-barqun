@@ -46,6 +46,7 @@
                         @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
+                        prefix="Rp. "
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -109,28 +110,30 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
-          <v-menu transition="slide-y-transition" offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon color="success" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-ellipsis-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-icon @click="editItem(item)" small style="margin-right: 3px"
-                  >fas fa-pencil</v-icon>
-              </v-list-item>
-              <v-list-item>
-                <v-icon @click="deleteItem(item)" small style="margin-right: 3px"
-                  >fas fa-trash</v-icon>
-                <v-list-item-title>{{ item.text }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <template v-slot:no-data>
-              <v-btn color="secondary" @click="initialize"> Reset </v-btn>
-            </template>
-          </v-menu>
-        </div>
+    <v-menu   
+    transition="slide-y-transition"
+    offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          color="secondary"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>fas fa-ellipsis-vertical</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item @click="deleteItem(item)">
+            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
+            <v-list-item-title>Delete</v-list-item-title>  
+        </v-list-item>
+        <v-list-item @click="editItem(item)">
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
       </template>
     </v-data-table>
     <Footer />
@@ -147,10 +150,6 @@ export default {
     Navbar,
   },
   data: () => ({
-    // items: [
-    //   { icon1: "fa-solid fa-pencil", text: "Edit" },
-    //   { icon2: "fa-solid fa-trash", text: "Delete" },
-    // ],
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -186,6 +185,27 @@ export default {
       id: [],
     },
   }),
+
+    // name: '',
+    //   nameRules: [
+    //     v => !!v || 'Product name is required',
+    //   ],
+    // price: '',
+    //   priceRules: [
+    //     v => !!v || 'Price is required',
+    //   ],
+    // qty: '',
+    //   qtyRules: [
+    //     v => !!v || 'Quantity is required',
+    //   ],
+    // unit: '',
+    //   unitRules: [
+    //     v => !!v || 'Unit is required',
+    //   ],
+    // warehouse: '',
+    //   warehouseRules: [
+    //     v => !!v || 'Warehouse is required',
+    //   ],
 
   computed: {
     formTitle() {

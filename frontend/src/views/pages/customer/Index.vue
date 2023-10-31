@@ -28,14 +28,37 @@ INDEX.VUE
 
               <v-card-text>
                 <v-container>
-                  <!-- <ModuleForm :form="editedItem" />  -->
+                  <form :form="editedItem" /> 
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="form.idcustomer"
-                        label="ID Customer"
-                      ></v-text-field>
-                    </v-col> -->
+                    <!-- <v-col cols="6">
+                        <v-text-field
+                          v-model="form.name"
+                          label="Customer Name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="form.email"
+                          label="Email"
+                          suffix="@gmail.com"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-text-field
+                        @keypress="filter(event)"
+                          v-model="form.telepon"
+                          label="Phone Number"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="form.alamat"
+                          label="Address"
+                        ></v-text-field>
+                      </v-col> -->
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -47,6 +70,7 @@ INDEX.VUE
                         <v-text-field
                           v-model="editedItem.email"
                           label="Email"
+                          suffix="@gmail.com"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -66,7 +90,7 @@ INDEX.VUE
                         ></v-text-field>
                       </v-col>
                     </v-row>
-                  </v-row>
+                  </v-row> 
                 </v-container>
               </v-card-text>
 
@@ -97,19 +121,39 @@ INDEX.VUE
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <div class="align-center">
+    <v-menu   
+    transition="slide-y-transition"
+    offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          color="secondary"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>fas fa-ellipsis-vertical</v-icon>
+        </v-btn>
       </template>
-      <template v-slot:no-data>
-        <v-btn color="secondary" @click="initialize"> Reset </v-btn>
+      <v-list>
+        <v-list-item @click="deleteItem(item)">
+            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
+            <v-list-item-title>Delete</v-list-item-title>  
+        </v-list-item>
+        <v-list-item @click="editItem(item)">
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
       </template>
     </v-data-table>
   </v-app>
 </template>
 <script>
-// import ModuleForm from "./Form.vue";
+// import form from "./Form.vue";
 export default {
-  // components: { ModuleForm },
+  // components: { form },
   data: () => ({
     tab: null,
     dialog: false,
@@ -152,7 +196,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
     },
   },
 
@@ -175,42 +219,42 @@ export default {
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
+          email: "marketing",
           telepon: "081387229453",
           alamat: "Jl. Kadrie Oening No. 1",
         },
