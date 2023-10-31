@@ -39,6 +39,7 @@
                         @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
+                        prefix="Rp. "
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -103,8 +104,17 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon>
-          <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
+        <div class="align-center">
+    <v-menu   
+    transition="slide-y-transition"
+    offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          color="secondary"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>fas fa-ellipsis-vertical</v-icon>
         </v-btn>
         <v-list>
           <v-list-item v-for="(item, index) in items" :key="index">
@@ -112,25 +122,19 @@
           </v-list-item>
         </v-list>
       </template>
-      <!-- <i
-        id="more"
-        class="fa-solid fa-ellipsis-vertical ml-5 more"
-        size="15px"
-      ></i>
-      <div class="details">
-        <v-btn
-          class="btn-pencil"
-          style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.9rem" class="fa-solid fa-pencil mr-2"></i
-          >Edit</v-btn
-        >
-        <v-btn
-          class="btn-delete"
-          style="text-transform: none; letter-spacing: 0"
-          ><i style="font-size: 0.9rem" class="fa-solid fa-trash mr-1"></i
-          >Delete</v-btn
-        >
-      </div> -->
+      <v-list>
+        <v-list-item @click="deleteItem(item)">
+            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
+            <v-list-item-title>Delete</v-list-item-title>  
+        </v-list-item>
+        <v-list-item @click="editItem(item)">
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
+      </template>
     </v-data-table>
     <Footer />
   </v-app>
@@ -146,12 +150,6 @@ export default {
     Navbar,
   },
   data: () => ({
-      item: [
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-        { item: 'fab fa-github' },
-      ],
     dialog: false,
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
@@ -188,6 +186,27 @@ export default {
       id: [],
     },
   }),
+
+    // name: '',
+    //   nameRules: [
+    //     v => !!v || 'Product name is required',
+    //   ],
+    // price: '',
+    //   priceRules: [
+    //     v => !!v || 'Price is required',
+    //   ],
+    // qty: '',
+    //   qtyRules: [
+    //     v => !!v || 'Quantity is required',
+    //   ],
+    // unit: '',
+    //   unitRules: [
+    //     v => !!v || 'Unit is required',
+    //   ],
+    // warehouse: '',
+    //   warehouseRules: [
+    //     v => !!v || 'Warehouse is required',
+    //   ],
 
   computed: {
     formTitle() {
