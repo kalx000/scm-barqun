@@ -2,7 +2,7 @@
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="supplier"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -169,7 +169,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.supplier = [
         {
           idsupplier: "91290928",
           name: "Barqun Digital Teknologi",
@@ -227,19 +227,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.supplier.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.supplier.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.supplier.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -261,9 +261,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.supplier[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.supplier.push(this.editedItem);
       }
       this.close();
     },

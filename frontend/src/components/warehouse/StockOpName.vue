@@ -2,7 +2,7 @@
   <v-card-text>
             <v-data-table
               :headers="headers"
-              :items="desserts"
+              :items="stockopname"
               sort-by="idstock"
               class="elevation-5 pa-4"
             >
@@ -192,7 +192,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.stockopname = [
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
@@ -250,19 +250,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.stockopname.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.stockopname.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.stockopname.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -284,9 +284,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.stockopname[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.stockopname.push(this.editedItem);
       }
       this.close();
     },

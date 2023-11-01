@@ -2,7 +2,7 @@
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="order"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -139,7 +139,7 @@ export default {
       { text: "Status Order", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    order: [],
     editedIndex: -1,
     editedItem: {
       idorder: "",
@@ -180,7 +180,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.order = [
         {
           idorder: "12345",
           idcustomer: "54321",
@@ -252,19 +252,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.order.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.order.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.order.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -286,9 +286,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.order[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.order.push(this.editedItem);
       }
       this.close();
     },

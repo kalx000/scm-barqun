@@ -4,7 +4,7 @@ INDEX.VUE
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="customer"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -120,6 +120,7 @@ INDEX.VUE
   </v-app>
 </template>
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     tab: null,
@@ -176,7 +177,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.customer = [
         {
           idcustomer: "91290928",
           name: "Barqun Digital Teknologi",
@@ -220,6 +221,7 @@ export default {
           alamat: "Jl. Kadrie Oening No. 1",
         },
       ];
+    
     },
 
     filter: function (evt) {
@@ -234,19 +236,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.customer.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.customer.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.customer.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -269,9 +271,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.customer[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.customer.push(this.editedItem);
       }
       this.close();
     },

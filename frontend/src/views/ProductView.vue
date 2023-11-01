@@ -1,13 +1,14 @@
 <template>
-<v-app>
-      <Navbar />
+  <v-app>
+    <Navbar />
     <LeftBar />
     <v-data-table
+    v-for="product in products" :key="product.id"
       :headers="headers"
-      :items="desserts"
+      :items="products"
       sort-by="price"
       class="elevation-5 pa-4"
-      style="margin-top:80px;"
+      style="margin-top: 80px"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -44,12 +45,19 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                      @keypress="filter(event)"
+                        @keypress="filter(event)"
                         v-model="editedItem.qty"
                         label="Quantity"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        @keypress="filter(event)"
+                        v-model="editedItem.desc"
+                        label="Description"
+                      ></v-text-field>
+                    </v-col>                    
+                    <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.unit"
                         label="Unit"
@@ -60,40 +68,60 @@
                         v-model="editedItem.warehouse"
                         label="Warehouse"
                       ></v-text-field>
-                    </v-col>
+                    </v-col> -->
                   </v-row>
                 </v-container>
               </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
+                <v-btn color="secondary" text @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Are you sure you want to delete this item?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="secondary" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="secondary" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
-    <v-menu   
-    transition="slide-y-transition"
-    offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>fas fa-ellipsis-vertical</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item @click="deleteItem(item)">
-            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
-            <v-list-item-title>Delete</v-list-item-title>  
-        </v-list-item>
-        <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
-            <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </div>
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="deleteItem(item)">
+                <v-icon style="color: red" small class="mr-2"
+                  >fa-solid fa-trash</v-icon
+                >
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="editItem(item)">
+                <v-icon style="color: orange" small class="mr-2"
+                  >fa-solid fa-pen</v-icon
+                >
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </template>
     </v-data-table>
     <Footer />
@@ -103,6 +131,7 @@
 import LeftBar from "@/components/LeftBar.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/NavBar.vue";
+import axios from 'axios';
 export default {
   components: {
     LeftBar,
@@ -122,17 +151,19 @@ export default {
       },
       { text: "Price", value: "price" },
       { text: "Qty", value: "qty" },
-      { text: "Unit", value: "unit" },
-      { text: "Warehouse", value: "warehouse" },
+      { text: "Description", value: "desc" },
+      // { text: "Unit", value: "unit" },
+      // { text: "Warehouse", value: "warehouse" },
       // { text: 'ID Product', value: 'id' },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    products: [],
     editedIndex: -1,
     editedItem: {
       name: "",
       price: [],
       qty: [],
+      desc: [],
       unit: [],
       warehouse: [],
       id: [],
@@ -141,32 +172,33 @@ export default {
       name: "",
       price: [],
       qty: [],
+      desc: [],
       unit: [],
       warehouse: [],
       id: [],
     },
   }),
 
-    // name: '',
-    //   nameRules: [
-    //     v => !!v || 'Product name is required',
-    //   ],
-    // price: '',
-    //   priceRules: [
-    //     v => !!v || 'Price is required',
-    //   ],
-    // qty: '',
-    //   qtyRules: [
-    //     v => !!v || 'Quantity is required',
-    //   ],
-    // unit: '',
-    //   unitRules: [
-    //     v => !!v || 'Unit is required',
-    //   ],
-    // warehouse: '',
-    //   warehouseRules: [
-    //     v => !!v || 'Warehouse is required',
-    //   ],
+  // name: '',
+  //   nameRules: [
+  //     v => !!v || 'Product name is required',
+  //   ],
+  // price: '',
+  //   priceRules: [
+  //     v => !!v || 'Price is required',
+  //   ],
+  // qty: '',
+  //   qtyRules: [
+  //     v => !!v || 'Quantity is required',
+  //   ],
+  // unit: '',
+  //   unitRules: [
+  //     v => !!v || 'Unit is required',
+  //   ],
+  // warehouse: '',
+  //   warehouseRules: [
+  //     v => !!v || 'Warehouse is required',
+  //   ],
 
   computed: {
     formTitle() {
@@ -188,76 +220,51 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: "RJ45 Cable",
-          price: 26000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "000",
-        },
-        {
-          name: "RJ45 ",
-          price: 66000,
-          qty: "2",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "111",
-        },
-        {
-          name: "Cable",
-          price: 25000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "222",
-        },
-        {
-          name: "RJ45 Cable",
-          price: 26700,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "333",
-        },
-        {
-          name: "RJ45 Cable",
-          price: 3000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "444",
-        },
-      ];
+    setproducts(data) {
+      this.products = data; 
+      // [
+        // {
+        //   name: "RJ45 Cable",
+        //   price: 3000,
+        //   qty: "10",
+        //   desc: "Lah",
+        // },
+        // {
+        //   name: "RJ45 Cable",
+        //   price: 3000,
+        //   qty: "10",
+        //   unit: "meter",
+        //   warehouse: "Gudang",
+        //   id: "444",
+        // },
+      // ];
     },
 
     filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
+      evt = evt ? evt : window.event;
+      let expect = evt.target.value.toString() + evt.key.toString();
 
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
+      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.products.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.products.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.products.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -279,13 +286,20 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.products[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.products.push(this.editedItem);
       }
       this.close();
     },
   },
+  mounted() {
+    axios
+    .get("http://127.0.0.1:8000/api/products")
+    .then((response) => this.products(response.data))
+    .catch((error) => console.log(error));
+
+  }
 };
 </script>
 
@@ -302,6 +316,4 @@ export default {
   text-transform: none;
   cursor: pointer;
 }
-
-
 </style>
