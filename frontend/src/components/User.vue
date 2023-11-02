@@ -2,7 +2,7 @@
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -15,7 +15,7 @@
           <v-dialog v-model="dialog" max-width="900px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-plus</v-icon>
+                <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
             </template>
@@ -36,7 +36,6 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.email"
-                        suffix="@gmail.com"
                         label="Email"
                       ></v-text-field>
                     </v-col>
@@ -123,7 +122,7 @@ export default {
       { text: "User Status", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -158,7 +157,7 @@ export default {
   
   methods: {
     initialize() {
-      this.desserts = [
+      this.items = [
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
@@ -198,19 +197,19 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -232,9 +231,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
     },
