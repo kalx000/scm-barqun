@@ -3,10 +3,6 @@
     <Navbar />
     <LeftBar />
     <v-data-table
-    v-for="product in products" :key="product.id"
-      :headers="headers"
-      :items="products"
-      sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top: 80px"
     >
@@ -26,7 +22,7 @@
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
 
-              <v-card-text>
+              <!-- <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
@@ -56,22 +52,11 @@
                         v-model="editedItem.desc"
                         label="Description"
                       ></v-text-field>
-                    </v-col>                    
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.unit"
-                        label="Unit"
-                      ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.warehouse"
-                        label="Warehouse"
-                      ></v-text-field>
-                    </v-col> -->
+                    </v-col> 
                   </v-row>
                 </v-container>
-              </v-card-text>
+              </v-card-text> -->
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
@@ -219,6 +204,13 @@ export default {
     this.initialize();
   },
 
+
+  data() {
+    return{
+      products: [],
+    }
+  },
+  
   methods: {
     setproducts(data) {
       this.products = data; 
@@ -240,62 +232,62 @@ export default {
       // ];
     },
 
-    filter: function (evt) {
-      evt = evt ? evt : window.event;
-      let expect = evt.target.value.toString() + evt.key.toString();
+    // filter: function (evt) {
+    //   evt = evt ? evt : window.event;
+    //   let expect = evt.target.value.toString() + evt.key.toString();
 
-      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
+    //   if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+    //     evt.preventDefault();
+    //   } else {
+    //     return true;
+    //   }
+    // },
 
-    editItem(item) {
-      this.editedIndex = this.products.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+    // editItem(item) {
+    //   this.editedIndex = this.products.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialog = true;
+    // },
 
-    deleteItem(item) {
-      this.editedIndex = this.products.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
+    // deleteItem(item) {
+    //   this.editedIndex = this.products.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialogDelete = true;
+    // },
 
-    deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
+    // deleteItemConfirm() {
+    //   this.products.splice(this.editedIndex, 1);
+    //   this.closeDelete();
+    // },
 
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    // close() {
+    //   this.dialog = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
 
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    // closeDelete() {
+    //   this.dialogDelete = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedItem);
-      } else {
-        this.products.push(this.editedItem);
-      }
-      this.close();
-    },
+    // save() {
+    //   if (this.editedIndex > -1) {
+    //     Object.assign(this.products[this.editedIndex], this.editedItem);
+    //   } else {
+    //     this.products.push(this.editedItem);
+    //   }
+    //   this.close();
+    // },
   },
   mounted() {
     axios
-    .get("http://127.0.0.1:8000/api/products")
+    .get("http://127.0.0.1:8081/api/products")
     .then((response) => this.products(response.data))
     .catch((error) => console.log(error));
 
