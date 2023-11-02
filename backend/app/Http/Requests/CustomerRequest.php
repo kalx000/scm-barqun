@@ -25,7 +25,7 @@ class CustomerRequest extends FormRequest
     {
         return [
             'nama_customer' => 'required',
-            'email' => 'email:dns|unique:customers',
+            'email' => 'required|email:dns|unique:customers',
             'nomor_telepon' => 'required',
             'alamat' => 'required'
         ];

@@ -21,7 +21,7 @@ class SupplierController extends Controller
 
     function store(SupplierRequest $request)
     {
-        $supplier = Supplier::create($request->all());
+        $supplier = Supplier::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -32,7 +32,7 @@ class SupplierController extends Controller
     function update($id, SupplierRequest $request)
     {
         $supplier = Supplier::find($id);
-        $supplier->update($request->all());
+        $supplier->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',

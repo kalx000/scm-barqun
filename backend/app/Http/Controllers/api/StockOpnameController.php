@@ -21,7 +21,7 @@ class StockOpnameController extends Controller
 
     function store(StockOpnameRequest $request)
     {
-        $stockOpname = StockOpname::create($request->all());
+        $stockOpname = StockOpname::create($request->validated());
 
         return response()->json([
             'message' => "Data Created",
@@ -32,7 +32,7 @@ class StockOpnameController extends Controller
     function update($id, StockOpnameRequest $request)
     {
         $stockOpname = StockOpname::find($id);
-        $stockOpname->update($request->all());
+        $stockOpname->update($request->validated());
 
         return response()->json([
             'message' => "Data Updated",

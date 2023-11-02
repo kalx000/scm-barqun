@@ -21,7 +21,7 @@ class CustomerController extends Controller
 
     function store(CustomerRequest $request)
     {
-        $customer = Customer::create($request->all());
+        $customer = Customer::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -32,7 +32,7 @@ class CustomerController extends Controller
     function update($id, CustomerRequest $request)
     {
         $customer = Customer::find($id);
-        $customer->update($request->all());
+        $customer->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',

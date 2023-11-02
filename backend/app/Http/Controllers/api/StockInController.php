@@ -21,7 +21,7 @@ class StockInController extends Controller
 
     function store(StockInRequest $request)
     {
-        $stockIn = StockIn::create($request->all());
+        $stockIn = StockIn::create($request->validated());
 
         return response()->json([
             'message' => "Data Created",
@@ -32,7 +32,7 @@ class StockInController extends Controller
     function update($id, StockInRequest $request)
     {
         $stockIn = StockIn::find($id);
-        $stockIn->update($request->all());
+        $stockIn->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',
