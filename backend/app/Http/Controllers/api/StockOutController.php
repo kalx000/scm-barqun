@@ -9,7 +9,15 @@ use Illuminate\Http\Request;
 
 class StockOutController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:stockout-list|stockout-create|stockout-edit|stockout-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:stockout-create', ['only' => ['store']]);
+        $this->middleware('permission:stockout-edit', ['only' => ['update']]);
+        $this->middleware('permission:stockout-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $stockOut = StockOut::all();
 
@@ -19,7 +27,15 @@ class StockOutController extends Controller
         ], 200);
     }
 
-    function store(StockOutRequest $request)
+    public function show(StockOut $stockOut)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $stockOut
+        ], 200);
+    }
+
+    public function store(StockOutRequest $request)
     {
         $stockOut = StockOut::create($request->validated());
 
@@ -29,7 +45,7 @@ class StockOutController extends Controller
         ], 201);
     }
 
-    function update($id, StockOutRequest $request)
+    public function update($id, StockOutRequest $request)
     {
         $stockOut = StockOut::find($id);
         $stockOut->update($request->validated());
@@ -40,7 +56,7 @@ class StockOutController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy($id)
     {
         $stockOut = StockOut::find($id);
         $stockOut->delete();

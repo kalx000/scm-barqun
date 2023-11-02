@@ -14,7 +14,11 @@ use App\Http\Controllers\api\CustomerController;
 use App\Http\Controllers\api\StockOutController;
 use App\Http\Controllers\api\SupplierController;
 use App\Http\Controllers\api\InventoryController;
+use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\StockOpnameController;
+use App\Http\Controllers\api\UserController;
+use App\Models\Product;
+use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,52 +31,45 @@ use App\Http\Controllers\api\StockOpnameController;
 |
 */
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/profile', function (Request $request) {
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('profile', function () {
         return auth()->user();
     });
-    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+    Route::resource('product', ProductController::class);
+    Route::resource('supplier', SupplierController::class);
+    Route::resource('customer', CustomerController::class);
+    Route::resource('inventory', InventoryController::class);
+
+    Route::resource('order', OrderController::class);
+    Route::resource('stockin', StockInController::class);
+    Route::resource('stockout', StockOutController::class);
+    Route::resource('stockopname', StockOpnameController::class);
+
+    Route::resource('role', RoleController::class);
+    Route::resource('user', UserController::class);
+
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::get('products', [ProductController::class, 'index']);
-Route::post('product', [ProductController::class, 'store']);
-Route::put('product/{id}', [ProductController::class, 'update']);
-Route::delete('product/{id}', [ProductController::class, 'destroy']);
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+//     Route::get('/profile', function () {
+//         return auth()->user();
+//     });
+//     Route::resource('product', ProductController::class);
+//     Route::resource('supplier', SupplierController::class);
+//     Route::resource('customer', CustomerController::class);
+//     Route::resource('inventory', InventoryController::class);
 
-Route::get('suppliers', [SupplierController::class, 'index']);
-Route::post('supplier', [SupplierController::class, 'store']);
-Route::put('supplier/{id}', [SupplierController::class, 'update']);
-Route::delete('supplier/{id}', [SupplierController::class, 'destroy']);
+//     Route::resource('order', OrderController::class);
+//     Route::resource('stockin', StockInController::class);
+//     Route::resource('stockout', StockOutController::class);
+//     Route::resource('stockopname', StockOpnameController::class);
 
-Route::get('stockins', [StockInController::class, 'index']);
-Route::post('stockin', [StockInController::class, 'store']);
-Route::put('stockin/{id}', [StockInController::class, 'update']);
-Route::delete('stockin/{id}', [StockInController::class, 'destroy']);
+//     Route::resource('role', ApiRoleController::class);
+//     Route::resource('user', UserController::class);
 
-Route::get('stockouts', [StockOutController::class, 'index']);
-Route::post('stockout', [StockOutController::class, 'store']);
-Route::put('stockout/{id}', [StockOutController::class, 'update']);
-Route::delete('stockout/{id}', [StockOutController::class, 'destroy']);
-
-Route::get('stockopnames', [StockOpnameController::class, 'index']);
-Route::post('stockopname', [StockOpnameController::class, 'store']);
-Route::put('stockopname/{id}', [StockOpnameController::class, 'update']);
-Route::delete('stockopname/{id}', [StockOpnameController::class, 'destroy']);
-
-Route::get('customers', [CustomerController::class, 'index']);
-Route::post('customer', [CustomerController::class, 'store']);
-Route::put('customer/{id}', [CustomerController::class, 'update']);
-Route::delete('customer/{id}', [CustomerController::class, 'destroy']);
-
-Route::get('orders', [OrderController::class, 'index']);
-Route::post('order', [OrderController::class, 'store']);
-Route::put('order/{id}', [OrderController::class, 'update']);
-Route::delete('order/{id}', [OrderController::class, 'destroy']);
-
-Route::get('inventories', [InventoryController::class, 'index']);
-Route::post('inventory', [InventoryController::class, 'store']);
-Route::put('inventory/{id}', [InventoryController::class, 'update']);
-Route::delete('inventory/{id}', [InventoryController::class, 'destroy']);
+//     Route::post('/logout', [AuthController::class, 'logout']);
+// });

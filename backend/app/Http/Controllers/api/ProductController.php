@@ -10,7 +10,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:product-create', ['only' => ['store']]);
+        $this->middleware('permission:product-edit', ['only' => 'update']);
+        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $product = Product::all();
 
@@ -20,7 +28,15 @@ class ProductController extends Controller
         ], 200);
     }
 
-    function store(ProductRequest $request)
+    public function show(Product $product)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $product
+        ], 200);
+    }
+
+    public function store(ProductRequest $request)
     {
         $product = Product::create($request->validated());
 
@@ -30,7 +46,7 @@ class ProductController extends Controller
         ], 201);
     }
 
-    function update($id, ProductRequest $request)
+    public function update($id, ProductRequest $request)
     {
         $product = Product::find($id);
         $product->update($request->validated());
@@ -41,7 +57,7 @@ class ProductController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy($id)
     {
         $product = Product::find($id);
         $product->delete();

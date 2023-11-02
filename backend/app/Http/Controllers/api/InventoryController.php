@@ -9,7 +9,15 @@ use App\Http\Requests\InventoryRequest;
 
 class InventoryController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:inventory-list|inventory-create|inventory-edit|inventory-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:inventory-create', ['only' => ['store']]);
+        $this->middleware('permission:inventory-edit', ['only' => ['update']]);
+        $this->middleware('permission:inventory-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $inventory = Inventory::all();
 
@@ -19,7 +27,15 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    function store(InventoryRequest $request)
+    public function show(Inventory $inventory)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $inventory
+        ], 200);
+    }
+
+    public function store(InventoryRequest $request)
     {
         $inventory = Inventory::create($request->validated());
 
@@ -29,7 +45,7 @@ class InventoryController extends Controller
         ], 201);
     }
 
-    function update($id, InventoryRequest $request)
+    public function update($id, InventoryRequest $request)
     {
         $inventory = Inventory::find($id);
         $inventory->update($request->validated());
@@ -40,7 +56,7 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy($id)
     {
         $inventory = Inventory::find($id);
         $inventory->delete();
