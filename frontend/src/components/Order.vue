@@ -2,7 +2,7 @@
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -15,7 +15,7 @@
           <v-dialog v-model="dialog" max-width="650px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-plus</v-icon>
+                <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
             </template>
@@ -145,7 +145,7 @@ export default {
       { text: "Status Order", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       idorder: "",
@@ -186,7 +186,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.items = [
         {
           idorder: "12345",
           idcustomer: "54321",
@@ -258,19 +258,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -292,9 +292,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
     },
