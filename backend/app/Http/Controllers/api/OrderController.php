@@ -21,7 +21,7 @@ class OrderController extends Controller
 
     function store(OrderRequest $request)
     {
-        $order = Order::create($request->all());
+        $order = Order::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -32,7 +32,7 @@ class OrderController extends Controller
     function update($id, OrderRequest $request)
     {
         $order = Order::find($id);
-        $order->update($request->all());
+        $order->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',

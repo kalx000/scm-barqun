@@ -21,7 +21,7 @@ class InventoryController extends Controller
 
     function store(InventoryRequest $request)
     {
-        $inventory = Inventory::create($request->all());
+        $inventory = Inventory::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -32,7 +32,7 @@ class InventoryController extends Controller
     function update($id, InventoryRequest $request)
     {
         $inventory = Inventory::find($id);
-        $inventory->update($request->all());
+        $inventory->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',

@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     function store(ProductRequest $request)
     {
-        $product = Product::create($request->all());
+        $product = Product::create($request->validated());
 
         return response()->json([
             'message' => "Data Created",
@@ -33,7 +33,7 @@ class ProductController extends Controller
     function update($id, ProductRequest $request)
     {
         $product = Product::find($id);
-        $product->update($request->all());
+        $product->update($request->validated());
 
         return response()->json([
             'message' => "Data Updated",

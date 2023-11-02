@@ -21,7 +21,7 @@ class StockOutController extends Controller
 
     function store(StockOutRequest $request)
     {
-        $stockOut = StockOut::create($request->all());
+        $stockOut = StockOut::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -32,7 +32,7 @@ class StockOutController extends Controller
     function update($id, StockOutRequest $request)
     {
         $stockOut = StockOut::find($id);
-        $stockOut->update($request->all());
+        $stockOut->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',
