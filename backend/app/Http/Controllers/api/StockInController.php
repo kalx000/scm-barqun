@@ -45,9 +45,9 @@ class StockInController extends Controller
         ], 201);
     }
 
-    public function update($id, StockInRequest $request)
+    public function update(StockIn $stockIn, StockInRequest $request)
     {
-        $stockIn = StockIn::find($id);
+        // $stockIn = StockIn::find($id);
         $stockIn->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class StockInController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(StockIn $stockIn)
     {
-        $stockIn = StockIn::find($id);
+        // $stockIn = StockIn::find($id);
         $stockIn->delete();
 
         return response()->json([

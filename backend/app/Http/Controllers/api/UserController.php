@@ -52,9 +52,9 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::find($id);
+        // $user = User::find($id);
         // $role = Role::find($id);
         // $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
         //     ->where("role_has_permissions.role_id", $id)
@@ -72,7 +72,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -88,9 +88,9 @@ class UserController extends Controller
             $input = Arr::except($input, array('password'));
         }
 
-        $user = User::find($id);
+        // $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
+        DB::table('model_has_roles')->where('model_id', $user->id)->delete();
 
         $user->assignRole($request->input('roles'));
 
@@ -100,9 +100,9 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
+        // $user = User::find($id);
         $user->delete();
 
         return response()->json([

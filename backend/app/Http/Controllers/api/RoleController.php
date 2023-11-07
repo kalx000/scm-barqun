@@ -44,9 +44,9 @@ class RoleController extends Controller
         ], 201);
     }
 
-    public function show($id)
+    public function show(Role $role)
     {
-        $role = Role::find($id);
+        // $role = Role::find($id);
         // $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
         //     ->where("role_has_permissions.role_id", $id)
         //     ->get();
@@ -62,14 +62,14 @@ class RoleController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
         $this->validate($request, [
             'name' => 'required',
             'permission' => 'required'
         ]);
 
-        $role = Role::find($id);
+        // $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
 
@@ -81,9 +81,9 @@ class RoleController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        DB::table("roles")->where('id', $id)->delete();
+        DB::table("roles")->where('id', $role->id)->delete();
 
         return response()->json(
             [

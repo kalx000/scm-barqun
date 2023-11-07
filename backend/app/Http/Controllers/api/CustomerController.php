@@ -45,9 +45,9 @@ class CustomerController extends Controller
         ], 201);
     }
 
-    public function update($id, CustomerRequest $request)
+    public function update(Customer $customer, CustomerRequest $request)
     {
-        $customer = Customer::find($id);
+        // $customer = Customer::find($id);
         $customer->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class CustomerController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        $customer = Customer::find($id);
+        // $customer = Customer::find($id);
         $customer->delete();
 
         return response()->json([

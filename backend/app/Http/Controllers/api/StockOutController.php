@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockOutRequest;
+use App\Models\StockOpname;
 use App\Models\StockOut;
 use Illuminate\Http\Request;
 
@@ -45,9 +46,9 @@ class StockOutController extends Controller
         ], 201);
     }
 
-    public function update($id, StockOutRequest $request)
+    public function update(StockOut $stockOut, StockOutRequest $request)
     {
-        $stockOut = StockOut::find($id);
+        // $stockOut = StockOut::find($id);
         $stockOut->update($request->validated());
 
         return response()->json([
@@ -56,9 +57,9 @@ class StockOutController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(StockOut $stockOut)
     {
-        $stockOut = StockOut::find($id);
+        // $stockOut = StockOut::find($id);
         $stockOut->delete();
 
         return response()->json([

@@ -45,9 +45,9 @@ class StockOpnameController extends Controller
         ], 201);
     }
 
-    public function update($id, StockOpnameRequest $request)
+    public function update(StockOpname $stockOpname, StockOpnameRequest $request)
     {
-        $stockOpname = StockOpname::find($id);
+        // $stockOpname = StockOpname::find($id);
         $stockOpname->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class StockOpnameController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(StockOpname $stockOpname)
     {
-        $stockOpname = StockOpname::find($id);
+        // $stockOpname = StockOpname::find($id);
         $stockOpname->delete();
 
         return response()->json([

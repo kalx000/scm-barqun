@@ -45,9 +45,9 @@ class InventoryController extends Controller
         ], 201);
     }
 
-    public function update($id, InventoryRequest $request)
+    public function update(Inventory $inventory, InventoryRequest $request)
     {
-        $inventory = Inventory::find($id);
+        // $inventory = Inventory::find($id);
         $inventory->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Inventory $inventory)
     {
-        $inventory = Inventory::find($id);
+        // $inventory = Inventory::find($id);
         $inventory->delete();
 
         return response()->json([

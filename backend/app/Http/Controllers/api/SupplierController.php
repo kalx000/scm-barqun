@@ -45,9 +45,9 @@ class SupplierController extends Controller
         ], 201);
     }
 
-    public function update($id, SupplierRequest $request)
+    public function update(Supplier $supplier, SupplierRequest $request)
     {
-        $supplier = Supplier::find($id);
+        // $supplier = Supplier::find($id);
         $supplier->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class SupplierController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Supplier $supplier)
     {
-        $supplier = Supplier::find($id);
+        // $supplier = Supplier::find($id);
         $supplier->delete();
 
         return response()->json([

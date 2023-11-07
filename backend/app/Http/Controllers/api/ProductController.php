@@ -46,9 +46,9 @@ class ProductController extends Controller
         ], 201);
     }
 
-    public function update($id, ProductRequest $request)
+    public function update(Product $product, ProductRequest $request)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
         $product->update($request->validated());
 
         return response()->json([
@@ -57,9 +57,9 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
         $product->delete();
 
         return response()->json([

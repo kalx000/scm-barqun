@@ -45,9 +45,9 @@ class OrderController extends Controller
         ], 201);
     }
 
-    public function update($id, OrderRequest $request)
+    public function update(Order $order, OrderRequest $request)
     {
-        $order = Order::find($id);
+        // $order = Order::find($id);
         $order->update($request->validated());
 
         return response()->json([
@@ -56,9 +56,9 @@ class OrderController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Order $order)
     {
-        $order = Order::find($id);
+        // $order = Order::find($id);
         $order->delete();
 
         return response()->json([
