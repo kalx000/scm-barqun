@@ -1,5 +1,7 @@
 <template>
-  <v-app>
+  <div>
+    <v-card>
+
     <v-data-table
       :headers="headers"
       :items="items"
@@ -121,7 +123,30 @@
   </div>
       </template>
     </v-data-table>
-  </v-app>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 <script>
 export default {
@@ -129,9 +154,11 @@ export default {
     tab: null,
     dialog: false,
     dialogDelete: false,
+    snackbar1: false,
+    snackbar2: false,
     headers: [
       // {
-      //   text: "ID Supplier",
+        //   text: "ID Supplier",
       //   align: "start",
       //   sortable: true,
       //   value: "idsupplier",
@@ -253,6 +280,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -278,6 +306,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
 };

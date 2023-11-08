@@ -1,5 +1,7 @@
 <template>
-<v-app>
+<div>
+  <v-card>
+
       <Navbar />
     <LeftBar />
     <v-data-table
@@ -40,7 +42,6 @@
                         @keypress="filter(event)"
                         v-model="editedItem.price"
                         label="Price"
-                        prefix="Rp. "
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -132,8 +133,30 @@
   </div>
       </template>
     </v-data-table>
-    <Footer />
-  </v-app>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 <script>
 import LeftBar from "@/components/LeftBar.vue";
@@ -144,6 +167,8 @@ export default {
     LeftBar,
     Footer,
     Navbar,
+    snackbar1: false,
+    snackbar2: false,
   },
   data: () => ({
     dialog: false,
@@ -273,6 +298,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -298,6 +324,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
 };

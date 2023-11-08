@@ -1,5 +1,7 @@
 <template>
-  <v-app>
+<div>
+
+  <v-card>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -40,10 +42,11 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
+                      <v-select
+                        :items="status"
                         v-model="editedItem.status"
                         label="User Status"
-                      ></v-text-field>
+                      ></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -102,7 +105,30 @@
   </div>
       </template>
     </v-data-table>
-  </v-app>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+</div>
 </template>
 
 <script>
@@ -111,6 +137,8 @@ export default {
     tab: null,
     dialog: false,
     dialogDelete: false,
+    snackbar1: false,
+    snackbar2: false,
     headers: [
       {
         text: "User Name",
@@ -122,6 +150,7 @@ export default {
       { text: "User Status", value: "status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    status: ['Active','Nonactive'],
     items: [],
     editedIndex: -1,
     editedItem: {
@@ -161,37 +190,37 @@ export default {
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Active",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Nonactive",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Nonactive",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Active",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Nonactive",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Active",
         },
         {
           name: "Barqun Digital Teknologi",
           email: "marketing@barqun.com",
-          status: "-",
+          status: "Active",
         },
       ];
     },
@@ -211,6 +240,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -236,6 +266,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
 };

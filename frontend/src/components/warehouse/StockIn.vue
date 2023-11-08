@@ -1,5 +1,6 @@
 <template>
-   <v-card-text>
+<div>
+<v-card>
             <v-data-table
               :headers="headers"
               :items="items"
@@ -100,13 +101,7 @@
                   </v-dialog>
                 </v-toolbar>
               </template>
-              <v-dialog v-model="dialogDetail" max-width="550px">
-                <v-card>
-                  <v-card-title>
-                    Details
-                  </v-card-title>
-                </v-card>
-              </v-dialog>
+              
               <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
     <v-menu   
@@ -126,34 +121,50 @@
             <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
+
         <v-list-item @click="editItem(item)">
             <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="detailItem(item)">
-          <v-icon style="color:green;" small class="mr-2">fa-reguler fa-eye</v-icon>
-          <v-list-item-title>Details</v-list-item-title>
-        </v-list-item>
+        </v-list-item>  
       </v-list>
     </v-menu>
   </div>
       </template>
             </v-data-table>
-          <v-snackbar
-           v-model="snackbar"
+             <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
            >
             The Data Successfully Add
           </v-snackbar>
-          </v-card-text>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 
 <script>
 export default {
     data: () => ({
     tab: null,
-    dialog: false,
+    dialog: false,  
     dialogDelete: false,
-    snackbar: false,
+    snackbar1: false,
+    snackbar2: false,
     headers: [
       {
         text: "Product Name",
@@ -262,11 +273,7 @@ export default {
       return true;
     }
   },
-
-    detailItem(item) {
-      this.dialogDetail = true;
-    },
-
+  
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -282,6 +289,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -307,7 +315,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
-      this.snackbar = true;
+      this.snackbar1 = true;
     },
   },
 }

@@ -1,5 +1,6 @@
 <template>
-    <v-card-text>
+<div>
+<v-card>
             <v-data-table
               :headers="headers"
               :items="items"
@@ -11,7 +12,7 @@
                   <v-toolbar-title>Stock Out</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="550px">
+                  <v-dialog v-model="dialog" max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="secondary"
@@ -62,7 +63,7 @@
                               <v-text-field
                               @keypress="filter(event)"
                                 v-model="editedItem.tanggal"
-                                label="Date Of Enrty"
+                                label="Date Of Entry"
                               ></v-text-field>
                             </v-col>
                           </v-row>
@@ -71,16 +72,16 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">
+                        <v-btn color="secondary" text @click="close">
                           Cancel
                         </v-btn>
-                        <v-btn color="blue darken-1" text @click="save">
+                        <v-btn color="secondary" text @click="save">
                           Save
                         </v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
-                  <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-dialog v-model="dialogDelete" max-width="550px">
                     <v-card>
                       <v-card-title class="text-h5"
                         >Are you sure you want to delete this
@@ -88,13 +89,10 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn color="secondary" text @click="closeDelete"
                           >Cancel</v-btn
                         >
-                        <v-btn
-                          color="blue darken-1"
-                          text
-                          @click="deleteItemConfirm"
+                        <v-btn color="secondary" text @click="deleteItemConfirm"
                           >OK</v-btn
                         >
                         <v-spacer></v-spacer>
@@ -103,6 +101,7 @@
                   </v-dialog>
                 </v-toolbar>
               </template>
+              
               <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
     <v-menu   
@@ -122,24 +121,50 @@
             <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
+
         <v-list-item @click="editItem(item)">
             <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
+        </v-list-item>  
       </v-list>
     </v-menu>
   </div>
       </template>
             </v-data-table>
-          </v-card-text>
+             <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 
 <script>
 export default {
- data: () => ({
+    data: () => ({
     tab: null,
-    dialog: false,
+    dialog: false,  
     dialogDelete: false,
+    snackbar1: false,
+    snackbar2: false,
     headers: [
       {
         text: "Product Name",
@@ -238,7 +263,7 @@ export default {
       ];
     },
 
-     filter: function (evt) {
+    filter: function (evt) {
     evt = evt ? evt : window.event;
     let expect = evt.target.value.toString() + evt.key.toString();
 
@@ -248,7 +273,7 @@ export default {
       return true;
     }
   },
-
+  
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -264,6 +289,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -289,9 +315,9 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
-
 }
 </script>
 
