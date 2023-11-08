@@ -2,7 +2,7 @@
   <v-card-text>
             <v-data-table
               :headers="headers"
-              :items="stockopname"
+              :items="items"
               sort-by="idstock"
               class="elevation-5 pa-4"
             >
@@ -20,7 +20,7 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                      <v-icon>fas fa-plus</v-icon>
+                      <v-icon left>fas fa-plus</v-icon>
                         Add
                       </v-btn>
                     </template>
@@ -135,8 +135,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-     data: () => ({
+data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
@@ -145,15 +146,14 @@ export default {
         text: "Product Name",
         align: "start",
         sortable: true,
-        value: "idproduct",
+        value: "product_id",
       },
-      { text: "Stock", value: "idstock" },
-      { text: "Supplier Name", value: "idsupplier" },
-      { text: "Incoming Amount", value: "jumlah" },
-      { text: "Date Of Entry", value: "tanggal" },
+      { text: "Stock", value: "inventory_id" },
+      { text: "Date", value: "tanggal_opname" },
+      { text: "Final", value: "hasil_opname" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       idproduct: "",
@@ -192,53 +192,53 @@ export default {
 
   methods: {
     initialize() {
-      this.stockopname = [
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-05",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-      ];
+      // this.items = [
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-05",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      // ];
     },
 
-     filter: function (evt) {
+filter: function (evt) {
     evt = evt ? evt : window.event;
     let expect = evt.target.value.toString() + evt.key.toString();
 
@@ -250,19 +250,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.stockopname.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.stockopname.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.stockopname.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -284,12 +284,21 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.stockopname[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.stockopname.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/stockopnames")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 }
 </script>

@@ -3,6 +3,9 @@
     <Navbar />
     <LeftBar />
     <v-data-table
+      :headers="headers"
+      :items="items"
+      sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top: 80px"
     >
@@ -13,8 +16,15 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon left>fas fa-plus</v-icon>
+                Add
               </v-btn>
             </template>
             <v-card>
@@ -22,7 +32,7 @@
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
 
-              <!-- <v-card-text>
+              <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
@@ -53,10 +63,9 @@
                         label="Description"
                       ></v-text-field>
                     </v-col>
-                    </v-col> 
                   </v-row>
                 </v-container>
-              </v-card-text> -->
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
@@ -112,11 +121,12 @@
     <Footer />
   </v-app>
 </template>
+
 <script>
 import LeftBar from "@/components/LeftBar.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/NavBar.vue";
-import axios from 'axios';
+import axios from "axios";
 export default {
   components: {
     LeftBar,
@@ -128,62 +138,33 @@ export default {
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      {
-        text: "Product Name",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Price", value: "price" },
-      { text: "Qty", value: "qty" },
-      { text: "Description", value: "desc" },
-      // { text: "Unit", value: "unit" },
-      // { text: "Warehouse", value: "warehouse" },
-      // { text: 'ID Product', value: 'id' },
+      { text: "Product Name", sortable: false, value: "nama_barang", },
+      { text: "Price", value: "harga" },
+      { text: "Qty", value: "jumlah_stock_tersedia" },
+      { text: "Description", value: "deskripsi" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    products: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       name: "",
-      price: [],
-      qty: [],
-      desc: [],
-      unit: [],
-      warehouse: [],
-      id: [],
+      price: "",
+      qty: "",
+      desc: "",
+      unit: "",
+      warehouse: "",
+      id: "",
     },
     defaultItem: {
       name: "",
-      price: [],
-      qty: [],
-      desc: [],
-      unit: [],
-      warehouse: [],
-      id: [],
+      price: "",
+      qty: "",
+      desc: "",
+      unit: "",
+      warehouse: "",
+      id: "",
     },
   }),
-
-  // name: '',
-  //   nameRules: [
-  //     v => !!v || 'Product name is required',
-  //   ],
-  // price: '',
-  //   priceRules: [
-  //     v => !!v || 'Price is required',
-  //   ],
-  // qty: '',
-  //   qtyRules: [
-  //     v => !!v || 'Quantity is required',
-  //   ],
-  // unit: '',
-  //   unitRules: [
-  //     v => !!v || 'Unit is required',
-  //   ],
-  // warehouse: '',
-  //   warehouseRules: [
-  //     v => !!v || 'Warehouse is required',
-  //   ],
 
   computed: {
     formTitle() {
@@ -204,94 +185,41 @@ export default {
     this.initialize();
   },
 
-
-  data() {
-    return{
-      products: [],
-    }
-  },
-  
   methods: {
-    setproducts(data) {
-      this.products = data; 
-      // [
-        // {
-        //   name: "RJ45 Cable",
-        //   price: 3000,
-        //   qty: "10",
-        //   desc: "Lah",
-        // },
-        // {
-        //   name: "RJ45 Cable",
-        //   price: 3000,
-        //   qty: "10",
-        //   unit: "meter",
-        //   warehouse: "Gudang",
-        //   id: "444",
-        // },
-      // ];
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
 
-    // filter: function (evt) {
-    //   evt = evt ? evt : window.event;
-    //   let expect = evt.target.value.toString() + evt.key.toString();
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
 
-    //   if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-    //     evt.preventDefault();
-    //   } else {
-    //     return true;
-    //   }
-    // },
-
-    // editItem(item) {
-    //   this.editedIndex = this.products.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialog = true;
-    // },
-
-    // deleteItem(item) {
-    //   this.editedIndex = this.products.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialogDelete = true;
-    // },
-
-    // deleteItemConfirm() {
-    //   this.products.splice(this.editedIndex, 1);
-    //   this.closeDelete();
-    // },
-
-    // close() {
-    //   this.dialog = false;
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem);
-    //     this.editedIndex = -1;
-    //   });
-    // },
-
-    // closeDelete() {
-    //   this.dialogDelete = false;
-    //   this.$nextTick(() => {
-    //     this.editedItem = Object.assign({}, this.defaultItem);
-    //     this.editedIndex = -1;
-    //   });
-    // },
-
-    // save() {
-    //   if (this.editedIndex > -1) {
-    //     Object.assign(this.products[this.editedIndex], this.editedItem);
-    //   } else {
-    //     this.products.push(this.editedItem);
-    //   }
-    //   this.close();
-    // },
+    deleteItemConfirm() {
+      this.items.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.items[this.editedIndex], this.editedItem);
+      } else {
+        this.items.push(this.editedItem);
+      }
+      this.close();
+    },
   },
   mounted() {
     axios
-    .get("http://127.0.0.1:8081/api/products")
-    .then((response) => this.products(response.data))
-    .catch((error) => console.log(error));
-
-  }
+      .get("http://127.0.0.1:8081/api/products")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
+  },
 };
 </script>
 

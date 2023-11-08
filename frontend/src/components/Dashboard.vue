@@ -95,8 +95,19 @@
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
   name: "HomeView",
+
+  // mounted() {
+  //   axios
+  //     .get("http://127.0.0.1:8081/api/products")
+  //     .then((response) => {
+  //       this.items = response.data.data;
+  //       console.log(this.items);
+  //     })
+  //     .catch((error) => console.log(error));
+  // },
 };
 </script>
 <style scoped>

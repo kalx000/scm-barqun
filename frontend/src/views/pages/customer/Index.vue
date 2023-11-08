@@ -4,7 +4,7 @@ INDEX.VUE
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="customer"
+      :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -17,7 +17,7 @@ INDEX.VUE
           <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-plus</v-icon>
+                <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
             </template>
@@ -131,14 +131,14 @@ export default {
         text: "Customer Name",
         align: "start",
         sortable: "true",
-        value: "name",
+        value: "nama_customer",
       },
       { text: "Email", value: "email" },
-      { text: "Phone Number", value: "telepon" },
+      { text: "Phone Number", value: "nomor_telepon" },
       { text: "Address", value: "alamat" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       idcustomer: "",
@@ -176,53 +176,6 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.customer = [
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-      ];
-    
-    },
 
     filter: function (evt) {
     evt = evt ? evt : window.event;
@@ -236,19 +189,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.customer.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.customer.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.customer.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -271,12 +224,21 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.customer[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.customer.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/customers")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>

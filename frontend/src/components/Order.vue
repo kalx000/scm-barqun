@@ -2,7 +2,7 @@
   <v-app>
     <v-data-table
       :headers="headers"
-      :items="order"
+      :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
       style="margin-top:70px;"
@@ -15,7 +15,7 @@
           <v-dialog v-model="dialog" max-width="650px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
-                <v-icon>fas fa-plus</v-icon>
+                <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
             </template>
@@ -120,26 +120,21 @@
   </v-app>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     headers: [
-      // {
-      //   text: "ID Order",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idorder",
-      // },
-      { text: "Customer Name", value: "idcustomer" },
-      { text: "Product Name", value: "productName" },
-      { text: "Amount of Items", value: "jumlah" },
-      { text: "Date Order", value: "tanggal" },
-      { text: "Status Order", value: "status" },
+      { text: "Product Name", value: "product_id" },
+      { text: "Customer Name", value: "customer_id" },
+      { text: "Date Order", value: "tanggal_pemesanan" },
+      { text: "Amount of Items", value: "jumlah_barang" },
+      { text: "Status Order", value: "status_pemesanan" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    order: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       idorder: "",
@@ -180,64 +175,64 @@ export default {
 
   methods: {
     initialize() {
-      this.order = [
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-      ];
+      // this.items = [
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      // ];
     },
 
     filter: function (evt) {
@@ -252,19 +247,19 @@ export default {
   },
 
     editItem(item) {
-      this.editedIndex = this.order.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.order.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.order.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -286,12 +281,21 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.order[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.order.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/orders")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>
