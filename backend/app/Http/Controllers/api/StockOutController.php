@@ -4,12 +4,21 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockOutRequest;
+use App\Models\StockOpname;
 use App\Models\StockOut;
 use Illuminate\Http\Request;
 
 class StockOutController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:stockout-list|stockout-create|stockout-edit|stockout-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:stockout-create', ['only' => ['store']]);
+        $this->middleware('permission:stockout-edit', ['only' => ['update']]);
+        $this->middleware('permission:stockout-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $stockOut = StockOut::all();
 
@@ -19,7 +28,15 @@ class StockOutController extends Controller
         ], 200);
     }
 
-    function store(StockOutRequest $request)
+    public function show(StockOut $stockOut)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $stockOut
+        ], 200);
+    }
+
+    public function store(StockOutRequest $request)
     {
         $stockOut = StockOut::create($request->validated());
 
@@ -29,9 +46,9 @@ class StockOutController extends Controller
         ], 201);
     }
 
-    function update($id, StockOutRequest $request)
+    public function update(StockOut $stockOut, StockOutRequest $request)
     {
-        $stockOut = StockOut::find($id);
+        // $stockOut = StockOut::find($id);
         $stockOut->update($request->validated());
 
         return response()->json([
@@ -40,9 +57,9 @@ class StockOutController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy(StockOut $stockOut)
     {
-        $stockOut = StockOut::find($id);
+        // $stockOut = StockOut::find($id);
         $stockOut->delete();
 
         return response()->json([
