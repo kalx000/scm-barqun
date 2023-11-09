@@ -9,7 +9,15 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:customer-list|customer-create|customer-edit|customer-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:customer-create', ['only' => ['store']]);
+        $this->middleware('permission:customer-edit', ['only' => ['update']]);
+        $this->middleware('permission:customer-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $customer = Customer::all();
 
@@ -19,9 +27,17 @@ class CustomerController extends Controller
         ], 200);
     }
 
-    function store(CustomerRequest $request)
+    public function show(Customer $customer)
     {
-        $customer = Customer::create($request->all());
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $customer
+        ], 200);
+    }
+
+    public function store(CustomerRequest $request)
+    {
+        $customer = Customer::create($request->validated());
 
         return response()->json([
             'message' => 'Data Created',
@@ -29,10 +45,10 @@ class CustomerController extends Controller
         ], 201);
     }
 
-    function update($id, CustomerRequest $request)
+    public function update(Customer $customer, CustomerRequest $request)
     {
-        $customer = Customer::find($id);
-        $customer->update($request->all());
+        // $customer = Customer::find($id);
+        $customer->update($request->validated());
 
         return response()->json([
             'message' => 'Data Updated',
@@ -40,9 +56,9 @@ class CustomerController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy(Customer $customer)
     {
-        $customer = Customer::find($id);
+        // $customer = Customer::find($id);
         $customer->delete();
 
         return response()->json([

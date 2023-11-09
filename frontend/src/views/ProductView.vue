@@ -1,67 +1,74 @@
 <template>
-  <v-app>
-    <Navbar />
-    <LeftBar />
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      sort-by="price"
-      class="elevation-5 pa-4"
-      style="margin-top: 80px"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Manage Product</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="700px">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
+  <div>
+    <v-card>
+      <Navbar />
+      <LeftBar />
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        sort-by="price"
+        class="elevation-5 pa-4"
+        style="margin-top: 80px"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Manage Product</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="700px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="secondary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon left>fas fa-plus</v-icon>
+                  Add
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
 
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Product name"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        @keypress="filter(event)"
-                        v-model="editedItem.price"
-                        label="Price"
-                        prefix="Rp. "
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        @keypress="filter(event)"
-                        v-model="editedItem.qty"
-                        label="Quantity"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.unit"
-                        label="Unit"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.warehouse"
-                        label="Warehouse"
-                      ></v-text-field>
-                    </v-col>
-                    <!-- <v-col
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Product name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          @keypress="filter(event)"
+                          v-model="editedItem.price"
+                          label="Price"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          @keypress="filter(event)"
+                          v-model="editedItem.qty"
+                          label="Quantity"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.unit"
+                          label="Unit"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.warehouse"
+                          label="Warehouse"
+                        ></v-text-field>
+                      </v-col>
+                      <!-- <v-col
                     cols="12"
                     sm="6"
                     md="4"
@@ -71,11 +78,11 @@
                       label="ID Product"
                     ></v-text-field>
                   </v-col> -->
-                  </v-row>
-                </v-container>
-              </v-card-text>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
 
-              <!-- <v-card-actions>
+                <!-- <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
@@ -97,45 +104,65 @@
                 >
                 <v-spacer></v-spacer>
               </v-card-actions> -->
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <div class="align-center">
-    <v-menu   
-    transition="slide-y-transition"
-    offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>fas fa-ellipsis-vertical</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </template>
-      <v-list>
-        <v-list-item @click="deleteItem(item)">
-            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
-            <v-list-item-title>Delete</v-list-item-title>  
-        </v-list-item>
-        <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
-            <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <div class="align-center">
+            <v-menu transition="slide-y-transition" offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                  <v-icon>fas fa-ellipsis-vertical</v-icon>
+                </v-btn>
+                <v-list>
+                  <v-list-item v-for="(item, index) in items" :key="index">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </template>
+              <v-list>
+                <v-list-item @click="deleteItem(item)">
+                  <v-icon style="color: red" small class="mr-2"
+                    >fa-solid fa-trash</v-icon
+                  >
+                  <v-list-item-title>Delete</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="editItem(item)">
+                  <v-icon style="color: orange" small class="mr-2"
+                    >fa-solid fa-pencil</v-icon
+                  >
+                  <v-list-item-title>Edit</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </template>
+      </v-data-table>
+      <v-snackbar
+        v-model="snackbar1"
+        absolute
+        top
+        color="success"
+        outlined
+        right
+        timeout="1500"
+      >
+        The Data Successfully Add
+      </v-snackbar>
+      <v-snackbar
+        v-model="snackbar2"
+        absolute
+        top
+        color="error"
+        outlined
+        right
+        timeout="1500"
+      >
+        The Data Successfully Delete
+      </v-snackbar>
+    </v-card>
   </div>
-      </template>
-    </v-data-table>
-    <Footer />
-  </v-app>
 </template>
 <script>
 import LeftBar from "@/components/LeftBar.vue";
@@ -146,6 +173,8 @@ export default {
     LeftBar,
     Footer,
     Navbar,
+    snackbar1: false,
+    snackbar2: false,
   },
   data: () => ({
     dialog: false,
@@ -165,7 +194,7 @@ export default {
       // { text: 'ID Product', value: 'id' },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -184,27 +213,6 @@ export default {
       id: [],
     },
   }),
-
-    // name: '',
-    //   nameRules: [
-    //     v => !!v || 'Product name is required',
-    //   ],
-    // price: '',
-    //   priceRules: [
-    //     v => !!v || 'Price is required',
-    //   ],
-    // qty: '',
-    //   qtyRules: [
-    //     v => !!v || 'Quantity is required',
-    //   ],
-    // unit: '',
-    //   unitRules: [
-    //     v => !!v || 'Unit is required',
-    //   ],
-    // warehouse: '',
-    //   warehouseRules: [
-    //     v => !!v || 'Warehouse is required',
-    //   ],
 
   computed: {
     formTitle() {
@@ -227,7 +235,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.items = [
         {
           name: "RJ45 Cable",
           price: 26000,
@@ -283,20 +291,21 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -317,11 +326,12 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
     // showDetails(task) {
     //   const detailsElement = document.getElementById(details-${task.id});

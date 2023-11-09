@@ -37,6 +37,7 @@
                     <div class="ocean">
                       <v-card-text class="white--text text-center mt-16 pt-13 px-2">
                         <v-img class="mt-12" width="270px" src="../public/image 2.png" />
+                        <br>
                         <h5
                           class="text-center"
                         >Enter your personal details and start journay with us</h5>
@@ -54,6 +55,7 @@
                       <div class="ocean2">
                       <v-card-text class="white--text">
                         <v-img class="mt-12" width="250px" src="../public/image 2.png" />
+                        <br>
                         <h5
                           class="text-center"
                         >To Keep connected with us please login with your personnel info</h5>

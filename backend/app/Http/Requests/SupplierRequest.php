@@ -25,7 +25,7 @@ class SupplierRequest extends FormRequest
     {
         return [
             'nama_supplier' => 'required',
-            'email' => 'email:dns|unique:suppliers',
+            'email' => 'required|email:dns|unique:suppliers',
             'nomor_telepon' => 'required',
             'alamat' => 'required',
         ];

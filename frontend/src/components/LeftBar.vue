@@ -24,7 +24,7 @@
       <v-list-item-group class="mt-4" active-class="active1">
         <v-list-item to="/home" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fat fa-home</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"><h3>Dashboard</h3></v-list-item-subtitle>
         </v-list-item>

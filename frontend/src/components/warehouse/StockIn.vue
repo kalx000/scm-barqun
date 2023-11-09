@@ -1,8 +1,9 @@
 <template>
-   <v-card-text>
+<div>
+<v-card>
             <v-data-table
               :headers="headers"
-              :items="desserts"
+              :items="items"
               sort-by="idstock"
               class="elevation-5 pa-4"
             >
@@ -11,7 +12,7 @@
                   <v-toolbar-title>Stock In</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="550px">
+                  <v-dialog v-model="dialog" max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         color="secondary"
@@ -20,7 +21,7 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        <v-icon>fas fa-plus</v-icon>
+                        <v-icon left>fas fa-plus</v-icon>
                         Add
                       </v-btn>
                     </template>
@@ -100,6 +101,7 @@
                   </v-dialog>
                 </v-toolbar>
               </template>
+              
               <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
     <v-menu   
@@ -119,24 +121,50 @@
             <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
+
         <v-list-item @click="editItem(item)">
             <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
+        </v-list-item>  
       </v-list>
     </v-menu>
   </div>
       </template>
             </v-data-table>
-          </v-card-text>
+             <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 
 <script>
 export default {
     data: () => ({
     tab: null,
-    dialog: false,
+    dialog: false,  
     dialogDelete: false,
+    snackbar1: false,
+    snackbar2: false,
     headers: [
       {
         text: "Product Name",
@@ -150,7 +178,7 @@ export default {
       { text: "Date Of Entry", value: "tanggal" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    items: [],
     editedIndex: -1,
     editedItem: {
       idproduct: "",
@@ -189,7 +217,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.items = [
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
@@ -245,22 +273,23 @@ export default {
       return true;
     }
   },
-
+  
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -281,11 +310,12 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
 }
