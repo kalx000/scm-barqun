@@ -130,7 +130,7 @@ export default {
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      { text: "Supplier Name", sortable: false, value: "nama_supplier", },
+      { text: "Supplier Name", sortable: true, value: "nama_supplier", },
       { text: "Email", value: "email" },
       { text: "Phone", value: "nomor_telepon" },
       { text: "Address", value: "alamat" },

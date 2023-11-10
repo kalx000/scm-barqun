@@ -138,7 +138,7 @@ export default {
     dialogDelete: false,
     items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      { text: "Product Name", sortable: false, value: "nama_barang", },
+      { text: "Product Name", sortable: true, value: "nama_barang", },
       { text: "Price", value: "harga" },
       { text: "Qty", value: "jumlah_stock_tersedia" },
       { text: "Description", value: "deskripsi" },
@@ -202,6 +202,23 @@ export default {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.items[this.editedIndex], this.editedItem);
@@ -209,6 +226,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
   mounted() {
