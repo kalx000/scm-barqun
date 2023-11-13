@@ -33,7 +33,7 @@
       </v-col>
 
       <v-col cols="12" sm="4" >
-      <router-link style="text-transform:none; text-decoration:none;" to="/warehouse">      
+      <router-link style="text-transform:none; text-decoration:none;" to="/inventory">      
         <v-card flat class="rounded-lg warehouse" :class="$vuetify.theme.dark ===true ? 'warehouse':'warehouse2'" height="200" width="AUTO">
           <v-list-item >
               <v-list-item-content>

@@ -118,6 +118,28 @@
         </div>
       </template>
     </v-data-table>
+    <v-snackbar
+        v-model="snackbar1"
+        absolute
+        top
+        color="success"
+        outlined
+        right
+        timeout="1500"
+      >
+        The Data Successfully Add
+      </v-snackbar>
+      <v-snackbar
+        v-model="snackbar2"
+        absolute
+        top
+        color="error"
+        outlined
+        right
+        timeout="1500"
+      >
+        The Data Successfully Delete
+      </v-snackbar>
     <Footer />
   </v-app>
 </template>
@@ -132,6 +154,8 @@ export default {
     LeftBar,
     Footer,
     Navbar,
+    snackbar1: false,
+    snackbar2: false,
   },
   data: () => ({
     dialog: false,
@@ -201,6 +225,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
 
     close() {
@@ -228,7 +253,6 @@ export default {
       this.close();
       this.snackbar1 = true;
     },
-  },
   mounted() {
     axios
       .get("http://127.0.0.1:8081/api/products")
@@ -238,7 +262,7 @@ export default {
       })
       .catch((error) => console.log(error));
   },
-};
+}}
 </script>
 
 <style scoped>

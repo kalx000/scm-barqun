@@ -12,10 +12,10 @@
       >
         <template v-slot:top>
           <v-toolbar flat>
-            <v-toolbar-title>Stock Opname</v-toolbar-title>
+            <v-toolbar-title>Inventory</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="550px">
+            <v-dialog v-model="dialogEdit" max-width="600px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -38,35 +38,21 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.idproduct"
-                          label="Product Name"
+                          v-model="editedItem.nama_gudang"
+                          label="Warehouse Name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.lokasi_gudang"
+                          label="Address"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           @keypress="filter(event)"
-                          v-model="editedItem.idstock"
+                          v-model="editedItem.kapasitas_stock"
                           label="Stock"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.idsupplier"
-                          label="Supplier Name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.jumlah"
-                          label="Incoming Amount"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.tanggal"
-                          label="Date Of Entry"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -75,24 +61,22 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">
-                    Cancel
-                  </v-btn>
-                  <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                  <v-btn color="secondary" text @click="close"> Cancel </v-btn>
+                  <v-btn color="secondary" text @click="save"> Save </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-dialog v-model="dialogDelete" max-width="550px">
               <v-card>
                 <v-card-title class="text-h5"
                   >Are you sure you want to delete this item?</v-card-title
                 >
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete"
+                  <v-btn color="secondary" text @click="closeDelete"
                     >Cancel</v-btn
                   >
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  <v-btn color="secondary" text @click="deleteItemConfirm"
                     >OK</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -101,6 +85,11 @@
             </v-dialog>
           </v-toolbar>
         </template>
+        <!-- <v-dialog v-model="dialogDetail" max-width="550px">
+        <v-card>
+          <v-card-title> Details </v-card-title>
+        </v-card>
+      </v-dialog> -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="align-center">
             <v-menu transition="slide-y-transition" offset-y>
@@ -108,7 +97,28 @@
                 <v-btn icon color="secondary" v-bind="attrs" v-on="on">
                   <v-icon>fas fa-ellipsis-vertical</v-icon>
                 </v-btn>
+                <!-- <div class="text-center">
+                <v-btn color="primary" @click="dialog = true">
+                  Open Dialog
+                </v-btn>
+
+                <v-dialog v-model="dialog" width="auto">
+                  <v-card>
+                    <v-card-text>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua.
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn color="primary" block @click="dialog = false"
+                        >Close Dialog</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div> -->
               </template>
+
               <v-list>
                 <v-list-item @click="deleteItem(item)">
                   <v-icon style="color: red" small class="mr-2"
@@ -122,11 +132,18 @@
                   >
                   <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
+                <v-list-item @click="detailItem(item)">
+                  <v-icon style="color: green" small class="mr-2"
+                    >fa-reguler fa-eye</v-icon
+                  >
+                  <v-list-item-title>Details</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
           </div>
         </template>
       </v-data-table>
+      <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
     </v-card-text>
   </div>
 </template>
@@ -145,34 +162,31 @@ export default {
   data: () => ({
     tab: null,
     dialog: false,
+    dialogEdit: false,
     dialogDelete: false,
+    snackbar: false,
     headers: [
       {
-        text: "Product Name",
+        text: "Warehouse Name",
         align: "start",
         sortable: true,
-        value: "product_id",
+        value: "nama_gudang",
       },
-      { text: "Stock", value: "inventory_id" },
-      { text: "Date", value: "tanggal_opname" },
-      { text: "Final", value: "hasil_opname" },
+      { text: "Address", value: "lokasi_gudang" },
+      { text: "Stock", value: "kapasitas_stock" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
-      idproduct: "",
-      idstock: "",
-      idsupplier: "",
-      jumlah: "",
-      tanggal: "",
+      nama_gudang: "",
+      lokasi_gudang: "",
+      kapasitas_stock: "",
     },
     defaultItem: {
-      idproduct: "",
-      idstock: "",
-      idsupplier: "",
-      jumlah: "",
-      tanggal: "",
+      nama_gudang: "",
+      lokasi_gudang: "",
+      kapasitas_stock: "",
     },
   }),
 
@@ -197,7 +211,6 @@ export default {
 
   methods: {
     initialize() {
-      // this.items = [
       //   {
       //     idproduct: "RJ45 Cable",
       //     idstock: 26000,
@@ -254,10 +267,14 @@ export default {
       }
     },
 
+    detailItem(item) {
+      this.dialogDetail = true;
+    },
+
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+      this.dialogEdit = true;
     },
 
     deleteItem(item) {
@@ -271,8 +288,8 @@ export default {
       this.closeDelete();
     },
 
-    close() {
-      this.dialog = false;
+    closeEdit() {
+      this.dialogEdit = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -293,12 +310,13 @@ export default {
       } else {
         this.items.push(this.editedItem);
       }
-      this.close();
+      this.closeEdit();
+      this.snackbar = true;
     },
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:8081/api/stockopnames")
+      .get("http://127.0.0.1:8081/api/inventories")
       .then((response) => {
         this.items = response.data.data;
         console.log(this.items);
