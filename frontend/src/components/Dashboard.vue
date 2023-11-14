@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard" style="margin-top:70px;">
-  <!-- <div class="greetings"> -->
+  <div class="greetings ml-5 mt-2">
   
-  <!-- <h1>Hello there, Nice to meet you Fransiscus 😎🤙</h1> -->
-  <!-- <v-divider :thickness="100" color="white" style="width:55%;"></v-divider> -->
-  <!-- </div> -->
+  <h2>Dashboard</h2>
+  <v-divider :thickness="100" color="white" style="width:55%;"></v-divider>
+  </div>
     <v-row class="px-12 py-12">
       <v-col cols="12" sm="4">
       <router-link style="text-transform:none; text-decoration:none;" to="/product">

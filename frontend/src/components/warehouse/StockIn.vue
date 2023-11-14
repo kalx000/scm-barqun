@@ -59,12 +59,30 @@
                                 label="Incoming Amount"
                               ></v-text-field>
                             </v-col>
+                            
                             <v-col cols="12" sm="6" md="4">
+                              <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto">
+                              <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                              @keypress="filter(event)"
-                                v-model="editedItem.tanggal"
+                                v-model="editedItem.date"
                                 label="Date Of Entry"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
                               ></v-text-field>
+                              </template>
+                              <v-date-picker
+                            v-model="editedItem.date"
+                            @input="menu = false">
+                            </v-date-picker>
+                              </v-menu>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -165,6 +183,7 @@ export default {
     dialogDelete: false,
     snackbar1: false,
     snackbar2: false,
+    menu: false, 
     headers: [
       {
         text: "Product Name",
@@ -175,7 +194,7 @@ export default {
       { text: "Stock", value: "idstock" },
       { text: "Supplier Name", value: "idsupplier" },
       { text: "Incoming Amount", value: "jumlah" },
-      { text: "Date Of Entry", value: "tanggal" },
+      { text: "Date Of Entry", value: "date" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
@@ -185,14 +204,14 @@ export default {
       idstock: "",
       idsupplier: "",
       jumlah: "",
-      tanggal: "",
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10) ,
     },
     defaultItem: {
       idproduct: "",
       idstock: "",
       idsupplier: "",
       jumlah: "",
-      tanggal: "",
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     },
   }),
 
@@ -223,42 +242,42 @@ export default {
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-05",
+          date: "13-02-05",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-06",
+          date: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-06",
+          date: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-06",
+          date: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-06",
+          date: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          tanggal: "13-02-06",
+          date: "13-02-06",
         },
       ];
     },
@@ -273,7 +292,7 @@ export default {
       return true;
     }
   },
-  
+
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);

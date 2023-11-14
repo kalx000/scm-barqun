@@ -18,7 +18,7 @@ export default {
 <style scoped>
   .footer {
     position: fixed;
-    bottom: 1;
+    bottom: 10;
     width: 100%;
   }
 </style>
