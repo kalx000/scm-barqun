@@ -3,8 +3,8 @@
     v-model="drawer"
     app
     height="100%"
-    :mini-variant.sync="mini"
     color="primary"
+    :mini-variant.sync="mini"
     class="teks"
     style="z-index: 101"
   >
@@ -25,7 +25,7 @@
       <v-list-item-group class="mt-4" active-class="active1">
         <v-list-item to="/home" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fat fa-home</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>Dashboard</h3></v-list-item-subtitle
@@ -33,7 +33,7 @@
         </v-list-item>
         <v-list-item to="/product" class="mb-4">
           <v-list-item-icon>
-            <v-icon>mdi-package-variant-closed</v-icon>
+            <v-icon>mdi-package</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>Product</h3></v-list-item-subtitle
@@ -41,14 +41,14 @@
         </v-list-item>
         <v-list-item to="/supplier" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fas fa-industry</v-icon>
+            <v-icon>mdi-factory</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>Supplier</h3></v-list-item-subtitle
           >
         </v-list-item>
 
-        <v-list-group class="mb-4" prepend-icon="fas fa-warehouse" 
+        <v-list-group class="mb-4" prepend-icon="mdi-warehouse" 
         :active-color="$vuetify.theme.dark ? 'activeDark' : 'activeLight'">
           <template v-slot:activator>
             <v-list-item-title class="teks">
@@ -57,7 +57,7 @@
           </template>
           <v-list-item to="/inventory" class="mb-4">
             <v-list-item-icon>
-              <v-icon>fas fa-warehouse</v-icon>
+              <v-icon>mdi-archive-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-subtitle class="teks"
               ><h3>Inventory</h3></v-list-item-subtitle
@@ -65,7 +65,7 @@
           </v-list-item>
           <v-list-item to="/stockin" class="mb-4">
             <v-list-item-icon>
-              <v-icon>fas fa-warehouse</v-icon>
+              <v-icon>mdi-plus-box-multiple-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-subtitle class="teks"
               ><h3>Stock In</h3></v-list-item-subtitle
@@ -73,7 +73,7 @@
           </v-list-item>
           <v-list-item to="/stockout" class="mb-4">
             <v-list-item-icon>
-              <v-icon>fas fa-warehouse</v-icon>
+              <v-icon>mdi-minus-box-multiple-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-subtitle class="teks"
               ><h3>Stock Out</h3></v-list-item-subtitle
@@ -81,7 +81,7 @@
           </v-list-item>
           <v-list-item to="/stockopname" class="mb-4">
             <v-list-item-icon>
-              <v-icon>fas fa-warehouse</v-icon>
+              <v-icon>mdi-star-box-multiple-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-subtitle class="teks"
               ><h3>Stock Opname</h3></v-list-item-subtitle
@@ -91,7 +91,7 @@
 
         <v-list-item to="/customers" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fas fa-users</v-icon>
+            <v-icon>mdi-account-group</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>Customer</h3></v-list-item-subtitle
@@ -99,7 +99,7 @@
         </v-list-item>
         <v-list-item to="/order" class="mb-4">
           <v-list-item-icon>
-            <v-icon>fas fa-inbox</v-icon>
+            <v-icon>mdi-inbox-full</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>Order</h3></v-list-item-subtitle
@@ -107,7 +107,7 @@
         </v-list-item>
         <v-list-item to="/user" class="mb-2">
           <v-list-item-icon>
-            <v-icon>fas fa-user</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
           <v-list-item-subtitle class="teks"
             ><h3>User</h3></v-list-item-subtitle
