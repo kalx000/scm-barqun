@@ -11,8 +11,8 @@
   >
     <v-list-item>
       <v-list-item-avatar class="ml-n2">
-        <v-img src="barqun.png"></v-img>
-        <!-- <v-img v-else src="barqunBlack.png"></v-img> -->
+        <v-img v-if="$vuetify.theme.dark" src="barqun.png"></v-img>
+        <v-img v-else src="barqun.png"></v-img>
       </v-list-item-avatar>
       <v-list-item-title style="color:white;"><h5>Supply Chain</h5></v-list-item-title>
       <v-btn icon @click.stop="mini = !mini">

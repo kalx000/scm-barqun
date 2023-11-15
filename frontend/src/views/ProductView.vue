@@ -1,15 +1,13 @@
 <template>
-<div>
-  <v-card>
-
-      <Navbar />
+  <v-app>
+    <Navbar />
     <LeftBar />
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
-      style="margin-top:80px;"
+      style="margin-top: 80px"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -18,7 +16,13 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="700px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -46,42 +50,24 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                      @keypress="filter(event)"
+                        @keypress="filter(event)"
                         v-model="editedItem.qty"
                         label="Quantity"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.unit"
-                        label="Unit"
+                        @keypress="filter(event)"
+                        v-model="editedItem.desc"
+                        label="Description"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.warehouse"
-                        label="Warehouse"
-                      ></v-text-field>
-                    </v-col>
-                    <!-- <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.id"
-                      label="ID Product"
-                    ></v-text-field>
-                  </v-col> -->
                   </v-row>
                 </v-container>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" text @click="close">
-                  Cancel
-                </v-btn>
+                <v-btn color="secondary" text @click="close"> Cancel </v-btn>
                 <v-btn color="secondary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
@@ -107,30 +93,28 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
-    <v-menu   
-    transition="slide-y-transition"
-    offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>fas fa-ellipsis-vertical</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item @click="deleteItem(item)">
-            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
-            <v-list-item-title>Delete</v-list-item-title>  
-        </v-list-item>
-        <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
-            <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </div>
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="deleteItem(item)">
+                <v-icon style="color: red" small class="mr-2"
+                  >fa-solid fa-trash</v-icon
+                >
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="editItem(item)">
+                <v-icon style="color: orange" small class="mr-2"
+                  >fa-solid fa-pen</v-icon
+                >
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </template>
     </v-data-table>
     <v-snackbar
@@ -155,13 +139,15 @@
            >
             The Data Successfully Delete
           </v-snackbar>
-  </v-card>
-  </div>
+  </v-app>
 </template>
+
+
 <script>
 import LeftBar from "@/components/LeftBar.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/NavBar.vue";
+import axios from "axios";
 export default {
   components: {
     LeftBar,
@@ -173,37 +159,33 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      {
-        text: "Product Name",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Price", value: "price" },
-      { text: "Qty", value: "qty" },
-      { text: "Unit", value: "unit" },
-      { text: "Warehouse", value: "warehouse" },
-      // { text: 'ID Product', value: 'id' },
+      { text: "Product Name", sortable: true, value: "nama_barang", },
+      { text: "Price", value: "harga" },
+      { text: "Qty", value: "jumlah_stock_tersedia" },
+      { text: "Description", value: "deskripsi" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
       name: "",
-      price: [],
-      qty: [],
-      unit: [],
-      warehouse: [],
-      id: [],
+      price: "",
+      qty: "",
+      desc: "",
+      unit: "",
+      warehouse: "",
+      id: "",
     },
     defaultItem: {
       name: "",
-      price: [],
-      qty: [],
-      unit: [],
-      warehouse: [],
-      id: [],
+      price: "",
+      qty: "",
+      desc: "",
+      unit: "",
+      warehouse: "",
+      id: "",
     },
   }),
 
@@ -227,62 +209,6 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.items = [
-        {
-          name: "RJ45 Cable",
-          price: 26000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "000",
-        },
-        {
-          name: "RJ45 ",
-          price: 66000,
-          qty: "2",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "111",
-        },
-        {
-          name: "Cable",
-          price: 25000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "222",
-        },
-        {
-          name: "RJ45 Cable",
-          price: 26700,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "333",
-        },
-        {
-          name: "RJ45 Cable",
-          price: 3000,
-          qty: "10",
-          unit: "meter",
-          warehouse: "Gudang",
-          id: "444",
-        },
-      ];
-    },
-
-    filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
-
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
-
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -327,6 +253,15 @@ export default {
       this.snackbar1 = true;
     },
   },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/products")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
+  },
 };
 </script>
 
@@ -343,6 +278,4 @@ export default {
   text-transform: none;
   cursor: pointer;
 }
-
-
 </style>

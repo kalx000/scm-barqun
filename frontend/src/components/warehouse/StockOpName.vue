@@ -123,7 +123,7 @@
         </v-list-item>
 
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>  
       </v-list>
@@ -158,8 +158,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-    data: () => ({
+data: () => ({
     tab: null,
     dialog: false,  
     dialogDelete: false,
@@ -170,12 +171,11 @@ export default {
         text: "Product Name",
         align: "start",
         sortable: true,
-        value: "idproduct",
+        value: "product_id",
       },
-      { text: "Stock", value: "idstock" },
-      { text: "Supplier Name", value: "idsupplier" },
-      { text: "Incoming Amount", value: "jumlah" },
-      { text: "Date Of Entry", value: "tanggal" },
+      { text: "Stock", value: "inventory_id" },
+      { text: "Date", value: "tanggal_opname" },
+      { text: "Final", value: "hasil_opname" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
@@ -217,53 +217,53 @@ export default {
 
   methods: {
     initialize() {
-      this.items = [
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-05",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-      ];
+      // this.items = [
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-05",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      //   {
+      //     idproduct: "RJ45 Cable",
+      //     idstock: 26000,
+      //     idsupplier: "10 meter",
+      //     jumlah: "1",
+      //     tanggal: "13-02-06",
+      //   },
+      // ];
     },
 
-    filter: function (evt) {
+filter: function (evt) {
     evt = evt ? evt : window.event;
     let expect = evt.target.value.toString() + evt.key.toString();
 
@@ -317,6 +317,15 @@ export default {
       this.close();
       this.snackbar1 = true;
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/stockopnames")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 }
 </script>

@@ -123,7 +123,7 @@
         </v-list-item>
 
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>  
       </v-list>
@@ -158,39 +158,40 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-    data: () => ({
+  data: () => ({
     tab: null,
-    dialog: false,  
+    dialog:false,
+    dialogEdit: false,
     dialogDelete: false,
-    snackbar1: false,
-    snackbar2: false,
+    snackbar: false,
     headers: [
       {
         text: "Product Name",
         align: "start",
         sortable: true,
-        value: "idproduct",
+        value: "product_id",
       },
-      { text: "Stock", value: "idstock" },
-      { text: "Supplier Name", value: "idsupplier" },
-      { text: "Incoming Amount", value: "jumlah" },
-      { text: "Date Of Entry", value: "tanggal" },
+      { text: "Customer Name", value: "customer_id" },
+      { text: "Order", value: "order_id" },
+      { text: "Outcoming Amount", value: "jumlah_keluar" },
+      { text: "Date", value: "tanggal_keluar" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
+      idsupplier: "",
       idproduct: "",
       idstock: "",
-      idsupplier: "",
       jumlah: "",
       tanggal: "",
     },
     defaultItem: {
+      idsupplier: "",
       idproduct: "",
       idstock: "",
-      idsupplier: "",
       jumlah: "",
       tanggal: "",
     },
@@ -216,68 +217,27 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.items = [
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-05",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-        {
-          idproduct: "RJ45 Cable",
-          idstock: 26000,
-          idsupplier: "10 meter",
-          jumlah: "1",
-          tanggal: "13-02-06",
-        },
-      ];
-    },
+    initialize() {},
 
     filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
+      evt = evt ? evt : window.event;
+      let expect = evt.target.value.toString() + evt.key.toString();
 
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
-  
+      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    detailItem(item) {
+      this.dialogDetail = true;
+    },
+
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+      this.dialogEdit = true;
     },
 
     deleteItem(item) {
@@ -292,8 +252,8 @@ export default {
       this.snackbar2 = true;
     },
 
-    close() {
-      this.dialog = false;
+    closeEdit() {
+      this.dialogEdit = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -314,11 +274,20 @@ export default {
       } else {
         this.items.push(this.editedItem);
       }
-      this.close();
-      this.snackbar1 = true;
+      this.closeEdit();
+      this.snackbar = true;
     },
   },
-}
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/stockouts")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
+  },
+};
 </script>
 
 <style>

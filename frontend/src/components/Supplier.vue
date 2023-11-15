@@ -7,7 +7,7 @@
       :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
-      style="margin-top:70px;"
+      style="margin-top: 70px"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -16,7 +16,13 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="550px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -29,12 +35,6 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idsupplier"
-                        label="ID Supplier"
-                      ></v-text-field>
-                    </v-col> -->
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -53,7 +53,7 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                        @keypress="filter(event)"
+                          @keypress="filter(event)"
                           v-model="editedItem.telepon"
                           label="Phone Number"
                         ></v-text-field>
@@ -97,30 +97,28 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
-    <v-menu   
-    transition="slide-y-transition"
-    offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>fas fa-ellipsis-vertical</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item @click="deleteItem(item)">
-            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
-            <v-list-item-title>Delete</v-list-item-title>  
-        </v-list-item>
-        <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
-            <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </div>
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="deleteItem(item)">
+                <v-icon style="color: red" small class="mr-2"
+                  >fa-solid fa-trash</v-icon
+                >
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="editItem(item)">
+                <v-icon style="color: orange" small class="mr-2"
+                  >fa-solid fa-pen</v-icon
+                >
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </template>
     </v-data-table>
     <v-snackbar
@@ -148,42 +146,34 @@
   </v-card>
   </div>
 </template>
+
 <script>
+import axios from 'axios';
 export default {
   data: () => ({
-    tab: null,
     dialog: false,
     dialogDelete: false,
-    snackbar1: false,
-    snackbar2: false,
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      // {
-        //   text: "ID Supplier",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idsupplier",
-      // },
-      { text: "Supplier Name", value: "name" },
+      { text: "Supplier Name", sortable: true, value: "nama_supplier", },
       { text: "Email", value: "email" },
-      { text: "Phone Number", value: "telepon" },
+      { text: "Phone", value: "nomor_telepon" },
       { text: "Address", value: "alamat" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
-      idsupplier: "",
       name: "",
       email: "",
-      telepon: "",
-      alamat: "",
+      phone: "",
+      address: "",
     },
     defaultItem: {
-      idsupplier: "",
       name: "",
       email: "",
-      telepon: "",
-      alamat: "",
+      phone: "",
+      address: "",
     },
   }),
 
@@ -203,68 +193,10 @@ export default {
   },
 
   created() {
-    this.initialize();
+    // this.initialize();
   },
 
   methods: {
-    initialize() {
-      this.items = [
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idsupplier: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-      ];
-    },
-
-    filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
-
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
-
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -282,23 +214,6 @@ export default {
       this.closeDelete();
       this.snackbar2 = true;
     },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.items[this.editedIndex], this.editedItem);
@@ -308,6 +223,15 @@ export default {
       this.close();
       this.snackbar1 = true;
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/suppliers")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>

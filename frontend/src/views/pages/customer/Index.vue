@@ -30,14 +30,7 @@ INDEX.VUE
 
               <v-card-text>
                 <v-container>
-                  <!-- <ModuleForm :form="editedItem" />  -->
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="form.idcustomer"
-                        label="ID Customer"
-                      ></v-text-field>
-                    </v-col> -->
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -118,7 +111,7 @@ INDEX.VUE
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -152,9 +145,8 @@ INDEX.VUE
   </div>
 </template>
 <script>
-// import ModuleForm from "./Form.vue";
+import axios from "axios";
 export default {
-  // components: { ModuleForm },
   data: () => ({
     tab: null,
     dialog: false,
@@ -162,20 +154,14 @@ export default {
     snackbar1: false,
     snackbar2: false,
     headers: [
-      // {
-      //   text: "ID Customer",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idcustomer",
-      // },
       {
         text: "Customer Name",
         align: "start",
         sortable: "true",
-        value: "name",
+        value: "nama_customer",
       },
       { text: "Email", value: "email" },
-      { text: "Phone Number", value: "telepon" },
+      { text: "Phone Number", value: "nomor_telepon" },
       { text: "Address", value: "alamat" },
       { text: "Actions", value: "actions", sortable: false },
     ],
@@ -217,52 +203,6 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.items = [
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-        {
-          idcustomer: "91290928",
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          telepon: "081387229453",
-          alamat: "Jl. Kadrie Oening No. 1",
-        },
-      ];
-    },
 
     filter: function (evt) {
     evt = evt ? evt : window.event;
@@ -319,6 +259,15 @@ export default {
       this.close();
       this.snackbar1 = true;
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/customers")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>

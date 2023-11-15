@@ -1,7 +1,4 @@
 <template>
-<div>
-  
-  <v-card>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -29,12 +26,6 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idorder"
-                        label="ID Order"
-                      ></v-text-field>
-                    </v-col> -->
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idcustomer"
@@ -62,11 +53,10 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-select
-                        :items = "orderan"
+                      <v-text-field 
                         v-model="editedItem.status"
                         label="Status Order"
-                      ></v-select>
+                      ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -99,7 +89,7 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <div class="align-center">
+        < class="align-center">
     <v-menu   
     transition="slide-y-transition"
     offset-y>
@@ -118,40 +108,17 @@
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
         <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
+            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
-  </div>
       </template>
     </v-data-table>
-    <v-snackbar
-           v-model="snackbar1"
-           absolute
-          top
-          color="success"
-          outlined
-          right
-          timeout= 1500
-           >
-            The Data Successfully Add
-          </v-snackbar>
-          <v-snackbar
-           v-model="snackbar2"
-            absolute
-          top
-          color="error"
-          outlined
-          right
-          timeout = 1500
-           >
-            The Data Successfully Delete
-          </v-snackbar>
-  </v-card>
-</div>
+    
 </template>
 <script>
+import axios from 'axios';
 export default {
   data: () => ({
     tab: null,
@@ -160,17 +127,11 @@ export default {
     snackbar1: false,
     snackbar2: false,
     headers: [
-      // {
-      //   text: "ID Order",
-      //   align: "start",
-      //   sortable: true,
-      //   value: "idorder",
-      // },
-      { text: "Customer Name", value: "idcustomer" },
-      { text: "Product Name", value: "productName" },
-      { text: "Amount of Items", value: "jumlah" },
-      { text: "Date Order", value: "tanggal" },
-      { text: "Status Order", value: "status" },
+      { text: "Product Name", value: "product_id" },
+      { text: "Customer Name", value: "customer_id" },
+      { text: "Date Order", value: "tanggal_pemesanan" },
+      { text: "Amount of Items", value: "jumlah_barang" },
+      { text: "Status Order", value: "status_pemesanan" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
@@ -215,64 +176,64 @@ export default {
 
   methods: {
     initialize() {
-      this.items = [
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-        {
-          idorder: "12345",
-          idcustomer: "54321",
-          jumlah: "10",
-          productName: "09876",
-          tanggal: "02/10/2023",
-          status: "-",
-        },
-      ];
+      // this.items = [
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      //   {
+      //     idorder: "12345",
+      //     idcustomer: "54321",
+      //     jumlah: "10",
+      //     productName: "09876",
+      //     tanggal: "02/10/2023",
+      //     status: "-",
+      //   },
+      // ];
     },
 
     filter: function (evt) {
@@ -329,6 +290,15 @@ export default {
       this.close();
       this.snackbar1 = true;
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/orders")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>

@@ -133,7 +133,7 @@
 
 <script>
 export default {
- data: () => ({
+  data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
@@ -269,6 +269,7 @@ export default {
       this.snackbar1 = true;
     },
   },
+  
 };
 </script>
 

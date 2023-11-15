@@ -1,34 +1,33 @@
 <template>
-<div>
-<v-card>
-            <v-data-table
-              :headers="headers"
-              :items="items"
-              sort-by="idstock"
-              class="elevation-5 pa-4"
-            >
-              <template v-slot:top>
-                <v-toolbar flat>
-                  <v-toolbar-title>Stock In</v-toolbar-title>
-                  <v-divider class="mx-4" inset vertical></v-divider>
-                  <v-spacer></v-spacer>
-                  <v-dialog v-model="dialog" max-width="600px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        color="secondary"
-                        dark
-                        class="mb-2"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon left>fas fa-plus</v-icon>
-                        Add
-                      </v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title>
-                        <span class="text-h5">{{ formTitle }}</span>
-                      </v-card-title>
+  <v-card-text>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      sort-by="idstock"
+      class="elevation-5 pa-4"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Stock In</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialogEdit" max-width="600px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon left>fas fa-plus</v-icon>
+                Add
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
 
                       <v-card-text>
                         <v-container>
@@ -59,30 +58,12 @@
                                 label="Incoming Amount"
                               ></v-text-field>
                             </v-col>
-                            
                             <v-col cols="12" sm="6" md="4">
-                              <v-menu
-                              ref="menu"
-                              v-model="menu"
-                              :close-on-content-click="false"
-                              :nudge-right="40"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="auto">
-                              <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="editedItem.date"
+                              @keypress="filter(event)"
+                                v-model="editedItem.tanggal"
                                 label="Date Of Entry"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
                               ></v-text-field>
-                              </template>
-                              <v-date-picker
-                            v-model="editedItem.date"
-                            @input="menu = false">
-                            </v-date-picker>
-                              </v-menu>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -119,7 +100,13 @@
                   </v-dialog>
                 </v-toolbar>
               </template>
-              
+              <v-dialog v-model="dialogDetail" max-width="550px">
+                <v-card>
+                  <v-card-title>
+                    Details
+                  </v-card-title>
+                </v-card>
+              </v-dialog>
               <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
     <v-menu   
@@ -139,47 +126,33 @@
             <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
             <v-list-item-title>Delete</v-list-item-title>  
         </v-list-item>
-
         <v-list-item @click="editItem(item)">
             <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pencil</v-icon>
             <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>  
+        </v-list-item>
+        <v-list-item @click="detailItem(item)">
+          <v-icon style="color:green;" small class="mr-2">fa-reguler fa-eye</v-icon>
+          <v-list-item-title>Details</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
   </div>
       </template>
             </v-data-table>
-             <v-snackbar
-           v-model="snackbar1"
-           absolute
-          top
-          color="success"
-          outlined
-          right
-          timeout= 1500
+          <v-snackbar
+           v-model="snackbar"
            >
             The Data Successfully Add
           </v-snackbar>
-          <v-snackbar
-           v-model="snackbar2"
-            absolute
-          top
-          color="error"
-          outlined
-          right
-          timeout = 1500
-           >
-            The Data Successfully Delete
-          </v-snackbar>
-  </v-card>
-  </div>
+          </v-card-text>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-    data: () => ({
+  data: () => ({
     tab: null,
-    dialog: false,  
+    dialog: false,
     dialogDelete: false,
     snackbar1: false,
     snackbar2: false,
@@ -189,27 +162,27 @@ export default {
         text: "Product Name",
         align: "start",
         sortable: true,
-        value: "idproduct",
+        value: "product_id",
       },
       { text: "Stock", value: "idstock" },
       { text: "Supplier Name", value: "idsupplier" },
       { text: "Incoming Amount", value: "jumlah" },
-      { text: "Date Of Entry", value: "date" },
+      { text: "Date Of Entry", value: "tanggal" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
+      idsupplier: "",
       idproduct: "",
       idstock: "",
-      idsupplier: "",
       jumlah: "",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10) ,
     },
     defaultItem: {
+      idsupplier: "",
       idproduct: "",
       idstock: "",
-      idsupplier: "",
       jumlah: "",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     },
@@ -242,49 +215,49 @@ export default {
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-05",
+          tanggal: "13-02-05",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-06",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-06",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-06",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-06",
+          tanggal: "13-02-06",
         },
         {
           idproduct: "RJ45 Cable",
           idstock: 26000,
           idsupplier: "10 meter",
           jumlah: "1",
-          date: "13-02-06",
+          tanggal: "13-02-06",
         },
       ];
     },
 
     filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
+      evt = evt ? evt : window.event;
+      let expect = evt.target.value.toString() + evt.key.toString();
 
     if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
       evt.preventDefault();
@@ -293,10 +266,14 @@ export default {
     }
   },
 
+    detailItem(item) {
+      this.dialogDetail = true;
+    },
+
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+      this.dialogEdit = true;
     },
 
     deleteItem(item) {
@@ -311,8 +288,8 @@ export default {
       this.snackbar2 = true;
     },
 
-    close() {
-      this.dialog = false;
+    closeEdit() {
+      this.dialogEdit = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -334,12 +311,20 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
-      this.snackbar1 = true;
+      this.snackbar = true;
     },
   },
-}
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8081/api/stockins")
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+      })
+      .catch((error) => console.log(error));
+  },
+};
 </script>
 
 <style>
-
 </style>
