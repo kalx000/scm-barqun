@@ -9,7 +9,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Supplier</v-toolbar-title>
+          <v-toolbar-title>Manage Product</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="550px">
@@ -172,40 +172,115 @@ export default {
   },
 
   methods: {
-    editItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+    
+    async fetchData() {
+      try{
+        this.loading = true;
+        const response = await axios.get("http://127.0.0.1:8081/api/products");
 
-    deleteItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
-      } else {
-        this.items.push(this.editedItem);
+        const data = respone.data.data;
+        console.log(data);
+        this.items.lists = data;
+      } catch (error){
+        console.error(error.message);
+      }finally {
+        this.loading = false;
       }
-      this.close();
     },
-  },
-  mounted() {
-    axios
-      .get("http://127.0.0.1:8081/api/products")
-      .then((response) => {
-        this.items = response.data.data;
-        console.log(this.items);
-      })
-      .catch((error) => console.log(error));
-  },
+    
+    async save(data) {
+      try{
+        const response = await axios.post("http://127.0.0.1:8081/api/product", data);
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
+    },
+
+    async edit(data) {
+      try{
+        const response = await axios.put("http://127.0.0.1:8081/api/product", data);
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
+    },
+
+    async save(data) {
+      try{
+        const response = await axios.post("http://127.0.0.1:8081/api/product", data);
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
+    },
+  }
+
+  // methods: {
+  //   editItem(item) {
+  //     this.editedIndex = this.items.indexOf(item);
+  //     this.editedItem = Object.assign({}, item);
+  //     this.dialog = true;
+  //   },
+
+  //   deleteItem(item) {
+  //     this.editedIndex = this.items.indexOf(item);
+  //     this.editedItem = Object.assign({}, item);
+  //     this.dialogDelete = true;
+  //   },
+
+  //   deleteItemConfirm() {
+  //     this.items.splice(this.editedIndex, 1);
+  //     this.closeDelete();
+  //   },
+  //   save() {
+  //     if (this.editedIndex > -1) {
+  //       Object.assign(this.items[this.editedIndex], this.editedItem);
+  //     } else {
+  //       this.items.push(this.editedItem);
+  //     }
+  //     this.close();
+  //   },
+  // },
+  // mounted() {
+  //   axios
+  //     .get("http://127.0.0.1:8081/api/products")
+  //     .then((response) => {
+  //       this.items = response.data.data;
+  //       console.log(this.items);
+  //     })
+  //     .catch((error) => console.log(error));
+  // },
 };
 </script>
 
