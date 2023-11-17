@@ -176,8 +176,8 @@ export default {
     async fetchData() {
       try{
         this.loading = true;
-        const response = await axios.get("http://127.0.0.1:8081/api/products");
-
+        const response = await axios.get('http://127.0.0.1:8081/api/product');
+        
         const data = respone.data.data;
         console.log(data);
         this.items.lists = data;
@@ -188,9 +188,9 @@ export default {
       }
     },
     
-    async save(data) {
+    async store(data) {
       try{
-        const response = await axios.post("http://127.0.0.1:8081/api/product", data);
+        const response = await axios.post('http://127.0.0.1:8081/api/product', data);
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
@@ -207,9 +207,9 @@ export default {
       }
     },
 
-    async edit(data) {
+    async update(data) {
       try{
-        const response = await axios.put("http://127.0.0.1:8081/api/product", data);
+        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data);
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
@@ -226,9 +226,9 @@ export default {
       }
     },
 
-    async save(data) {
+    async destroy(data) {
       try{
-        const response = await axios.post("http://127.0.0.1:8081/api/product", data);
+        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`);
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
