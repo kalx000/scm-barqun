@@ -9,7 +9,15 @@ use Illuminate\Http\Request;
 
 class StockInController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:stockin-list|stockin-create|stockin-edit|stockin-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:stockin-create', ['only' => ['store']]);
+        $this->middleware('permission:stockin-edit', ['only' => ['update']]);
+        $this->middleware('permission:stockin-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $stockIn = StockIn::all();
 
@@ -19,7 +27,15 @@ class StockInController extends Controller
         ], 200);
     }
 
-    function store(StockInRequest $request)
+    public function show(StockIn $stockIn)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $stockIn
+        ], 200);
+    }
+
+    public function store(StockInRequest $request)
     {
         $stockIn = StockIn::create($request->validated());
 
@@ -29,9 +45,9 @@ class StockInController extends Controller
         ], 201);
     }
 
-    function update($id, StockInRequest $request)
+    public function update(StockIn $stockIn, StockInRequest $request)
     {
-        $stockIn = StockIn::find($id);
+        // $stockIn = StockIn::find($id);
         $stockIn->update($request->validated());
 
         return response()->json([
@@ -40,9 +56,9 @@ class StockInController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy(StockIn $stockIn)
     {
-        $stockIn = StockIn::find($id);
+        // $stockIn = StockIn::find($id);
         $stockIn->delete();
 
         return response()->json([

@@ -9,7 +9,15 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    function index()
+    function __construct()
+    {
+        $this->middleware('permission:supplier-list|supplier-create|supplier-edit|supplier-delete', ['only' => 'index', 'store']);
+        $this->middleware('permission:supplier-create', ['only' => ['store']]);
+        $this->middleware('permission:supplier-edit', ['only' => ['update']]);
+        $this->middleware('permission:supplier-delete', ['only' => ['destroy']]);
+    }
+
+    public function index()
     {
         $supplier = Supplier::all();
 
@@ -19,7 +27,15 @@ class SupplierController extends Controller
         ], 200);
     }
 
-    function store(SupplierRequest $request)
+    public function show(Supplier $supplier)
+    {
+        return response()->json([
+            'message' => 'Data Retrieved',
+            'data' => $supplier
+        ], 200);
+    }
+
+    public function store(SupplierRequest $request)
     {
         $supplier = Supplier::create($request->validated());
 
@@ -29,9 +45,9 @@ class SupplierController extends Controller
         ], 201);
     }
 
-    function update($id, SupplierRequest $request)
+    public function update(Supplier $supplier, SupplierRequest $request)
     {
-        $supplier = Supplier::find($id);
+        // $supplier = Supplier::find($id);
         $supplier->update($request->validated());
 
         return response()->json([
@@ -40,9 +56,9 @@ class SupplierController extends Controller
         ], 200);
     }
 
-    function destroy($id)
+    public function destroy(Supplier $supplier)
     {
-        $supplier = Supplier::find($id);
+        // $supplier = Supplier::find($id);
         $supplier->delete();
 
         return response()->json([

@@ -1,5 +1,7 @@
 <template>
-  <v-app>
+  <div>
+    <v-card>
+
     <v-data-table
       :headers="headers"
       :items="items"
@@ -119,7 +121,30 @@
         </div>
       </template>
     </v-data-table>
-  </v-app>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card>
+  </div>
 </template>
 
 <script>
@@ -128,9 +153,16 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
+    snackbar1: false,
+    snackbar2: false,
     headers: [
-      { text: "Supplier Name", sortable: true, value: "nama_supplier", },
+      // {
+        //   text: "ID Supplier",
+      //   align: "start",
+      //   sortable: true,
+      //   value: "idsupplier",
+      // },
+      { text: "Supplier Name", value: "name" },
       { text: "Email", value: "email" },
       { text: "Phone", value: "nomor_telepon" },
       { text: "Address", value: "alamat" },
@@ -187,6 +219,7 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.snackbar2 = true;
     },
     save() {
       if (this.editedIndex > -1) {
@@ -195,6 +228,7 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
+      this.snackbar1 = true;
     },
   },
   mounted() {
