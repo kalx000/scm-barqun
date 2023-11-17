@@ -1,16 +1,9 @@
 <template>
   <div class="dashboard" style="margin-top:70px;">
-  <!-- <div class="greetings"> -->
-  
-  <!-- <h1>Hello there, Nice to meet you Fransiscus 😎🤙</h1> -->
-  <!-- <v-divider :thickness="100" color="white" style="width:55%;"></v-divider> -->
-  <!-- </div> -->
     <v-row class="px-12 py-12">
       <v-col cols="12" sm="4">
       <router-link style="text-transform:none; text-decoration:none;" to="/product">
         <v-card flat class="rounded-lg" :class="$vuetify.theme.dark ===true ? 'total-items':'total-items2'" height="200" width="auto">
-          <!-- <v-img v-if="$vuetify.theme.dark" src="@/assets/1.png"></v-img>
-          <v-img v-else src="@/assets/1b.png"></v-img> -->
           <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
@@ -40,7 +33,7 @@
       </v-col>
 
       <v-col cols="12" sm="4" >
-      <router-link style="text-transform:none; text-decoration:none;" to="/warehouse">      
+      <router-link style="text-transform:none; text-decoration:none;" to="/inventory">      
         <v-card flat class="rounded-lg warehouse" :class="$vuetify.theme.dark ===true ? 'warehouse':'warehouse2'" height="200" width="AUTO">
           <v-list-item >
               <v-list-item-content>
@@ -102,8 +95,19 @@
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
   name: "HomeView",
+
+  // mounted() {
+  //   axios
+  //     .get("http://127.0.0.1:8081/api/products")
+  //     .then((response) => {
+  //       this.items = response.data.data;
+  //       console.log(this.items);
+  //     })
+  //     .catch((error) => console.log(error));
+  // },
 };
 </script>
 <style scoped>
