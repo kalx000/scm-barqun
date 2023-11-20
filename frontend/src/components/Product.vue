@@ -36,14 +36,14 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.name"
-                          label="Supplier Name"
+                          v-model="editedItem.nama_barang"
+                          label="Product Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
+                          v-model="editedItem.harga"
+                          label="Price"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -52,14 +52,14 @@
                       <v-col cols="6">
                         <v-text-field
                           @keypress="filter(event)"
-                          v-model="editedItem.telepon"
-                          label="Phone Number"
+                          v-model="editedItem.jumlah_stock_tersedia"
+                          label="Quantity"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.alamat"
-                          label="Address"
+                          v-model="editedItem.deskripsi"
+                          label="Description"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -176,9 +176,8 @@ export default {
     async fetchData() {
       try{
         this.loading = true;
-        const response = await axios.get('http://127.0.0.1:8081/api/product');
-        
-        const data = respone.data.data;
+        const response = await axios.get('http://127.0.0.1:8081/api/product', );
+        const data = response.data.data;
         console.log(data);
         this.items.lists = data;
       } catch (error){
