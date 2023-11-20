@@ -175,7 +175,8 @@ export default {
     async fetchData() {
       try{
         this.loading = true;
-        const response = await axios.get('http://127.0.0.1:8081/api/product');
+        const response = await axios.get('http://127.0.0.1:8081/api/product', 
+        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
         const data = response.data.data;
         console.log(data);
         this.items.lists = data;
@@ -188,58 +189,61 @@ export default {
     
     async save(data) {
       try{
-        const response = await axios.post('http://127.0.0.1:8081/api/product', data);
+        const response = await axios.post('http://127.0.0.1:8081/api/product', data,
+        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        // this.sbData.sbColor = 'success';
-        // this.sbData.sbMsg = response.data.message;
-        // this.sbData.sbIcon = 'mdi-check';
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
         this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        // this.sbData.sbColor = 'error';
-        // this.sbData.sbMsg = error.response.data.message;
-        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        // this.$refs.snackbar.show();
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
       }
     },
 
     async edit(data) {
       try{
-        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data);
+        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data,
+        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        // this.sbData.sbColor = 'success';
-        // this.sbData.sbMsg = response.data.message;
-        // this.sbData.sbIcon = 'mdi-check';
-        // this.$refs.snackbar.show();
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        // this.sbData.sbColor = 'error';
-        // this.sbData.sbMsg = error.response.data.message;
-        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        // this.$refs.snackbar.show();
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
       }
     },
 
     async destroy(data) {
       try{
-        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`);
+        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`, 
+        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        // this.sbData.sbColor = 'success';
-        // this.sbData.sbMsg = response.data.message;
-        // this.sbData.sbIcon = 'mdi-check';
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
         this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        // this.sbData.sbColor = 'error';
-        // this.sbData.sbMsg = error.response.data.message;
-        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        // this.$refs.snackbar.show();
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
       }
     },
 

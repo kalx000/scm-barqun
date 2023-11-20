@@ -172,48 +172,126 @@ export default {
   },
 
   methods: {
-    editItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1);
-      this.closeDelete();
-      this.snackbar2 = true;
-    },
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
-      } else {
-        this.items.push(this.editedItem);
+    async fetchData() {
+      try{
+        this.loading = true;
+        const response = await axios.get('http://127.0.0.1:8081/api/product', 
+        "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz");
+        const data = response.data.data;
+        console.log(data);
+        this.items.lists = data;
+      } catch (error){
+        console.error(error.message);
+      }finally {
+        this.loading = false;
       }
-      this.close();
-      this.snackbar1 = true;
     },
-  },
-  mounted() {
-axios
-  .get("http://127.0.0.1:8081/api/supplier", {
-    headers: {
-      Authorization: "Bearer 1|Bje4SQKVa892au5ZByFUnuNUOgMy6KJhj10Kf7Cn", // Add the token here
+    
+    async save(data) {
+      try{
+        const response = await axios.post('http://127.0.0.1:8081/api/product', data,
+        "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz");
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
     },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })  
-  .catch((error) => console.log(error));
 
+    async edit(data) {
+      try{
+        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data,
+        "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz");
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
+    },
+
+    async destroy(data) {
+      try{
+        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`, 
+        "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz");
+        console.log(response.data.message);
+        this.fetchData();
+        this.dialog = false;
+        this.sbData.sbColor = 'success';
+        this.sbData.sbMsg = response.data.message;
+        this.sbData.sbIcon = 'mdi-check';
+        this.$refs.snackbar.show();
+      } catch (error) {
+        console.log(error);
+        this.sbData.sbColor = 'error';
+        this.sbData.sbMsg = error.response.data.message;
+        this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        this.$refs.snackbar.show();
+      }
+    },
+
+  
+
+    // editItem(item) {
+    //   this.editedIndex = this.items.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialog = true;
+    // },
+
+    // deleteItem(item) {
+    //   this.editedIndex = this.items.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialogDelete = true;
+    // },
+
+    // deleteItemConfirm() {
+    //   this.items.splice(this.editedIndex, 1);
+    //   this.closeDelete();
+    //   this.snackbar2 = true;
+    // },
+    // save() {
+    //   if (this.editedIndex > -1) {
+    //     Object.assign(this.items[this.editedIndex], this.editedItem);
+    //   } else {
+    //     this.items.push(this.editedItem);
+    //   }
+    //   this.close();
+    //   this.snackbar1 = true;
+    // },
   },
+
+//   mounted() {
+// axios
+//   .get("http://127.0.0.1:8081/api/supplier", {
+//     headers: {
+//       Authorization: "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz", // Add the token here
+//     },
+//   })
+//   .then((response) => {
+//     this.items = response.data.data;
+//     console.log(this.items);
+//     this.isLoading = false;
+//   })  
+//   .catch((error) => console.log(error));
+
+//   },
 };
 </script>
 
