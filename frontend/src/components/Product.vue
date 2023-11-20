@@ -139,16 +139,16 @@ export default {
     items: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
+      nama_barang: "",
+      harga: "",
+      jumlah_stock_tersedia: "",
+      deskripsi: ""
     },
     defaultItem: {
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
+      nama_barang: "",
+      harga: "",
+      jumlah_stock_tersedia: "",
+      deskripsi: ""
     },
   }),
 
@@ -192,16 +192,16 @@ export default {
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
+        // this.sbData.sbColor = 'success';
+        // this.sbData.sbMsg = response.data.message;
+        // this.sbData.sbIcon = 'mdi-check';
         this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
+        // this.sbData.sbColor = 'error';
+        // this.sbData.sbMsg = error.response.data.message;
+        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        // this.$refs.snackbar.show();
       }
     },
 
@@ -211,16 +211,16 @@ export default {
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
+        // this.sbData.sbColor = 'success';
+        // this.sbData.sbMsg = response.data.message;
+        // this.sbData.sbIcon = 'mdi-check';
+        // this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
+        // this.sbData.sbColor = 'error';
+        // this.sbData.sbMsg = error.response.data.message;
+        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        // this.$refs.snackbar.show();
       }
     },
 
@@ -230,16 +230,16 @@ export default {
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
+        // this.sbData.sbColor = 'success';
+        // this.sbData.sbMsg = response.data.message;
+        // this.sbData.sbIcon = 'mdi-check';
         this.$refs.snackbar.show();
       } catch (error) {
         console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
+        // this.sbData.sbColor = 'error';
+        // this.sbData.sbMsg = error.response.data.message;
+        // this.sbData.sbIcon = 'mdi-alert-circle-outline';
+        // this.$refs.snackbar.show();
       }
     },
 
@@ -268,20 +268,20 @@ export default {
     //   this.close();
     // },
   },
-  // mounted() {
-  //   axios
-  // .get("http://127.0.0.1:8081/api/product", {
-  //   headers: {
-  //     Authorization: "Bearer 1|Bje4SQKVa892au5ZByFUnuNUOgMy6KJhj10Kf7Cn", // Add the token here
-  //   },
-  // })
-  // .then((response) => {
-  //   this.items = response.data.data;
-  //   this.isLoading = false;
-  //   console.log(this.items);
-  // })
-  // .catch((error) => console.log(error));
-  // },
+  mounted() {
+    axios
+  .get("http://127.0.0.1:8081/api/product", {
+    headers: {
+      Authorization: "Bearer 1|Bje4SQKVa892au5ZByFUnuNUOgMy6KJhj10Kf7Cn", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    this.isLoading = false;
+    console.log(this.items);
+  })
+  .catch((error) => console.log(error));
+  },
 };
 </script>
 
