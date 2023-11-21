@@ -277,21 +277,21 @@ export default {
     // },
   },
 
-//   mounted() {
-// axios
-//   .get("http://127.0.0.1:8081/api/supplier", {
-//     headers: {
-//       Authorization: "Bearer 2|hInFYkOHIslnRBsSwW5in9AcQJZArYjVz0XJrNPz", // Add the token here
-//     },
-//   })
-//   .then((response) => {
-//     this.items = response.data.data;
-//     console.log(this.items);
-//     this.isLoading = false;
-//   })  
-//   .catch((error) => console.log(error));
+  mounted() {
+axios
+  .get("http://127.0.0.1:8081/api/supplier", {
+    headers: {
+      Authorization: "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })  
+  .catch((error) => console.log(error));
 
-//   },
+  },
 };
 </script>
 

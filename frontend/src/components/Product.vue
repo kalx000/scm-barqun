@@ -176,7 +176,7 @@ export default {
       try{
         this.loading = true;
         const response = await axios.get('http://127.0.0.1:8081/api/product', 
-        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
+        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
         const data = response.data.data;
         console.log(data);
         this.items.lists = data;
@@ -190,7 +190,7 @@ export default {
     async save(data) {
       try{
         const response = await axios.post('http://127.0.0.1:8081/api/product', data,
-        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
+        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
@@ -210,7 +210,7 @@ export default {
     async edit(data) {
       try{
         const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data,
-        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
+        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
@@ -230,7 +230,7 @@ export default {
     async destroy(data) {
       try{
         const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`, 
-        "Bearer 1|hTaXFPvmjW9uNSeuXFWDbK0qvE9c30Dj8HRzMBGA");
+        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
         console.log(response.data.message);
         this.fetchData();
         this.dialog = false;
@@ -272,11 +272,12 @@ export default {
     //   this.close();
     // },
   },
+  
   mounted() {
     axios
   .get("http://127.0.0.1:8081/api/product", {
     headers: {
-      Authorization: "Bearer 1|Bje4SQKVa892au5ZByFUnuNUOgMy6KJhj10Kf7Cn", // Add the token here
+      Authorization: "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV", // Add the token here
     },
   })
   .then((response) => {

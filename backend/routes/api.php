@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 //         return auth()->user();
 //     });
 //     Route::resource('product', ProductController::class);
-//     Route::resource('supplier', SupplierController::class);
+//     Route::resource('supplier', SupplierController::class);u
 //     Route::resource('customer', CustomerController::class);
 //     Route::resource('inventory', InventoryController::class);
 
