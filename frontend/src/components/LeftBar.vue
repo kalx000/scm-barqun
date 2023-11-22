@@ -48,7 +48,7 @@
           >
         </v-list-item>
 
-        <v-list-group class="mb-4" prepend-icon="mdi-warehouse" 
+        <v-list-group class="mb-4" prepend-icon="mdi-warehouse"
         :active-color="$vuetify.theme.dark ? 'activeDark' : 'activeLight'">
           <template v-slot:activator>
             <v-list-item-title class="teks">
