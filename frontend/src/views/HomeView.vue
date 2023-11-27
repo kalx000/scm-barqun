@@ -1,26 +1,22 @@
 <template>
   <v-app>
-    <NavBar/>
     <LeftBar/>
     <Dashboard />
-    <Footer/>
+    <Footer />
   </v-app >
 </template>
 
 <script>
 import LeftBar from "@/components/LeftBar.vue";
-import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
 import Dashboard from "@/components/Dashboard.vue";
-
+import Footer from "../components/Footer.vue"
 export default {
   name: "HomeView",
 
   components: {
-    Footer,
     LeftBar,
-    NavBar,
-    Dashboard
+    Dashboard,
+    Footer
   },
  
 };

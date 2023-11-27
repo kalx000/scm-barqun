@@ -1,7 +1,6 @@
 <template>
 <div>
-  <Navbar />
-  <Footer />
+    <Navbar />
   <v-card-text>
     <v-data-table
       :headers="headers"
@@ -13,12 +12,18 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Customer</v-toolbar-title>
+          <v-toolbar-title>Product</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="secondary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon left>fas fa-plus</v-icon>
                 Add
               </v-btn>
@@ -35,15 +40,15 @@
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.name"
-                          label="Customer Name"
-                          prepend-icon= "mdi-account-outline"
+                          label="Product name"
+                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
-                          prepend-icon= "mdi-email-outline"
+                          v-model="editedItem.price"
+                          label="Price"
+                          prepend-icon= "mdi-cash"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -51,17 +56,17 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                        @keypress="filter(event)"
-                          v-model="editedItem.telepon"
-                          label="Phone Number"
-                          prepend-icon= "mdi-phone-dial-outline"
+                          @keypress="filter(event)"
+                          v-model="editedItem.Quantity"
+                          label="Quantity"
+                          prepend-icon= "mdi-hand-coin-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.alamat"
-                          label="Address"
-                          prepend-icon= "mdi-map-marker-outline"
+                          v-model="editedItem.description"
+                          label="Description"
+                          prepend-icon= "mdi-text"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -97,106 +102,72 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="align-center">
-    <v-menu   
-    transition="slide-y-transition"
-    offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>fas fa-ellipsis-vertical</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item @click="deleteItem(item)">
-            <v-icon style="color:red;" small class="mr-2">fa-solid fa-trash</v-icon>
-            <v-list-item-title>Delete</v-list-item-title>  
-        </v-list-item>
-        <v-list-item @click="editItem(item)">
-            <v-icon style="color:orange;" small class="mr-2">fa-solid fa-pen</v-icon>
-            <v-list-item-title>Edit</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </div>
+          <v-menu transition="slide-y-transition" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon color="secondary" v-bind="attrs" v-on="on">
+                <v-icon>fas fa-ellipsis-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="deleteItem(item)">
+                <v-icon style="color: red" small class="mr-2"
+                  >fa-solid fa-trash</v-icon
+                >
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="editItem(item)">
+                <v-icon style="color: orange" small class="mr-2"
+                  >fa-solid fa-pen</v-icon
+                >
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </template>
     </v-data-table>
-  <v-snackbar
-           v-model="snackbar1"
-           absolute
-          top
-          color="success"
-          outlined
-          right
-          timeout= 1500
-           >
-            The Data Successfully Add
-          </v-snackbar>
-          <v-snackbar
-           v-model="snackbar2"
-            absolute
-          top
-          color="error"
-          outlined
-          right
-          timeout = 1500
-           >
-            The Data Successfully Delete
-          </v-snackbar>
   </v-card-text>
-  </div>
+</div>
 </template>
+
 <script>
-import axios from "axios";
-import Navbar from "@/components/NavBar.vue"
-import Footer from "@/components/Footer.vue"
+import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
-  components:{
+  components: {
     Navbar,
-    Footer
   },
   data: () => ({
-    tab: null,
     dialog: false,
     dialogDelete: false,
-    snackbar1: false,
-    snackbar2: false,
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
     headers: [
-      {
-        text: "Customer Name",
-        align: "start",
-        sortable: "true",
-        value: "nama_customer",
-      },
-      { text: "Email", value: "email" },
-      { text: "Phone Number", value: "nomor_telepon" },
-      { text: "Address", value: "alamat" },
+      { text: "Product Name", sortable: true, value: "nama_barang", },
+      { text: "Price", value: "harga" },
+      { text: "Quantity", value: "jumlah_stock_tersedia" },
+      { text: "Description", value: "deskripsi" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
-      idcustomer: "",
       name: "",
-      email: "",
-      telepon: "",
-      alamat: "",
+      price: "",
+      quantity: "",
+      description: "",
     },
     defaultItem: {
-      idcustomer: "",
       name: "",
-      email: "",
-      telepon: "",
-      alamat: "",
+      price: "",
+      quantity: "",
+      description: "",
     },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
   },
 
@@ -210,22 +181,10 @@ export default {
   },
 
   created() {
-    this.initialize();
+    // this.initialize();
   },
 
   methods: {
-
-    filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
-
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
-
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -241,25 +200,24 @@ export default {
     deleteItemConfirm() {
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
-      this.snackbar2 = true;
     },
+    
+  close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
 
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        ``;
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
 
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
 
     save() {
       if (this.editedIndex > -1) {
@@ -268,12 +226,11 @@ export default {
         this.items.push(this.editedItem);
       }
       this.close();
-      this.snackbar1 = true;
     },
   },
   mounted() {
-    axios
-      .get("http://127.0.0.1:8081/api/customer", {
+axios
+  .get("http://127.0.0.1:8081/api/product", {
     headers: {
       Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
     },
@@ -284,6 +241,7 @@ export default {
     this.isLoading = false;
   })
   .catch((error) => console.log(error));
+
   },
 };
 </script>

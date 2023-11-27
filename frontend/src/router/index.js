@@ -6,8 +6,13 @@ import ProductView from '../views/ProductView.vue'
 import Warehouse from '../views/Warehouse.vue'
 import SupplierView from '../views/SupplierView.vue'
 import CustomerView from '../views/CustomerView.vue'
+import Inventory from '../components/warehouse/Inventory.vue'
+import StockIn from '../components/warehouse/StockIn.vue'
+import StockOut from '../components/warehouse/StockOut.vue'
+import StockOpName from '../components/warehouse/StockOpName.vue'
 import OrderView from '../views/OrderView.vue'
 import UserView from '../views/UserView.vue'
+import ProfileView from '../views/ProfileView.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +38,26 @@ const routes = [
     component: Warehouse
   },
   {
+    path: '/inventory',
+    name: 'inventory',
+    component: Inventory
+  },
+  {
+    path: '/stockin',
+    name: 'stockin',
+    component: StockIn
+  },
+  {
+    path: '/stockout',
+    name: 'stockout',
+    component: StockOut
+  },
+  {
+    path: '/stockopname',
+    name: 'stockopname',
+    component: StockOpName
+  },
+  {
     path: '/supplier',
     name: 'supplier',
     component: SupplierView
@@ -51,6 +76,11 @@ const routes = [
     path: '/user',
     name: 'user',
     component: UserView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/about',
