@@ -151,6 +151,7 @@ export default {
     tab: null,
     dialog: false,
     dialogDelete: false,
+    formTitle: "",
     snackbar1: false,
     snackbar2: false,
     headers: [
@@ -183,96 +184,113 @@ export default {
     },
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
-    },
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-  },
-
-  created() {
-    this.initialize();
-  },
-
   methods: {
-
-    filter: function (evt) {
-    evt = evt ? evt : window.event;
-    let expect = evt.target.value.toString() + evt.key.toString();
-
-    if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-      evt.preventDefault();
-    } else {
-      return true;
-    }
-  },
-
     editItem(item) {
-      this.editedIndex = this.items.indexOf(item);
+      this.formTitle = "Edit Customer";
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
     deleteItem(item) {
-      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1);
+      const index = this.items.indexOf(this.editedItem);
+      this.items.splice(index, 1);
       this.closeDelete();
-      this.snackbar2 = true;
     },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        ``;
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
+      if (this.formTitle === "Add Customer") {
+        this.items.push(Object.assign({}, this.editedItem));
       } else {
-        this.items.push(this.editedItem);
+        const index = this.items.indexOf(this.editedItem);
+        this.items.splice(index, Object.assign({}, this.editedItem));
       }
       this.close();
-      this.snackbar1 = true;
+      this.snackbar = true;
+    },
+    close() {
+      this.dialog = false;
+      this.clearEditedItem();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.clearEditedItem();
+    },
+    clearEditedItem() {
+      this.editedItem = {};
+    },
+    filter(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+      }
+    },
+
+    async save() {
+      try {
+        const headers = {
+          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          "Content-Type": "application/json",
+        };
+
+        console.log("Form Title:", this.formTitle);
+        console.log("Edited Item:", this.editedItem);
+
+        if (this.formTitle === "Add Customer") {
+          console.log("Sending POST request...");
+          await axios.post(
+            "http://127.0.0.1:8081/api/customer",
+            this.editedItem,
+            { headers }
+          );
+        } else {
+          console.log("Sending PUT request...");
+          await axios.put(
+            `http://127.0.0.1:8081/api/customer/${this.editedItem.id}`,
+            this.editedItem,
+            { headers }
+          );
+        }
+
+        console.log("Request successful!");
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    },
+
+    async deleteItem(item) {
+      try {
+        const headers = {
+          Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4",
+        };
+        await axios.delete(`http://127.0.0.1:8081/api/customer/${item.id}`, {
+          headers,
+        });
+        await this.fetchData();
+
+        this.closeDelete();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
+    },
+
+    async fetchData() {
+      try {
+        const headers = {
+          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+        };
+        const response = await axios.get("http://127.0.0.1:8081/api/customer", {
+          headers,
+        });
+        this.items = response.data.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     },
   },
   mounted() {
-    axios
-  .get("http://127.0.0.1:8081/api/customer", {
-    headers: {
-      Authorization: "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    this.isLoading = false;
-    console.log(this.items);
-  })
-  .catch((error) => console.log(error));
+    this.fetchData();
   },
 };
 </script>

@@ -36,14 +36,14 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.name"
-                          label="Supplier Name"
+                          v-model="editedItem.nama_barang"
+                          label="Product Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
+                          v-model="editedItem.harga"
+                          label="Price"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -51,15 +51,14 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.telepon"
-                          label="Phone Number"
+                          v-model="editedItem.jumlah_stock_tersedia"
+                          label="Quantity"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.alamat"
-                          label="Address"
+                          v-model="editedItem.deskripsi"
+                          label="Description"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -119,173 +118,166 @@
         </div>
       </template>
     </v-data-table>
+    <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
   </v-app>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-  data: () => ({
-    dialog: false,
-    dialogDelete: false,
-    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
-    headers: [
-      { text: "Product Name", sortable: true, value: "nama_barang", },
-      { text: "Price", value: "harga" },
-      { text: "Quantity", value: "jumlah_stock_tersedia" },
-      { text: "Description", value: "deskripsi" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
-    items: [],
-    editedIndex: -1,
-    editedItem: {
-      nama_barang: "",
-      harga: "",
-      jumlah_stock_tersedia: "",
-      deskripsi: ""
-    },
-    defaultItem: {
-      nama_barang: "",
-      harga: "",
-      jumlah_stock_tersedia: "",
-      deskripsi: ""
-    },
-  }),
-
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-  },
-
-  created() {
-    // this.initialize();
+  data() {
+    return {
+      dialog: false,
+      dialogDelete: false,
+      snackbar: false,
+      formTitle: "",
+      editedItem: {},
+      icons: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
+      headers: [
+        { text: "Product Name", value: "nama_barang" },
+        { text: "Price", value: "harga" },
+        { text: "Quantity", value: "jumlah_stock_tersedia" },
+        { text: "Description", value: "deskripsi" },
+        { text: "Actions", value: "actions", sortable: false },
+      ],
+      items: [],
+      editedIndex: -1,
+      editedItem: {
+        nama_barang: "",
+        harga: "",
+        jumlah_stock_tersedia: "",
+        deskripsi: "",
+      },
+      defaultItem: {
+        nama_barang: "",
+        harga: "",
+        jumlah_stock_tersedia: "",
+        deskripsi: "",
+      },
+    };
   },
 
   methods: {
-    async fetchData() {
-      try{
-        this.loading = true;
-        const response = await axios.get('http://127.0.0.1:8081/api/product', 
-        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
-        const data = response.data.data;
-        console.log(data);
-        this.items.lists = data;
-      } catch (error){
-        console.error(error.message);
-      }finally {
-        this.loading = false;
-      }
+    editItem(item) {
+      this.formTitle = "Edit Product";
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
+    deleteItem(item) {
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      const index = this.items.indexOf(this.editedItem);
+      this.items.splice(index, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.clearEditedItem();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.clearEditedItem();
+    },
+    clearEditedItem() {
+      this.editedItem = {};
+    },
+
+    //get data
+      async fetchData() {
+        try {
+          const headers = {
+            Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          };
+          const response = await axios.get("http://127.0.0.1:8081/api/product", { headers, });
+          this.items = response.data.data;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      },
     
-    async save(data) {
-      try{
-        const response = await axios.post('http://127.0.0.1:8081/api/product', data,
-        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
+
+    //edit data
+      // console.log("Edited Item:", this.editedItem);
+
+    //post data
+    async save() {
+      try {
+        const headers = {
+          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          "Content-Type": "application/json",
+        };
+        console.log("Form Title:", this.formTitle);
+
+        if (this.formTitle === "Add Product") {
+          console.log("Sending POST request...");
+          const response = await axios.post(
+            "http://127.0.0.1:8081/api/product",
+            this.editedItem,
+            { headers }
+          );
+          try{
+            const response = await axios.get(
+            "http://127.0.0.1:8081/api/product",
+            { headers }
+          ); 
+          console.log(response.data.id);
+          } catch (error){
+            console.log(error);
+          }
+          this.editedItem.id = response.data.id;
+        } else {
+          console.log("Sending PUT request...");
+          await axios.put(
+            `http://127.0.0.1:8081/api/product/${this.editedItem.id}`,
+            this.editedItem,
+            { headers }
+          );
+        }
+
+        console.log("Request successful!");
       } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
+        console.error("Error saving data:", error);
+      }
+
+      // try {
+
+      //   const headers = {
+      //     Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+      //     "Content-Type": "application/json",
+      //   };
+
+      //   console.log("Sending POST request...");
+      //   await axios.post("http://127.0.0.1:8081/api/product", this.editedItem, { headers });
+      //   this.editedItem.id = response.data.id;
+      //   console.log("Request successful!");
+      // } catch (error) {
+      //   console.error("Error saving data:", error);
+      // }
+    },
+
+    //delete data
+    async deleteItem(item) {
+      try {
+        const headers = {
+          Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4",
+        };
+        await axios.delete(`http://127.0.0.1:8081/api/product/${item.id}`, {
+          headers,
+        });
+        await this.fetchData();
+
+        this.closeDelete();
+      } catch (error) {
+        console.error("Error deleting item:", error);
       }
     },
 
-    async edit(data) {
-      try{
-        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data,
-        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
-      } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
-      }
-    },
-
-    async destroy(data) {
-      try{
-        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`, 
-        "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV");
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
-      } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
-      }
-    },
-
-    // editItem(item) {
-    //   this.editedIndex = this.items.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialog = true;
-    // },
-
-    // deleteItem(item) {
-    //   this.editedIndex = this.items.indexOf(item);
-    //   this.editedItem = Object.assign({}, item);
-    //   this.dialogDelete = true;
-    // },
-
-    // deleteItemConfirm() {
-    //   this.items.splice(this.editedIndex, 1);
-    //   this.closeDelete();
-    // },
-    // save() {
-    //   if (this.editedIndex > -1) {
-    //     Object.assign(this.items[this.editedIndex], this.editedItem);
-    //   } else {
-    //     this.items.push(this.editedItem);
-    //   }
-    //   this.close();
-    // },
   },
-  
   mounted() {
-    axios
-  .get("http://127.0.0.1:8081/api/product", {
-    headers: {
-      Authorization: "Bearer 2|WhjHcMkCyLhkqLDHG65actezjIvez342WkC9c1HV", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    this.isLoading = false;
-    console.log(this.items);
-  })
-  .catch((error) => console.log(error));
+    this.fetchData();
   },
 };
 </script>

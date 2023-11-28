@@ -294,9 +294,9 @@ export default {
   },
   mounted() {
     axios
-  .get("http://127.0.0.1:8081/api/order", {
+  .get("http://127.0.0.1:8081/api/orders", {
     headers: {
-      Authorization: "Bearer 1|Bje4SQKVa892au5ZByFUnuNUOgMy6KJhj10Kf7Cn", // Add the token here
+      Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4", // Add the token here
     },
   })
   .then((response) => {
