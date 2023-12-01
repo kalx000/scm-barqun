@@ -231,7 +231,7 @@ export default {
 axios
   .get("http://127.0.0.1:8081/api/product", {
     headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+      Authorization: "Bearer 2|VzVBA34DtIvyd8M0LNvBY9FdKrYYxmYjLlsLfS3X", // Add the token here
     },
   })
   .then((response) => {

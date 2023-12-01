@@ -10,7 +10,7 @@
         sort-by="idstock"
         class="elevation-2 pa-4"
         :loading="isLoading"
-      loading-text="Loading... Please wait"
+        loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -40,59 +40,57 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.idproduct"
-                          label="Product Name"
-                          prepend-icon= "mdi-plus-box-outline"
-                        ></v-text-field>
-                      </v-col>
-                       <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.idsupplier"
+                          v-model="editedItem.supplier_id"
                           label="Supplier Name"
-                          prepend-icon= "mdi-account-outline"
+                          prepend-icon="mdi-account-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.idstock"
+                          v-model="editedItem.product_id"
+                          label="Product Name"
+                          prepend-icon="mdi-plus-box-outline"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.inventory_id"
                           label="Stock"
-                          prepend-icon= "mdi-package-variant-closed"
+                          prepend-icon="mdi-package-variant-closed"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.jumlah"
+                          v-model="editedItem.jumlah_masuk"
                           label="Incoming Amount"
-                          prepend-icon= "mdi-package-variant-closed-plus"
+                          prepend-icon="mdi-package-variant-closed-plus"
                         ></v-text-field>
                       </v-col>
-                       <v-col cols="12" sm="6" md="4" >
+                      <v-col cols="12" sm="6" md="4">
                         <v-menu
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="tanggal_masuk"
-                      label="Date Of Entry"
-                      prepend-icon= "mdi-calendar-range"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="tanggal_masuk"
-                      @input="menu = false"
-                    ></v-date-picker>
-                  </v-menu>
-                       </v-col>
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="editedItem.tanggal_masuk"
+                              label="Date Of Entry"
+                              prepend-icon="mdi-calendar-range"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="editedItem.tanggal_masuk"
+                            @input="menu = false"
+                          ></v-date-picker>
+                        </v-menu>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -168,8 +166,9 @@ export default {
   },
   data: () => ({
     tab: null,
-    dialog: false,  
+    dialog: false,
     dialogDelete: false,
+    tanggal_masuk: new Date().toISOString().substr(0, 10),
     menu: false,
     headers: [
       {
@@ -188,20 +187,26 @@ export default {
     items: [],
     editedIndex: -1,
     editedItem: {
-      supplier_id:"",
       product_id: "",
-      inventory_id: "",
       supplier_id: "",
+      inventory_id: "",
       jumlah_masuk: "",
-      tanggal_masuk: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      tanggal_masuk: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
     defaultItem: {
-      idsupplier:"",
       product_id: "",
-      inventory_id: "",
       supplier_id: "",
+      inventory_id: "",
       jumlah_masuk: "",
-      tanggal_masuk: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      tanggal_masuk: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
   }),
 
@@ -225,52 +230,7 @@ export default {
   },
 
   methods: {
-    initialize() {
-      // this.items = [
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-05",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      // ];
-    },
+    initialize() {},
 
     filter: function (evt) {
       evt = evt ? evt : window.event;
@@ -329,17 +289,17 @@ export default {
   },
   mounted() {
     axios
-       .get("http://127.0.0.1:8081/api/stockin", {
-    headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })
-  .catch((error) => console.log(error));
+      .get("http://127.0.0.1:8081/api/stockin", {
+        headers: {
+          Authorization: "Bearer 2|VzVBA34DtIvyd8M0LNvBY9FdKrYYxmYjLlsLfS3X", // Add the token here
+        },
+      })
+      .then((response) => {
+        this.items = response.data.data;
+        console.log(this.items);
+        this.isLoading = false;
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>
