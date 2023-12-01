@@ -2,20 +2,22 @@
   <div>
     <Navbar />
     <LeftBar />
+    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
         sort-by="idstock"
-        class="elevation-5 pa-4"
-        style="margin-top: 70px"
+        class="elevation-2 pa-4"
+        :loading="isLoading"
+        loading-text="Loading...Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Inventory</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialogEdit" max-width="600px">
+            <v-dialog v-model="dialogEdit" max-width="650px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -40,12 +42,14 @@
                         <v-text-field
                           v-model="editedItem.nama_gudang"
                           label="Warehouse Name"
+                          prepend-icon="mdi-warehouse"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.lokasi_gudang"
                           label="Address"
+                          prepend-icon="mdi-map-marker-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -53,6 +57,7 @@
                           @keypress="filter(event)"
                           v-model="editedItem.kapasitas_stock"
                           label="Stock"
+                          prepend-icon="mdi-package-variant-closed  "
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -176,6 +181,7 @@ export default {
       { text: "Stock", value: "kapasitas_stock" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
@@ -288,21 +294,22 @@ export default {
       this.closeDelete();
     },
 
-    closeEdit() {
-      this.dialogEdit = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    close () {
+        this.dialog = false
+        this.dialogEdit = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
 
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
 
     save() {
       if (this.editedIndex > -1) {
@@ -316,12 +323,18 @@ export default {
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:8081/api/inventories")
-      .then((response) => {
-        this.items = response.data.data;
-        console.log(this.items);
-      })
-      .catch((error) => console.log(error));
+  .get("http://127.0.0.1:8081/api/inventory", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
+
   },
 };
 </script>

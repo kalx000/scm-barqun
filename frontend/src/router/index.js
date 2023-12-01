@@ -12,6 +12,7 @@ import StockOut from '../components/warehouse/StockOut.vue'
 import StockOpName from '../components/warehouse/StockOpName.vue'
 import OrderView from '../views/OrderView.vue'
 import UserView from '../views/UserView.vue'
+import ProfileView from '../views/ProfileView.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,11 @@ const routes = [
     path: '/user',
     name: 'user',
     component: UserView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/about',

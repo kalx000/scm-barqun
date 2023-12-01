@@ -1,18 +1,21 @@
 <template>
-  <v-app>
+<div>
+    <Navbar />
+  <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
-      class="elevation-5 pa-4"
-      style="margin-top: 70px"
+      class="elevation-2 pa-4"
+      :loading="isLoading"
+      loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Manage Product</v-toolbar-title>
+          <v-toolbar-title>Product</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="secondary"
@@ -36,14 +39,16 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.nama_barang"
-                          label="Product Name"
+                          v-model="editedItem.name"
+                          label="Product name"
+                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.harga"
+                          v-model="editedItem.price"
                           label="Price"
+                          prepend-icon= "mdi-cash"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -52,14 +57,16 @@
                       <v-col cols="6">
                         <v-text-field
                           @keypress="filter(event)"
-                          v-model="editedItem.jumlah_stock_tersedia"
+                          v-model="editedItem.Quantity"
                           label="Quantity"
+                          prepend-icon= "mdi-hand-coin-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.deskripsi"
+                          v-model="editedItem.description"
                           label="Description"
+                          prepend-icon= "mdi-text"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -119,12 +126,17 @@
         </div>
       </template>
     </v-data-table>
-  </v-app>
+  </v-card-text>
+</div>
 </template>
 
 <script>
 import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
+  components: {
+    Navbar,
+  },
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -136,19 +148,20 @@ export default {
       { text: "Description", value: "deskripsi" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
       name: "",
-      email: "",
-      phone: "",
-      address: "",
+      price: "",
+      quantity: "",
+      description: "",
     },
     defaultItem: {
       name: "",
-      email: "",
-      phone: "",
-      address: "",
+      price: "",
+      quantity: "",
+      description: "",
     },
   }),
 
@@ -172,114 +185,63 @@ export default {
   },
 
   methods: {
-    
-    async fetchData() {
-      try{
-        this.loading = true;
-        const response = await axios.get('http://127.0.0.1:8081/api/product', );
-        const data = response.data.data;
-        console.log(data);
-        this.items.lists = data;
-      } catch (error){
-        console.error(error.message);
-      }finally {
-        this.loading = false;
-      }
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.items.splice(this.editedIndex, 1);
+      this.closeDelete();
     },
     
-    async store(data) {
-      try{
-        const response = await axios.post('http://127.0.0.1:8081/api/product', data);
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
-      } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
+  close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.items[this.editedIndex], this.editedItem);
+      } else {
+        this.items.push(this.editedItem);
       }
     },
-
-    async update(data) {
-      try{
-        const response = await axios.put(`http://127.0.0.1:8081/api/product/${data.id}`, data);
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
-      } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
-      }
+  },
+  mounted() {
+axios
+  .get("http://127.0.0.1:8081/api/product", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
     },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
 
-    async destroy(data) {
-      try{
-        const response = await axios.delete(`http://127.0.0.1:8081/api/product/${data.id}`);
-        console.log(response.data.message);
-        this.fetchData();
-        this.dialog = false;
-        this.sbData.sbColor = 'success';
-        this.sbData.sbMsg = response.data.message;
-        this.sbData.sbIcon = 'mdi-check';
-        this.$refs.snackbar.show();
-      } catch (error) {
-        console.log(error);
-        this.sbData.sbColor = 'error';
-        this.sbData.sbMsg = error.response.data.message;
-        this.sbData.sbIcon = 'mdi-alert-circle-outline';
-        this.$refs.snackbar.show();
-      }
-    },
-  }
-
-  // methods: {
-  //   editItem(item) {
-  //     this.editedIndex = this.items.indexOf(item);
-  //     this.editedItem = Object.assign({}, item);
-  //     this.dialog = true;
-  //   },
-
-  //   deleteItem(item) {
-  //     this.editedIndex = this.items.indexOf(item);
-  //     this.editedItem = Object.assign({}, item);
-  //     this.dialogDelete = true;
-  //   },
-
-  //   deleteItemConfirm() {
-  //     this.items.splice(this.editedIndex, 1);
-  //     this.closeDelete();
-  //   },
-  //   save() {
-  //     if (this.editedIndex > -1) {
-  //       Object.assign(this.items[this.editedIndex], this.editedItem);
-  //     } else {
-  //       this.items.push(this.editedItem);
-  //     }
-  //     this.close();
-  //   },
-  // },
-  // mounted() {
-  //   axios
-  //     .get("http://127.0.0.1:8081/api/products")
-  //     .then((response) => {
-  //       this.items = response.data.data;
-  //       console.log(this.items);
-  //     })
-  //     .catch((error) => console.log(error));
-  // },
+  },
 };
 </script>
 

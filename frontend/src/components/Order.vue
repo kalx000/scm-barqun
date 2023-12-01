@@ -1,13 +1,14 @@
 <template>
 <div>
-  
-  <v-card>
+  <Navbar />
+<v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
-      style="margin-top:70px;"
+      :loading="isLoading"
+      loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -32,27 +33,48 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.idcustomer"
-                        label="Customer Name"
+                        label="Product Name"
+                        prepend-icon= "mdi-plus-box-outline"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.productname"
-                        label="Product Name"
+                        label="Customer Name"
+                        prepend-icon= "mdi-account-outline"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
+                      <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                      @keypress="filter(event)"
-                        v-model="editedItem.productName"
-                        label="Amount of items"
+                        v-model="tanggal_masuk"
+                      label="Date Order"
+                      prepend-icon= "mdi-calendar-range"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
                       ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="tanggal_masuk"
+                      @input="menu = false"
+                    ></v-date-picker>
+                  </v-menu>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                       @keypress="filter(event)"
                         v-model="editedItem.tanggal"
-                        label="Date Order"
+                        label="Amount Of Items"
+                        prepend-icon="mdi-cart-arrow-up"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -92,7 +114,7 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <div class="align-center">
+        <class="align-center">
     <v-menu   
     transition="slide-y-transition"
     offset-y>
@@ -116,43 +138,26 @@
         </v-list-item>
       </v-list>
     </v-menu>
-  </div>
       </template>
     </v-data-table>
-    <v-snackbar
-           v-model="snackbar1"
-           absolute
-          top
-          color="success"
-          outlined
-          right
-          timeout= 1500
-           >
-            The Data Successfully Add
-          </v-snackbar>
-          <v-snackbar
-           v-model="snackbar2"
-            absolute
-          top
-          color="error"
-          outlined
-          right
-          timeout = 1500
-           >
-            The Data Successfully Delete
-          </v-snackbar>
-  </v-card>
-</div>
+</v-card-text>
+  </div>
+    
 </template>
 <script>
 import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
+  components: {
+    Navbar,
+  },
   data: () => ({
     tab: null,
     dialog: false,
     dialogDelete: false,
     snackbar1: false,
     snackbar2: false,
+    menu: false,
     headers: [
       { text: "Product Name", value: "product_id" },
       { text: "Customer Name", value: "customer_id" },
@@ -161,6 +166,7 @@ export default {
       { text: "Status Order", value: "status_pemesanan" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
@@ -179,6 +185,7 @@ export default {
       tanggal: "",
       status: "",
     },
+    orderan: ['In Process','To Send','Sending','Done'],
   }),
 
   computed: {
@@ -319,12 +326,17 @@ export default {
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:8081/api/orders")
-      .then((response) => {
-        this.items = response.data.data;
-        console.log(this.items);
-      })
-      .catch((error) => console.log(error));
+      .get("http://127.0.0.1:8081/api/order", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
   },
 };
 </script>

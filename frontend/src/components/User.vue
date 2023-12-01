@@ -1,13 +1,12 @@
 <template>
 <div>
-
-  <v-card>
+  <Navbar />
+  <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
       class="elevation-5 pa-4"
-      style="margin-top:70px;"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -33,12 +32,14 @@
                       <v-text-field
                         v-model="editedItem.name"
                         label="User Name"
+                        prepend-icon="mdi-account-outline"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.email"
                         label="Email"
+                        prepend-icon="mdi-email-outline"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -127,12 +128,17 @@
            >
             The Data Successfully Delete
           </v-snackbar>
-  </v-card>
+  </v-card-text>
 </div>
 </template>
 
 <script>
+import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
+  components:{
+    Navbar,
+  },
   data: () => ({
     tab: null,
     dialog: false,
@@ -186,43 +192,43 @@ export default {
   
   methods: {
     initialize() {
-      this.items = [
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Active",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Nonactive",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Nonactive",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Active",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Nonactive",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Active",
-        },
-        {
-          name: "Barqun Digital Teknologi",
-          email: "marketing@barqun.com",
-          status: "Active",
-        },
-      ];
+      // this.items = [
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Active",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Nonactive",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Nonactive",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Active",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Nonactive",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Active",
+      //   },
+      //   {
+      //     name: "Barqun Digital Teknologi",
+      //     email: "marketing@barqun.com",
+      //     status: "Active",
+      //   },
+      // ];
     },
 
     editItem(item) {
@@ -269,7 +275,20 @@ export default {
       this.snackbar1 = true;
     },
   },
-  
+   mounted() {
+    axios
+       .get("http://127.0.0.1:8081/api/user", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
+  },
 };
 </script>
 

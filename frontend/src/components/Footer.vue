@@ -1,11 +1,9 @@
 <template>
   <footer class="footer">
-    <div class="container">
-        <div class="row">         
-            <div class="col text-center">
-                Supply Chain Management 2023  
-            </div>
-        </div>
+    <v-divider></v-divider>
+    <div class="mt-2 mb-2 ml-2">
+      Copyright © 2023
+      <a  style="text-decoration: none; color:blue;" href="https://barqun.com/" target="_blank">Pt.Barqun</a>
     </div>
   </footer>
 </template>
@@ -17,8 +15,12 @@ export default {
 
 <style scoped>
   .footer {
-    position: fixed;
-    bottom: 1;
+    position: absolute;
+    bottom: 0;
     width: 100%;
+    font-size: 13px;
+    font-weight: 400px;
+    line-height: 1.5;
   }
+
 </style>
