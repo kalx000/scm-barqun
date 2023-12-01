@@ -20,6 +20,7 @@
                 class="mb-2"
                 v-bind="attrs"
                 v-on="on"
+                @click="formTitle = 'Add Product'"
               >
                 <v-icon left>fas fa-plus</v-icon>
                 Add
@@ -130,10 +131,10 @@ export default {
       dialog: false,
       dialogDelete: false,
       snackbar: false,
-      formTitle: "",
+      formTitle: '',
       editedItem: {},
       icons: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
-      headers: [
+      headers: [,
         { text: "Product Name", value: "nama_barang" },
         { text: "Price", value: "harga" },
         { text: "Quantity", value: "jumlah_stock_tersedia" },
@@ -197,36 +198,33 @@ export default {
           console.error("Error fetching data:", error);
         }
       },
-    
 
-    //edit data
-      // console.log("Edited Item:", this.editedItem);
-
-    //post data
+    //post n put data
     async save() {
       try {
         const headers = {
           Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
           "Content-Type": "application/json",
         };
-        console.log("Form Title:", this.formTitle);
 
         if (this.formTitle === "Add Product") {
           console.log("Sending POST request...");
+            console.log(this.editedItem);
+
           const response = await axios.post(
             "http://127.0.0.1:8081/api/product",
             this.editedItem,
             { headers }
-          );
-          try{
-            const response = await axios.get(
+          );axios.get(
             "http://127.0.0.1:8081/api/product",
             { headers }
-          ); 
-          console.log(response.data.id);
-          } catch (error){
-            console.log(error);
-          }
+          ).then((response) => {
+            this.items = response.data.data
+            this.dialog = false
+          }).catch((error)=>{
+          console.log(error.response);
+          })
+
           this.editedItem.id = response.data.id;
         } else {
           console.log("Sending PUT request...");
@@ -235,27 +233,21 @@ export default {
             this.editedItem,
             { headers }
           );
+          axios.get(
+            "http://127.0.0.1:8081/api/product",
+            { headers }
+          ).then((response) => {
+            this.items = response.data.data
+            this.dialog = false
+          }).catch((error)=>{
+          console.log(error.response);
+          })
         }
 
         console.log("Request successful!");
       } catch (error) {
-        console.error("Error saving data:", error);
+        console.error("Error saving data:", error.response);
       }
-
-      // try {
-
-      //   const headers = {
-      //     Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
-      //     "Content-Type": "application/json",
-      //   };
-
-      //   console.log("Sending POST request...");
-      //   await axios.post("http://127.0.0.1:8081/api/product", this.editedItem, { headers });
-      //   this.editedItem.id = response.data.id;
-      //   console.log("Request successful!");
-      // } catch (error) {
-      //   console.error("Error saving data:", error);
-      // }
     },
 
     //delete data
@@ -283,4 +275,11 @@ export default {
 </script>
 
 <style>
+/* .v-list-item--link:before{
+  background-color: #1976D2; 
+  z-index: 2;
+}
+.v-list-item__title{
+  z-index: 1;  
+} */
 </style>
