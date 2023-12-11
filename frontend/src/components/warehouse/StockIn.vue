@@ -291,7 +291,7 @@ export default {
     axios
       .get("http://127.0.0.1:8081/api/stockin", {
         headers: {
-          Authorization: "Bearer 2|VzVBA34DtIvyd8M0LNvBY9FdKrYYxmYjLlsLfS3X", // Add the token here
+          Authorization: "Bearer 3|5MUhWH6qkpjGwNTdn78zUI3gnMZRRSvZNE3mOslu", // Add the token here
         },
       })
       .then((response) => {
