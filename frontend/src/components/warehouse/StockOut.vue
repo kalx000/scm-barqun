@@ -23,6 +23,7 @@
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
+                  @click="formTitle = 'Add Stock Out'"
                 >
                   <v-icon left>fas fa-plus</v-icon>
                   Add
@@ -38,36 +39,58 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.idproduct"
+                          v-model="editedItem.product_id"
                           label="Product Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.idstock"
-                          label="Stock"
+                          v-model="editedItem.customer_id"
+                          label="Customer Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.idsupplier"
-                          label="Supplier Name"
+                          v-model="editedItem.inventory_id"
+                          label="Warehouse Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.jumlah"
-                          label="Incoming Amount"
+                          v-model="editedItem.jumlah_keluar"
+                          label="Outcoming Amount"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.tanggal"
-                          label="Date Of Enrty"
+                          v-model="editedItem.order_id"
+                          label="Order"
                         ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-menu
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="editedItem.tanggal_keluar"
+                              label="Out of Date"
+                              prepend-icon="mdi-calendar-range"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="editedItem.tanggal_keluar"
+                            @input="menu = false"
+                          ></v-date-picker>
+                        </v-menu>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -147,13 +170,15 @@ export default {
     dialog: false,
     dialogEdit: false,
     dialogDelete: false,
+    tanggal_keluar: new Date().toISOString().substr(0, 10),
+    menu: false,
     formTitle: "",
     headers: [
       { text: "Product Name",  value: "product_id",},
-      { text: "Order",  value: "order_id",},
       { text: "Customer Name",  value: "customer_id" },
       { text: "Inventory Name", value: "inventory_id" },
       { text: "Outcoming Amount", value: "jumlah_keluar" },
+      { text: "Order",  value: "order_id",},
       { text: "Out Date", value: "tanggal_keluar" },
       { text: "Actions", value: "actions", sortable: false },
     ],
@@ -161,19 +186,27 @@ export default {
     editedIndex: -1,
     editedItem: {
       product_id: "",
-      order_id: "",
       customer_id: "",
       inventory_id: "",
       jumlah_keluar: "",
-      tanggal_keluar: "",
+      order_id: "",
+      tanggal_keluar: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
     defaultItem: {
       product_id: "",
-      order_id: "",
       customer_id: "",
       inventory_id: "",
       jumlah_keluar: "",
-      tanggal_keluar: "",
+      order_id: "",
+      tanggal_keluar: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
   }),
 
@@ -192,15 +225,7 @@ export default {
       this.items.splice(index, 1);
       this.closeDelete();
     },
-    save() {
-      if (this.formTitle === "Add Stock Out") {
-        this.items.push(Object.assign({}, this.editedItem));
-      } else {
-        const index = this.items.indexOf(this.editedItem);
-        this.items.splice(index, Object.assign({}, this.editedItem));
-      }
-      this.close();
-    },
+
     close() {
       this.dialog = false;
       this.clearEditedItem();
@@ -212,13 +237,23 @@ export default {
     clearEditedItem() {
       this.editedItem = {};
     },
-    filter(event) {
-      const charCode = event.which ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        event.preventDefault();
+
+    //get data
+    async fetchData() {
+      try {
+        const headers = {
+          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+        };
+        const response = await axios.get("http://127.0.0.1:8081/api/stockout", {
+          headers,
+        });
+        this.items = response.data.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     },
 
+    //post n put data
     async save() {
       try {
         const headers = {
@@ -226,16 +261,25 @@ export default {
           "Content-Type": "application/json",
         };
 
-        console.log("Form Title:", this.formTitle);
-        console.log("Edited Item:", this.editedItem);
-
         if (this.formTitle === "Add Stock Out") {
           console.log("Sending POST request...");
-          await axios.post(
+          console.log(this.editedItem);
+
+          const response = await axios.post(
             "http://127.0.0.1:8081/api/stockout",
             this.editedItem,
             { headers }
           );
+          axios
+            .get("http://127.0.0.1:8081/api/stockout", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+          this.editedItem = response.data;
         } else {
           console.log("Sending PUT request...");
           await axios.put(
@@ -243,14 +287,25 @@ export default {
             this.editedItem,
             { headers }
           );
+          axios
+            .get("http://127.0.0.1:8081/api/stockout", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            })
+            ;
         }
 
         console.log("Request successful!");
       } catch (error) {
-        console.error("Error saving data:", error);
+        console.error("Error saving data:", error.response);
       }
     },
 
+    //delete data
     async deleteItem(item) {
       try {
         const headers = {
@@ -264,20 +319,6 @@ export default {
         this.closeDelete();
       } catch (error) {
         console.error("Error deleting item:", error);
-      }
-    },
-
-    async fetchData() {
-      try {
-        const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
-        };
-        const response = await axios.get("http://127.0.0.1:8081/api/stockout", {
-          headers,
-        });
-        this.items = response.data.data;
-      } catch (error) {
-        console.error("Error fetching data:", error);
       }
     },
   },
