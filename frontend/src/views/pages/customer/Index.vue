@@ -1,5 +1,3 @@
-INDEX.VUE
-
 <template>
 <div>
 
