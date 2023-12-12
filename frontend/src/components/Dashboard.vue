@@ -1,5 +1,6 @@
 <template>
-  <div class="dashboard" style="margin-top:70px;">
+  <div class="dashboard">
+  <Navbar />
     <v-row class="px-12 py-12">
       <v-col cols="12" sm="4">
       <router-link style="text-transform:none; text-decoration:none;" to="/product">
@@ -96,7 +97,11 @@
 
 <script>
 // import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
+  components:{
+    Navbar,
+  },
   name: "HomeView",
 
   // mounted() {

@@ -113,6 +113,59 @@
             ><h3>User</h3></v-list-item-subtitle
           >
         </v-list-item>
+          <div class="propil" >
+            <v-list-item  to="/profile">
+          <v-list-item-avatar class="ml-0">
+            <v-img src="bongo.gif"></v-img>
+          </v-list-item-avatar>
+          <v-list-item-title><h5 style="font-size:13px" class="teks">Fransiscus</h5></v-list-item-title>
+        </v-list-item>
+        
+        <v-list-item @click="dialog = true">
+            <v-icon class="teks">fa-solid fa-arrow-right-from-bracket</v-icon>
+            <h3 style="font-size:16px;" class="teks pl-6">Log out</h3>
+           <v-dialog
+      v-model="dialog"
+      max-width="500"
+    >
+      <v-card>
+        <v-card-text class="text-center pt-5">
+      <v-icon size="75" color="red">
+        fa-solid fa-triangle-exclamation fa-2xl
+      </v-icon>
+      </v-card-text>
+
+
+        <v-card-text class="text-h5 text-center font-weight-bold">
+          Are You Sure Want To Logout?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="secondary"
+            text
+            @click="dialog = false"
+            class="mb-5"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+            color="secondary"
+            text
+            to="/"
+            class="mb-5"
+          >
+            Logout
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+        </v-list-item>
+          </div>
       </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
@@ -123,6 +176,7 @@ export default {
   data: () => ({
     drawer: true,
     mini: false,
+    dialog: false,
   }),
 };
 </script>
@@ -147,4 +201,12 @@ export default {
 .teks {
   color: white !important;
 }
+
+.propil{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
 </style>

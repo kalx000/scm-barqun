@@ -1,18 +1,21 @@
 <template>
-  <v-app>
+<div>
+    <Navbar />
+  <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
-      class="elevation-5 pa-4"
-      style="margin-top: 70px"
+      class="elevation-2 pa-4"
+      :loading="isLoading"
+      loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Manage Product</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="secondary"
@@ -120,7 +123,7 @@
       </template>
     </v-data-table>
     <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
-  </v-app>
+  </div>
 </template>
 
 <script>

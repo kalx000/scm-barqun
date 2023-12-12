@@ -2,36 +2,38 @@
   <v-app>
     <NavBar />
     <LeftBar />
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      sort-by="Email"
-      class="elevation-5 pa-4"
-      style="margin-top: 70px"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Inventory</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="550px">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="secondary"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-                @click="formTitle = 'Add Warehouse'"
-              >
-                <v-icon left>fas fa-plus</v-icon>
-                Add
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
+    <Footer />
+    <v-card-text>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        sort-by="idstock"
+        class="elevation-2 pa-4"
+        :loading="isLoading"
+        loading-text="Loading...Please wait"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Inventory</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialogEdit" max-width="650px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="secondary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon left>fas fa-plus</v-icon>
+                  Add
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
 
               <v-card-text>
                 <v-container>
@@ -40,13 +42,23 @@
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.nama_gudang"
-                          label="Inventory"
+                          label="Warehouse Name"
+                          prepend-icon="mdi-warehouse"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.lokasi_gudang"
-                          label="Location"
+                          label="Address"
+                          prepend-icon="mdi-map-marker-outline"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          @keypress="filter(event)"
+                          v-model="editedItem.kapasitas_stock"
+                          label="Stock"
+                          prepend-icon="mdi-package-variant-closed  "
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -61,6 +73,7 @@
                     </v-row>
                   </v-row>
                 </v-container>
+              
               </v-card-text>
 
               <v-card-actions>
@@ -115,6 +128,7 @@
         </div>
       </template>
     </v-data-table>
+    </v-card-text>
     <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
   </v-app>
 </template>

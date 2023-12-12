@@ -1,11 +1,14 @@
 <template>
-  <v-app>
+  <div>
+    <Navbar/>
+    <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
-      sort-by="Email"
-      class="elevation-5 pa-4"
-      style="margin-top: 70px"
+      sort-by="price"
+      class="elevation-2 pa-4"
+      :loading="isLoading"
+    loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -39,12 +42,14 @@
                         <v-text-field
                           v-model="editedItem.nama_supplier"
                           label="Supplier Name"
+                          prepend-icon="mdi-account-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.email"
                           label="Email"
+                          prepend-icon="mdi-email-outline"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -52,14 +57,17 @@
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.nomor_telepon"
-                          label="Phone"
+                          @keypress="filter(event)"
+                          v-model="editedItem.telepon"
+                          label="Phone Number"
+                          prepend-icon="mdi-phone-dial-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.alamat"
                           label="Address"
+                          prepend-icon="mdi-map-marker-outline"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -119,43 +127,84 @@
         </div>
       </template>
     </v-data-table>
-    <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
-  </v-app>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
+  </v-card-text>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import Navbar from "../components/NavBar.vue"
 export default {
-  data() {
-    return {
-      dialog: false,
-      dialogDelete: false,
-      snackbar: false,
-      formTitle: '',
-      editedItem: {},
-      icons: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
-      headers: [,
-        { text: "supplier Name", value: "nama_supplier" },
-        { text: "Email", value: "email" },
-        { text: "Phone", value: "nomor_telepon" },
-        { text: "Address", value: "alamat" },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
-      items: [],
-      editedIndex: -1,
-      editedItem: {
-        nama_supplier: "",
-        email: "",
-        nomor_telepon: "",
-        alamat: "",
-      },
-      defaultItem: {
-        nama_supplier: "",
-        email: "",
-        nomor_telepon: "",
-        alamat: "",
-      },
-    };
+  components:{
+    Navbar,
+  },
+  data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    items: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
+    headers: [
+      { text: "Supplier Name", sortable: true, value: "nama_supplier", },
+      { text: "Email", value: "email" },
+      { text: "Phone", value: "nomor_telepon" },
+      { text: "Address", value: "alamat" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    isLoading: true,
+    items: [],
+    editedIndex: -1,
+    editedItem: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+    defaultItem: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+  }),
+
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  created() {
+    // this.initialize();
   },
 
   methods: {

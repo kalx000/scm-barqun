@@ -2,20 +2,22 @@
   <div>
     <Navbar />
     <LeftBar />
+    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
         sort-by="idstock"
-        style="margin-top: 70px"
         class="elevation-5 pa-4"
+        :loading="isLoading"
+      loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Stock Out</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="550px">
+            <v-dialog v-model="dialog" max-width="700px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -41,6 +43,7 @@
                         <v-text-field
                           v-model="editedItem.product_id"
                           label="Product Name"
+                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -182,6 +185,7 @@ export default {
       { text: "Out Date", value: "tanggal_keluar" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {

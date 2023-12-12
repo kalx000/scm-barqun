@@ -1,13 +1,15 @@
 <template>
 <div>
-
-  <v-card>
+  <Navbar />
+  <Footer />
+  <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
       sort-by="price"
-      class="elevation-5 pa-4"
-      style="margin-top:70px;"
+      class="elevation-2 pa-4"
+      :loading="isLoading"
+      loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -34,12 +36,14 @@
                         <v-text-field
                           v-model="editedItem.name"
                           label="Customer Name"
+                          prepend-icon= "mdi-account-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.email"
                           label="Email"
+                          prepend-icon= "mdi-email-outline"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -50,12 +54,14 @@
                         @keypress="filter(event)"
                           v-model="editedItem.telepon"
                           label="Phone Number"
+                          prepend-icon= "mdi-phone-dial-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.alamat"
                           label="Address"
+                          prepend-icon= "mdi-map-marker-outline"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -139,12 +145,18 @@
            >
             The Data Successfully Delete
           </v-snackbar>
-  </v-card>
+  </v-card-text>
   </div>
 </template>
 <script>
 import axios from "axios";
+import Navbar from "@/components/NavBar.vue"
+import Footer from "@/components/Footer.vue"
 export default {
+  components:{
+    Navbar,
+    Footer
+  },
   data: () => ({
     tab: null,
     dialog: false,
@@ -164,6 +176,7 @@ export default {
       { text: "Address", value: "alamat" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
@@ -288,7 +301,22 @@ export default {
     },
   },
   mounted() {
+<<<<<<< HEAD
     this.fetchData();
+=======
+    axios
+      .get("http://127.0.0.1:8081/api/customer", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
+>>>>>>> 4ee6a00dcd15c8acecc4865a3fb9a4c6e093d02a
   },
 };
 </script>

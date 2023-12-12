@@ -1,16 +1,16 @@
 <template>
-  <v-app>
+  <div>
     <Navbar />
     <LeftBar />
+    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
         sort-by="idstock"
-        style="margin-top: 70px"
         class="elevation-2 pa-4"
         :loading="isLoading"
-        loading-text="Loading... Please wait"
+      loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -41,16 +41,24 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.supplier_id"
-                          label="Supplier Name"
-                          prepend-icon="mdi-account-outline"
+                          v-model="editedItem.idproduct"
+                          label="Product Name"
+                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.product_id"
-                          label="Product Name"
-                          prepend-icon="mdi-plus-box-outline"
+                          v-model="editedItem.idsupplier"
+                          label="Supplier Name"
+                          prepend-icon= "mdi-account-outline"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          @keypress="filter(event)"
+                          v-model="editedItem.idstock"
+                          label="Stock"
+                          prepend-icon= "mdi-package-variant-closed"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -64,34 +72,34 @@
                         <v-text-field
                           v-model="editedItem.jumlah_masuk"
                           label="Incoming Amount"
-                          prepend-icon="mdi-package-variant-closed-plus"
+                          prepend-icon= "mdi-package-variant-closed-plus"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                       <v-col cols="12" sm="6" md="4" >
                         <v-menu
-                          v-model="menu"
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                              v-model="editedItem.tanggal_masuk"
-                              label="Date Of Entry"
-                              prepend-icon="mdi-calendar-range"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            v-model="editedItem.tanggal_masuk"
-                            @input="menu = false"
-                          ></v-date-picker>
-                        </v-menu>
-                      </v-col>
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="tanggal_masuk"
+                      label="Date Of Entry"
+                      prepend-icon= "mdi-calendar-range"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="tanggal_masuk"
+                      @input="menu = false"
+                    ></v-date-picker>
+                  </v-menu>
+                       </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -151,7 +159,7 @@
         </template>
       </v-data-table>
     </v-card-text>
-  </v-app>
+  </div>
 </template>
 
 <script>

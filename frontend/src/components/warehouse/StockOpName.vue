@@ -2,20 +2,22 @@
   <div>
     <Navbar />
     <LeftBar />
+    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
         sort-by="idstock"
         class="elevation-5 pa-4"
-        style="margin-top: 70px"
+        :loading="isLoading"
+      loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Stock Opname</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="550px">
+            <v-dialog v-model="dialog" max-width="700px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -40,6 +42,7 @@
                         <v-text-field
                           v-model="editedItem.idproduct"
                           label="Product Name"
+                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -47,26 +50,40 @@
                           @keypress="filter(event)"
                           v-model="editedItem.idstock"
                           label="Stock"
+                          prepend-icon= "mdi-package-variant-closed"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.idsupplier"
-                          label="Supplier Name"
-                        ></v-text-field>
+                        <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="tanggal_masuk"
+                      label="Date"
+                      prepend-icon= "mdi-calendar-range"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="tanggal_masuk"
+                      @input="menu = false"
+                    ></v-date-picker>
+                  </v-menu>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           @keypress="filter(event)"
                           v-model="editedItem.jumlah"
-                          label="Incoming Amount"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.tanggal"
-                          label="Date Of Entry"
+                          label="Final"
+                          prepend-icon= "mdi-package-check"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -155,6 +172,7 @@ export default {
       { text: "Final", value: "hasil_opname" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {

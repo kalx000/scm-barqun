@@ -162,6 +162,9 @@
   <script>
 import axios from "axios";
 export default {
+  components: {
+    Navbar,
+  },
   data: () => ({
     tab: null,
     dialog: false,
@@ -185,6 +188,7 @@ export default {
       { text: "Status Order", value: "status_pemesanan" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    isLoading: true,
     items: [],
     editedIndex: -1,
     editedItem: {
@@ -209,6 +213,7 @@ export default {
         .substr(0, 10),
       status_pemesanan: "",
     },
+    orderan: ['In Process','To Send','Sending','Done'],
   }),
 
   methods: {
