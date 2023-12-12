@@ -44,6 +44,7 @@
                           label="Product Name"
                         ></v-text-field>
                       </v-col>
+
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.harga"
@@ -59,6 +60,7 @@
                           label="Quantity"
                         ></v-text-field>
                       </v-col>
+
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.deskripsi"
@@ -122,6 +124,7 @@
         </div>
       </template>
     </v-data-table>
+  </v-card-text>
     <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
   </div>
 </template>
@@ -272,7 +275,19 @@ export default {
 
   },
   mounted() {
-    this.fetchData();
+axios
+  .get("http://127.0.0.1:8081/api/product", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
+
   },
 };
 </script>

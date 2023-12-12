@@ -8,7 +8,7 @@
   color="primary"
   size="114"
 >
-  <img :src="preview" class="img-fluid" />
+  <img :src="preview"/>
 </v-avatar>
 <label for="my-file">
 <v-btn 
@@ -119,13 +119,10 @@ export default {
   },
    data: () => ({
       dialog: false,
-
-       return: {
-      preview: null,
+      preview: "bongo.gif",
       image: null,
       preview_list: [],
-      image_list: []
-    },
+      image_list: [],
 
       editedItem: {
       name: "",
@@ -134,11 +131,6 @@ export default {
       password: "",
     },
     }),
-      watch: {
-      name () {
-        this.errorMessages = ''
-      },
-    },
   methods: {
      openFileInput() {
     document.getElementById('my-file').click(); // Trigger the file input's click event

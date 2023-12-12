@@ -327,7 +327,19 @@ export default {
     },
   },
   mounted() {
-    this.fetchData();
+    axios
+    .get("http://127.0.0.1:8081/api/stockout", {
+    headers: {
+      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+    },
+  })
+  .then((response) => {
+    this.items = response.data.data;
+    console.log(this.items);
+    this.isLoading = false;
+  })
+  .catch((error) => console.log(error));
+
   },
 };
 </script>
