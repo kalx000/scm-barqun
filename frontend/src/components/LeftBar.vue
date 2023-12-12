@@ -153,10 +153,10 @@
           </v-btn>
 
           <v-btn
+          @click="logoutAction()"
             color="secondary"
             text
-            to="/"
-            class="mb-5"
+            class="nav-link mb-5"
           >
             Logout
           </v-btn>
@@ -177,7 +177,14 @@ export default {
     drawer: true,
     mini: false,
     dialog: false,
+    
   }),
+  methods: {
+    logoutAction () {
+      localStorage.removeItem("token");
+      window.location.href="/"
+    }
+  }
 };
 </script>
 

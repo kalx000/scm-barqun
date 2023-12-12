@@ -279,7 +279,7 @@ export default {
     axios
        .get("http://127.0.0.1:8081/api/user", {
     headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+      Authorization: "Bearer 1|zKQqphqq2DB9Ym0hQT6YU6NFoaBBrLdlY3wkv4G7", // Add the token here
     },
   })
   .then((response) => {

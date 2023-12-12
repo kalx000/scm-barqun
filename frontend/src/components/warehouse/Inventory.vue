@@ -137,12 +137,6 @@
                   >
                   <v-list-item-title>Edit</v-list-item-title>
                 </v-list-item>
-                <v-list-item @click="detailItem(item)">
-                  <v-icon style="color: green" small class="mr-2"
-                    >fa-reguler fa-eye</v-icon
-                  >
-                  <v-list-item-title>Details</v-list-item-title>
-                </v-list-item>
               </v-list>
             </v-menu>
           </div>
@@ -325,7 +319,7 @@ export default {
     axios
   .get("http://127.0.0.1:8081/api/inventory", {
     headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+      Authorization: "Bearer 1|zKQqphqq2DB9Ym0hQT6YU6NFoaBBrLdlY3wkv4G7", // Add the token here
     },
   })
   .then((response) => {

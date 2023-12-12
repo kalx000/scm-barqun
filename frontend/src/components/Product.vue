@@ -44,6 +44,7 @@
                           prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
+
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.price"
@@ -62,6 +63,7 @@
                           prepend-icon= "mdi-hand-coin-outline"
                         ></v-text-field>
                       </v-col>
+
                       <v-col cols="6">
                         <v-text-field
                           v-model="editedItem.description"
@@ -232,7 +234,7 @@ export default {
 axios
   .get("http://127.0.0.1:8081/api/product", {
     headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
+      Authorization: "Bearer 1|zKQqphqq2DB9Ym0hQT6YU6NFoaBBrLdlY3wkv4G7", // Add the token here
     },
   })
   .then((response) => {

@@ -42,7 +42,6 @@
                   <h3>Warehouse</h3>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                <h1>10</h1>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -96,24 +95,20 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 import Navbar from "../components/NavBar.vue"
 export default {
   components:{
     Navbar,
   },
-  name: "HomeView",
+   name: "HomeView",
+   data() {
+    return {
+      user: {},
+    };
+  },
 
-  // mounted() {
-  //   axios
-  //     .get("http://127.0.0.1:8081/api/products")
-  //     .then((response) => {
-  //       this.items = response.data.data;
-  //       console.log(this.items);
-  //     })
-  //     .catch((error) => console.log(error));
-  // },
-};
+}
 </script>
 <style scoped>
 .total-items{

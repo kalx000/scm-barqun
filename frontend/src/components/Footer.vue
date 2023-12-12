@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <v-divider></v-divider>
-    <div class="mt-2 mb-2 ml-2">
+    <div class="mt-1 mb-2 ml-2">
       Copyright © 2023
       <a  style="text-decoration: none; color:blue;" href="https://barqun.com/" target="_blank">Pt.Barqun</a>
     </div>
