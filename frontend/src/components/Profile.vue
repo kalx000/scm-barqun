@@ -4,7 +4,7 @@
     <v-row justify="center">
 
   <v-card-text class="ma-4" style="width:400px" align="center" elevation="7">
-     <v-avatar class="mt-2"
+    <v-avatar class="mt-2"
   color="primary"
   size="114"
 >

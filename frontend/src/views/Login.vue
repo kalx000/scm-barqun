@@ -1,122 +1,245 @@
 <template>
-    <div class="login-container"> 
-        <v-card class="elevation-12" width="930px">
-              <v-window v-model="step">
-                <div class="sign-up">
-                <v-window-item :value="1">
-                  <v-row>
-                    <v-col cols="12" md="8">
-                      <v-card-text class="mt-6">
-                        <h1 class="text-center">Sign in to Barqun SCM</h1>
-                        <v-form class="pt-10">
-                          <v-text-field
-                            label="Email"
-                            name="Email"
-                            prepend-icon="email"
-                            type="text"
-                            color="#0284D0"
-                          />
+  <div class="login-container">
+    <v-card class="elevation-12" width="940px">
+      <v-window v-model="step">
+        <div class="sign-up">
+          <v-window-item :value="1">
+            <v-row>
+              <v-col cols="12" md="8">
+                <v-card-text class="mt-9 pt-16">
+                  <h1 class="text-center">Sign in to Barqun SCM</h1>
+                  <v-form class="pt-10" autocomplete="off">
+                    <v-text-field
+                      v-model="email"
+                      id="email"
+                      label="email"
+                      name="Email"
+                      prepend-icon="mdi-email-outline"
+                      type="text"
+                      color="#0284D0"
+                    />
 
-                          <v-text-field
-                            id="password"
-                            label="Password"
-                            name="password"
-                            prepend-icon="lock"
-                            type="password"
-                            color="#0284D0"
-                          />
-                        </v-form>
-                        <!-- <div class="text-center">
+                    <v-text-field
+                      v-model="password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      id="password"
+                      label="Password"
+                      name="password"
+                      prepend-icon="mdi-lock-outline"
+                      :type="show1 ? 'text' : 'password'"
+                      color="#0284D0"
+                      @click:append="show1 = !show1"
+                    />
+                  </v-form>
+                  <!-- <div class="text-center">
                         <v-btn rounded color="#0284D0" class=" mt-4" dark>Forgot your password ?</v-btn>
                         </div> -->
-                      </v-card-text>
-                      <div class="text-center mt-3">
-                        <v-btn rounded color="#0284D0" dark to="/home">SIGN IN</v-btn>
-                      </div>
-                    </v-col>
-                    <div class="ocean">
-                      <v-card-text class="white--text text-center mt-16 pt-13 px-2">
-                        <v-img class="mt-12" width="270px" src="../public/image 2.png" />
-                        <br>
-                        <h5
-                          class="text-center"
-                        >Enter your personal details and start journay with us</h5>
-                      </v-card-text>
-                      <div class="text-center">
-                        <v-btn rounded outlined dark @click="step++">SIGN UP</v-btn>
-                      </div>
-                    </div>
-                  </v-row>
-                </v-window-item>
+                </v-card-text>
+                <div class="text-center mt-3">
+                  <v-btn rounded color="#0284D0" dark @click="loginAction()"
+                    >SIGN IN</v-btn
+                  >
                 </div>
-                <v-window-item :value="2">
-                  <v-row>
-                    <v-col cols="12" md="4" class="py-0 px-2">
-                      <div class="ocean2">
-                      <v-card-text class="white--text">
-                        <v-img class="mt-12" width="250px" src="../public/image 2.png" />
-                        <br>
-                        <h5
-                          class="text-center"
-                        >To Keep connected with us please login with your personnel info</h5>
-                      </v-card-text>
-                      <div class="text-center">
-                        <v-btn rounded outlined dark @click="step--">Sign in</v-btn>
-                      </div>
-                      </div>
-                    </v-col>
+              </v-col>
+              <div class="ocean">
+                <v-card-text class="white--text text-center mt-16 pt-13 px-2">
+                  <v-img
+                    class="mt-12"
+                    width="270px"
+                    src="../public/image 2.png"
+                  />
+                  <br />
+                  <h5 class="text-center">
+                    Enter your personal details and start journay with us
+                  </h5>
+                </v-card-text>
+                <div class="text-center">
+                  <v-btn rounded outlined dark @click="step++">SIGN UP</v-btn>
+                </div>
+              </div>
+            </v-row>
+          </v-window-item>
+        </div>
+        <v-window-item :value="2">
+          <v-row>
+            <v-col cols="12" md="4" class="py-0 px-2">
+              <div class="ocean2">
+                <v-card-text class="white--text">
+                  <v-img
+                    class="mt-12"
+                    width="250px"
+                    src="../public/image 2.png"
+                  />
+                  <br />
+                  <h5 class="text-center">
+                    To Keep connected with us please login with your personnel
+                    info
+                  </h5>
+                </v-card-text>
+                <div class="text-center">
+                  <v-btn rounded outlined dark @click="step--">Sign in</v-btn>
+                </div>
+              </div>
+            </v-col>
 
-                    <v-col cols="12" md="8">
-                      <v-card-text class="mt-6">
-                        <h1 class="text-center display-2 blue--text">Create Account</h1>
-                        <h4 class="text-center mt-4">Ensure your email for registration</h4>
-                        <v-form>
-                          <v-text-field
-                            label="Name"
-                            name="Name"
-                            prepend-icon="person"
-                            type="text"
-                            color="#0284D0"
-                          />
-                          <v-text-field
-                            label="Email"
-                            name="Email"
-                            prepend-icon="email"
-                            type="text"
-                            color="#0284D0"
-                          />
+            <v-col cols="12" md="8">
+              <v-card-text class="mt-6">
+                <h1 class="text-center display-2 blue--text">Create Account</h1>
+                <h4 class="text-center mt-4">
+                  Ensure your email for registration
+                </h4>
+                <v-form autocomplete="off">
+                  <v-text-field
+                    v-model="namargstr"
+                    label="Name"
+                    name="Name"
+                    prepend-icon="mdi-account-outline"
+                    type="text"
+                    color="#0284D0"
+                  />
+                  <v-text-field
+                    v-model="emailrgstr"
+                    label="Email"
+                    name="Email"
+                    prepend-icon="mdi-email-outline"
+                    type="text"
+                    color="#0284D0"
+                  />
 
-                          <v-text-field
-                            id="password"
-                            label="Password"
-                            name="password"
-                            prepend-icon="lock"
-                            type="password"
-                            color="#0284D0"
-                          />
-                        </v-form>
-                      </v-card-text>
-                      <div class="text-center mt-n5">
-                        <v-btn rounded color="#0284D0" dark>SIGN UP</v-btn>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-window-item>
-              </v-window>
-            </v-card>
-    </div>
+                  <v-text-field
+                    v-model="passwordrgstr"
+                    id="password"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    label="Password"
+                    name="password"
+                    prepend-icon="mdi-lock-outline"
+                    :type="show2 ? 'text' : 'password'"
+                    color="#0284D0"
+                    @click:append="show2 = !show2"
+                  />
+                </v-form>
+              </v-card-text>
+              <div class="text-center mt-n5">
+                <v-btn rounded color="#0284D0" dark @click="registerAction()"
+                  >SIGN UP</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-window-item>
+      </v-window>
+    </v-card>
+
+    <v-snackbar
+      v-model="snackbar1"
+      absolute
+      top
+      color="success"
+      outlined
+      right
+      timeout="1500"
+    >
+      The Data Successfully Add
+    </v-snackbar>
+    <v-snackbar
+      v-model="snackbar2"
+      absolute
+      top
+      color="error"
+      outlined
+      right
+      timeout="1500"
+    >
+      The Data Successfully Delete
+    </v-snackbar>
+    <v-snackbar
+      v-model="snackbar3"
+      absolute
+      top
+      color="error"
+      outlined
+      right
+      timeout="1500"
+    >
+      the email and password doesn't match
+    </v-snackbar>
+  </div>
 </template>
-props: {
-        source: String,
-      },
+
 <script>
+import axios from "axios";
 export default {
   data: () => ({
-    step: 1
+    step: 1,
+    email: "",
+    password: "",
+
+    namargstr: "",
+    emailrgstr: "",
+    passwordrgstr: "",
+
+    snackbar1: false,
+    snackbar2: false,
+    snackbar3: false,
+
+    show1: false,
+    show2: false,
   }),
-  props: {
-    source: String
-  }
+
+  created() {
+    if (
+      localStorage.getItem("token") != "" &&
+      localStorage.getItem("token") != null
+    ) {
+      this.$router.push("/home");
+    }
+  },
+
+  methods: {
+    loginAction() {
+      this.isSubmitting = true;
+      let payload = {
+        email: this.email,
+        password: this.password,
+      };
+      axios
+        .post("http://127.0.0.1:8081/api/login", payload)
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          this.$router.push("/home");
+          return console.log(response);
+        })
+        .catch((error) => {
+          this.isSubmitting = false;
+          if (error.response.data.errors != undefined) {
+            this.validationErrors = error.response.data.errors;
+          }
+          if (error.response.data.error != undefined) {
+            this.validationErrors = error.response.data.error;
+          }
+          this.snackbar3 = true;
+          return console.log(error);
+        });
+    },
+    registerAction() {
+      this.isSubmitting = true;
+      let payload = {
+        name: this.namargstr,
+        email: this.emailrgstr,
+        password: this.passwordrgstr,
+      };
+      axios
+        .post("http://127.0.0.1:8081/api/register", payload)
+        .then((response) => {
+          this.snackbar1 = true;
+          return console.log(response);
+        })
+        .catch((error) => {
+          this.snackbar2 = true;
+          return console.log(error);
+        });
+    },
+  },
 };
 </script>
 

@@ -1,11 +1,15 @@
+Order.vue 
   <template>
   <div>
+    <Navbar />
+    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
-        style="margin-top: 70px"
-        class="elevation-5 pa-4"
+        class="elevation-2 pa-4"
+        :loading="isLoading"
+        loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -34,7 +38,6 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.customer_id"
@@ -81,22 +84,12 @@
                           ></v-date-picker>
                         </v-menu>
                       </v-col>
-
-                      <!-- <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.status_pemesanan"
-                          label="Status Order"
-                          :value="mapStatusOptions(editedItem.status_pemesanan)"
-                        ></v-text-field>
-                      </v-col> -->
-
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.status_pemesanan"
                           label="Status Order"
                         ></v-text-field>
                       </v-col>
-
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -159,12 +152,14 @@
   </div>
 </template>
 
-  <script>
+<script>
 import axios from "axios";
-import Navbar from "@/components/NavBar.vue"
+import Navbar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 export default {
   components: {
     Navbar,
+    Footer,
   },
   data: () => ({
     tab: null,
@@ -214,7 +209,6 @@ export default {
         .substr(0, 10),
       status_pemesanan: "",
     },
-    orderan: ['In Process','To Send','Sending','Done'],
   }),
 
   methods: {
@@ -249,7 +243,7 @@ export default {
     async fetchData() {
       try {
         const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
         };
         const response = await axios.get("http://127.0.0.1:8081/api/order", {
           headers,
@@ -265,7 +259,7 @@ export default {
     async save() {
       try {
         const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
           "Content-Type": "application/json",
         };
 
@@ -316,7 +310,7 @@ export default {
     async deleteItem(item) {
       try {
         const headers = {
-          Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4",
+          Authorization: "Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN",
         };
         await axios.delete(`http://127.0.0.1:8081/api/order/${item.id}`, {
           headers,
@@ -328,21 +322,9 @@ export default {
         console.error("Error deleting item:", error);
       }
     },
-
   },
   mounted() {
-    axios
-      .get("http://127.0.0.1:8081/api/order", {
-    headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })
-  .catch((error) => console.log(error));
+    this.fetchData();
   },
 };
 </script>

@@ -10,7 +10,7 @@
         sort-by="idstock"
         class="elevation-5 pa-4"
         :loading="isLoading"
-      loading-text="Loading... Please wait"
+        loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -25,6 +25,7 @@
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
+                  @click="formTitle = 'Add Stock Opname'"
                 >
                   <v-icon left>fas fa-plus</v-icon>
                   Add
@@ -40,50 +41,26 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          v-model="editedItem.idproduct"
+                          v-model="editedItem.product_id"
                           label="Product Name"
-                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.idstock"
-                          label="Stock"
-                          prepend-icon= "mdi-package-variant-closed"
+                          v-model="editedItem.inventory_id"
+                          label="Warehouse Name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
-                        <v-menu
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="tanggal_masuk"
-                      label="Date"
-                      prepend-icon= "mdi-calendar-range"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="tanggal_masuk"
-                      @input="menu = false"
-                    ></v-date-picker>
-                  </v-menu>
+                        <v-text-field
+                          v-model="editedItem.hasil_opname"
+                          label="Incoming Amount"
+                        ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.jumlah"
-                          label="Final"
-                          prepend-icon= "mdi-package-check"
+                          v-model="editedItem.tanggal_opname"
+                          label="Tanggal Opname"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -162,12 +139,19 @@ export default {
   data: () => ({
     tab: null,
     dialog: false,
-    dialogEdit: false,
     dialogDelete: false,
+    snackbar1: false,
+    snackbar2: false,
+    menu: false,
     formTitle: "",
     headers: [
-      { text: "Product Name",  value: "product_id",},
-      { text: "Inventory Name", value: "inventory_id" },
+      {
+        text: "Product Name",
+        align: "start",
+        sortable: true,
+        value: "product_id",
+      },
+      { text: "Stock", value: "inventory_id" },
       { text: "Date", value: "tanggal_opname" },
       { text: "Final", value: "hasil_opname" },
       { text: "Actions", value: "actions", sortable: false },
@@ -178,14 +162,22 @@ export default {
     editedItem: {
       product_id: "",
       inventory_id: "",
-      tanggal_opname: "",
       hasil_opname: "",
+      tanggal_opname: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
     defaultItem: {
       product_id: "",
-      inventory_id: "",
-      tanggal_opname: "",
+      idstock: "",
       hasil_opname: "",
+      tanggal_opname: new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10),
     },
   }),
 
@@ -204,15 +196,7 @@ export default {
       this.items.splice(index, 1);
       this.closeDelete();
     },
-    save() {
-      if (this.formTitle === "Add Stock Opname") {
-        this.items.push(Object.assign({}, this.editedItem));
-      } else {
-        const index = this.items.indexOf(this.editedItem);
-        this.items.splice(index, Object.assign({}, this.editedItem));
-      }
-      this.close();
-    },
+
     close() {
       this.dialog = false;
       this.clearEditedItem();
@@ -224,30 +208,53 @@ export default {
     clearEditedItem() {
       this.editedItem = {};
     },
-    filter(event) {
-      const charCode = event.which ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        event.preventDefault();
+
+    //get data
+    async fetchData() {
+      try {
+        const headers = {
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
+        };
+        const response = await axios.get(
+          "http://127.0.0.1:8081/api/stockopname",
+          {
+            headers,
+          }
+        );
+        this.items = response.data.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     },
 
+    //post n put data
     async save() {
       try {
         const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
           "Content-Type": "application/json",
         };
 
-        console.log("Form Title:", this.formTitle);
-        console.log("Edited Item:", this.editedItem);
-
-        if (this.formTitle === "Add Stock Opname") {
+        if (this.formTitle === "Add Stock Out") {
           console.log("Sending POST request...");
-          await axios.post(
+          console.log(this.editedItem);
+
+          const response = await axios.post(
             "http://127.0.0.1:8081/api/stockopname",
             this.editedItem,
             { headers }
           );
+          axios
+            .get("http://127.0.0.1:8081/api/stockopname", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+
+          this.editedItem.id = response.data.id;
         } else {
           console.log("Sending PUT request...");
           await axios.put(
@@ -255,18 +262,28 @@ export default {
             this.editedItem,
             { headers }
           );
+          axios
+            .get("http://127.0.0.1:8081/api/stockopname", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
         }
 
         console.log("Request successful!");
       } catch (error) {
-        console.error("Error saving data:", error);
+        console.error("Error saving data:", error.response);
       }
     },
 
+    //delete data
     async deleteItem(item) {
       try {
         const headers = {
-          Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4",
+          Authorization: "Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN",
         };
         await axios.delete(`http://127.0.0.1:8081/api/stockopname/${item.id}`, {
           headers,
@@ -278,38 +295,12 @@ export default {
         console.error("Error deleting item:", error);
       }
     },
-
-    async fetchData() {
-      try {
-        const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
-        };
-        const response = await axios.get("http://127.0.0.1:8081/api/stockopname", {
-          headers,
-        });
-        this.items = response.data.data;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    },
   },
   mounted() {
-    axios
-      .get("http://127.0.0.1:8081/api/stockin", {
-    headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })
-  .catch((error) => console.log(error));
+    this.fetchData();
   },
 };
 </script>
-
 
 <style>
 </style>

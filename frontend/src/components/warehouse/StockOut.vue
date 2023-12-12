@@ -10,14 +10,14 @@
         sort-by="idstock"
         class="elevation-5 pa-4"
         :loading="isLoading"
-      loading-text="Loading... Please wait"
+        loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Stock Out</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="700px">
+            <v-dialog v-model="dialog" max-width="550px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -41,9 +41,14 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
+                          v-model="editedItem.order_id"
+                          label="Order"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
                           v-model="editedItem.product_id"
                           label="Product Name"
-                          prepend-icon= "mdi-plus-box-outline"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -62,12 +67,6 @@
                         <v-text-field
                           v-model="editedItem.jumlah_keluar"
                           label="Outcoming Amount"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.order_id"
-                          label="Order"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -158,61 +157,50 @@
 </template>
 
 <script>
-import LeftBar from "@/components/LeftBar.vue";
-import Footer from "@/components/Footer.vue";
-import Navbar from "@/components/NavBar.vue";
 import axios from "axios";
+import Navbar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 export default {
   components: {
-    LeftBar,
-    Footer,
     Navbar,
+    Footer,
   },
-  data: () => ({
-    tab: null,
-    dialog: false,
-    dialogEdit: false,
-    dialogDelete: false,
-    tanggal_keluar: new Date().toISOString().substr(0, 10),
-    menu: false,
-    formTitle: "",
-    headers: [
-      { text: "Product Name",  value: "product_id",},
-      { text: "Customer Name",  value: "customer_id" },
-      { text: "Inventory Name", value: "inventory_id" },
-      { text: "Outcoming Amount", value: "jumlah_keluar" },
-      { text: "Order",  value: "order_id",},
-      { text: "Out Date", value: "tanggal_keluar" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
-    isLoading: true,
-    items: [],
-    editedIndex: -1,
-    editedItem: {
-      product_id: "",
-      customer_id: "",
-      inventory_id: "",
-      jumlah_keluar: "",
-      order_id: "",
-      tanggal_keluar: new Date(
-        Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .substr(0, 10),
-    },
-    defaultItem: {
-      product_id: "",
-      customer_id: "",
-      inventory_id: "",
-      jumlah_keluar: "",
-      order_id: "",
-      tanggal_keluar: new Date(
-        Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .substr(0, 10),
-    },
-  }),
+  data() {
+    return {
+      dialog: false,
+      dialogDelete: false,
+      snackbar: false,
+      menu: false,
+      formTitle: "",
+      editedItem: {},
+      icons: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
+      headers: [
+        { text: "Order", value: "order_id" },
+        { text: "Product Name", value: "product_id" },
+        { text: "Customer Name", value: "customer_id" },
+        { text: "Warehouse", value: "inventory_id" },
+        { text: "Date", value: "tanggal_keluar" },
+        { text: "Actions", value: "actions", sortable: false },
+      ],
+      isLoading: false,
+      items: [],
+      editedIndex: -1,
+      editedItem: {
+        order_id: "",
+        supplier_id: "",
+        product_id: "",
+        inventory_id: "",
+        tanggal_keluar: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      },
+      defaultItem: {
+        order_id: "",
+        supplier_id: "",
+        product_id: "",
+        inventory_id: "",
+        tanggal_keluar: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      },
+    };
+  },
 
   methods: {
     editItem(item) {
@@ -246,7 +234,7 @@ export default {
     async fetchData() {
       try {
         const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
         };
         const response = await axios.get("http://127.0.0.1:8081/api/stockout", {
           headers,
@@ -261,7 +249,7 @@ export default {
     async save() {
       try {
         const headers = {
-          Authorization: `Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4`,
+          Authorization: `Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN`,
           "Content-Type": "application/json",
         };
 
@@ -283,7 +271,8 @@ export default {
             .catch((error) => {
               console.log(error.response);
             });
-          this.editedItem = response.data;
+
+          this.editedItem.id = response.data.id;
         } else {
           console.log("Sending PUT request...");
           await axios.put(
@@ -299,8 +288,7 @@ export default {
             })
             .catch((error) => {
               console.log(error.response);
-            })
-            ;
+            });
         }
 
         console.log("Request successful!");
@@ -313,7 +301,7 @@ export default {
     async deleteItem(item) {
       try {
         const headers = {
-          Authorization: "Bearer 3|mZIUwp6JDcvKP4QB2H43dPJm22xCfY2UrtYRJ3k4",
+          Authorization: "Bearer 6|m9Aa6vcYnbtwhVAqBQXn7oodNud9rpySvAqjjiFN",
         };
         await axios.delete(`http://127.0.0.1:8081/api/stockout/${item.id}`, {
           headers,
@@ -327,19 +315,7 @@ export default {
     },
   },
   mounted() {
-    axios
-    .get("http://127.0.0.1:8081/api/stockout", {
-    headers: {
-      Authorization: "Bearer 1|9kDguz3xKqt0JZ7NaKGBa6QaJUHMIKtXUIXRySSk", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })
-  .catch((error) => console.log(error));
-
+    this.fetchData();
   },
 };
 </script>
