@@ -78,7 +78,7 @@
                         <h4 class="text-center mt-4">Ensure your email for registration</h4>
                         <v-form autocomplete="off">
                           <v-text-field
-                            v-model=namargstr
+                            v-model=isi.namargstr
                             label="Name"
                             name="Name"
                             prepend-icon="mdi-account-outline"
@@ -86,7 +86,7 @@
                             color="#0284D0"
                           />
                           <v-text-field
-                            v-model=emailrgstr
+                            v-model=isi.emailrgstr
                             label="Email"
                             name="Email"
                             prepend-icon="mdi-email-outline"
@@ -95,7 +95,7 @@
                           />
 
                           <v-text-field
-                            v-model=passwordrgstr
+                            v-model=isi.passwordrgstr
                             id="password"
                             :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                             label="Password"
@@ -147,7 +147,7 @@
           right
           timeout = 1500
            >
-            the email and password doesn't match
+            fill the field first
           </v-snackbar>
     </div>
 </template>
@@ -160,9 +160,17 @@ export default {
       email : '',
       password : '',
 
-        namargstr: '',
-        emailrgstr: '',
-        passwordrgstr: '',
+        isi: {
+          namargstr: '',
+          emailrgstr: '',
+          passwordrgstr: '',
+        },
+
+        kosong: {
+          namargstr: '',
+          emailrgstr: '',
+          passwordrgstr: '',
+        },
 
       snackbar1: false,
       snackbar2: false,
@@ -206,15 +214,17 @@ export default {
           });
      },
      registerAction(){
-        this.isSubmitting = true
         let payload = {
-            name:this.namargstr,
-            email: this.emailrgstr,
-            password: this.passwordrgstr,
+            name:this.isi.namargstr,
+            email: this.isi.emailrgstr,
+            password: this.isi.passwordrgstr,
         }
         axios.post('http://127.0.0.1:8081/api/register', payload)
           .then(response => {
             this.snackbar1 = true;
+             this.$nextTick(() => {
+          this.isi = Object.assign({}, this.kosong)
+        })
             return console.log(response);
           })
           .catch(error => {
