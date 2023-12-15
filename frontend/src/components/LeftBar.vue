@@ -118,7 +118,7 @@
           <v-list-item-avatar class="ml-0">
             <v-img src="bongo.gif"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title><h5 style="font-size:13px" class="teks">Fransiscus</h5></v-list-item-title>
+          <v-list-item-title><h5 style="font-size:1rem;" class="teks">{{name}}</h5></v-list-item-title>
         </v-list-item>
         
         <v-list-item @click="dialog = true">
@@ -177,11 +177,17 @@ export default {
     drawer: true,
     mini: false,
     dialog: false,
+
+  name: localStorage.getItem("name")
+
     
   }),
   methods: {
     logoutAction () {
       localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
       window.location.href="/"
     }
   }

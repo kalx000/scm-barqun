@@ -107,7 +107,6 @@ export default {
       user: {},
     };
   },
-
 }
 </script>
 <style scoped>

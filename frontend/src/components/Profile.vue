@@ -4,7 +4,7 @@
     <v-row justify="center">
 
   <v-card-text class="ma-4" style="width:400px" align="center" elevation="7">
-     <v-avatar class="mt-2"
+    <v-avatar class="mt-2"
   color="primary"
   size="114"
 >
@@ -22,7 +22,8 @@
     color="secondary"
 ><v-icon>mdi-camera-outline</v-icon></v-btn>
 </label>
-<h4 class="pt-0 mb-3  ">Fransiscus</h4>
+<h4 class="pt-4 mb-3" style="font-size: 1.5rem;">{{name}}</h4>
+<h4 class="pt-0 pb-6">{{email}}</h4>
     <v-dialog
       v-model="dialog"
       max-width="600px"
@@ -54,13 +55,6 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  v-model="editedItem.phone"
-                  label="Phone"
-                  prepend-icon= "mdi-phone-dial-outline"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
                   v-model="editedItem.email"
                   label="Email"
                   prepend-icon= "mdi-email-outline"
@@ -70,10 +64,10 @@
                 <v-text-field
                   v-model="editedItem.password"
                   label="Password"
-                  type="password"
                   prepend-icon= "mdi-lock-outline"
                 ></v-text-field>
               </v-col>
+              
               <v-col
                 cols="12"
                 sm="6"
@@ -118,18 +112,21 @@ export default {
     Navbar,
   },
    data: () => ({
-      dialog: false,
+     dialog: false,
       preview: "bongo.gif",
       image: null,
       preview_list: [],
       image_list: [],
 
       editedItem: {
-      name: "",
-      phone: "",  
+        name: "",
       email: "",
-      password: "",
+      password: "",  
     },
+
+        name: localStorage.getItem("name"),
+        email: localStorage.getItem("email"),
+        password: localStorage.getItem("password")
     }),
   methods: {
      openFileInput() {

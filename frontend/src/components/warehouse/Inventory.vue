@@ -1,23 +1,23 @@
+Inventory.vue
 <template>
   <div>
-    <Navbar />
+    <NavBar />
     <LeftBar />
-    <Footer />
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="items"
-        sort-by="idstock"
-        class="elevation-2 pa-4"
+        sort-by="Email"
+        class="elevation-5 pa-4"
         :loading="isLoading"
-        loading-text="Loading...Please wait"
+        loading-text="Loading... Please wait"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Inventory</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialogEdit" max-width="650px">
+            <v-dialog v-model="dialog" max-width="550px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="secondary"
@@ -25,6 +25,7 @@
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
+                  @click="formTitle = 'Add Warehouse'"
                 >
                   <v-icon left>fas fa-plus</v-icon>
                   Add
@@ -38,28 +39,30 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.nama_gudang"
-                          label="Warehouse Name"
-                          prepend-icon="mdi-warehouse"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.lokasi_gudang"
-                          label="Address"
-                          prepend-icon="mdi-map-marker-outline"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          @keypress="filter(event)"
-                          v-model="editedItem.kapasitas_stock"
-                          label="Stock"
-                          prepend-icon="mdi-package-variant-closed  "
-                        ></v-text-field>
-                      </v-col>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model="editedItem.nama_gudang"
+                            label="Inventory"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model="editedItem.lokasi_gudang"
+                            label="Location"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model="editedItem.kapasitas_stock"
+                            label="Capacity"
+                            @keypress="onlyNumber" type="text"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -71,7 +74,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="550px">
+            <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
                 <v-card-title class="text-h5"
                   >Are you sure you want to delete this item?</v-card-title
@@ -90,11 +93,6 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <!-- <v-dialog v-model="dialogDetail" max-width="550px">
-        <v-card>
-          <v-card-title> Details </v-card-title>
-        </v-card>
-      </v-dialog> -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="align-center">
             <v-menu transition="slide-y-transition" offset-y>
@@ -102,28 +100,7 @@
                 <v-btn icon color="secondary" v-bind="attrs" v-on="on">
                   <v-icon>fas fa-ellipsis-vertical</v-icon>
                 </v-btn>
-                <!-- <div class="text-center">
-                <v-btn color="primary" @click="dialog = true">
-                  Open Dialog
-                </v-btn>
-
-                <v-dialog v-model="dialog" width="auto">
-                  <v-card>
-                    <v-card-text>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn color="primary" block @click="dialog = false"
-                        >Close Dialog</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </div> -->
               </template>
-
               <v-list>
                 <v-list-item @click="deleteItem(item)">
                   <v-icon style="color: red" small class="mr-2"
@@ -142,196 +119,222 @@
           </div>
         </template>
       </v-data-table>
-      <v-snackbar v-model="snackbar"> The Data Successfully Add </v-snackbar>
     </v-card-text>
+    <v-snackbar
+           v-model="snackbar1"
+           absolute
+          top
+          color="success"
+          outlined
+          right
+          timeout= 1500
+           >
+            The Data Successfully Add
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar2"
+            absolute
+          top
+          color="orange"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Edit
+          </v-snackbar>
+          <v-snackbar
+           v-model="snackbar3"
+            absolute
+          top
+          color="error"
+          outlined
+          right
+          timeout = 1500
+           >
+            The Data Successfully Delete
+          </v-snackbar>
   </div>
 </template>
 
 <script>
-import LeftBar from "@/components/LeftBar.vue";
-import Footer from "@/components/Footer.vue";
-import Navbar from "@/components/NavBar.vue";
 import axios from "axios";
+import NavBar from "@/components/NavBar.vue";
+import LeftBar from "@/components/LeftBar.vue";
 export default {
-  components: {
-    LeftBar,
-    Footer,
-    Navbar,
-  },
-  data: () => ({
-    tab: null,
-    dialog: false,
-    dialogEdit: false,
-    dialogDelete: false,
-    snackbar: false,
-    headers: [
-      {
-        text: "Warehouse Name",
-        align: "start",
-        sortable: true,
-        value: "nama_gudang",
+  data() {
+    return {
+      dialog: false,
+      dialogDelete: false,
+
+      snackbar1: false,
+      snackbar2: false,
+      snackbar3: false,
+
+      formTitle: "",
+      editedItem: {},
+      icons: [{ icon: "mdi-delete", text: "delete" }, { icon: "mdi-pencil" }],
+      headers: [
+        ,
+        { text: "Inventory", value: "nama_gudang" },
+        { text: "Location", value: "lokasi_gudang" },
+        { text: "Capacity", value: "kapasitas_stock" },
+        { text: "Actions", value: "actions", sortable: false },
+      ],
+      isLoading: false,
+      items: [],
+      editedIndex: -1,
+      editedItem: {
+        nama_gudang: "",
+        lokasi_gudang: "",
+        kapasitas_stock: "",
       },
-      { text: "Address", value: "lokasi_gudang" },
-      { text: "Stock", value: "kapasitas_stock" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
-    isLoading: true,
-    items: [],
-    editedIndex: -1,
-    editedItem: {
-      nama_gudang: "",
-      lokasi_gudang: "",
-      kapasitas_stock: "",
-    },
-    defaultItem: {
-      nama_gudang: "",
-      lokasi_gudang: "",
-      kapasitas_stock: "",
-    },
-  }),
-
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-  },
-
-  created() {
-    this.initialize();
+      defaultItem: {
+        nama_gudang: "",
+        lokasi_gudang: "",
+        kapasitas_stock: "",
+      },
+    };
   },
 
   methods: {
-    initialize() {
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-05",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      //   {
-      //     idproduct: "RJ45 Cable",
-      //     idstock: 26000,
-      //     idsupplier: "10 meter",
-      //     jumlah: "1",
-      //     tanggal: "13-02-06",
-      //   },
-      // ];
-    },
-
-    filter: function (evt) {
-      evt = evt ? evt : window.event;
-      let expect = evt.target.value.toString() + evt.key.toString();
-
-      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
-
-    detailItem(item) {
-      this.dialogDetail = true;
-    },
-
     editItem(item) {
-      this.editedIndex = this.items.indexOf(item);
+      this.formTitle = "Edit Warehouse";
       this.editedItem = Object.assign({}, item);
-      this.dialogEdit = true;
+      this.dialog = true;
     },
-
     deleteItem(item) {
-      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1);
+      const index = this.items.indexOf(this.editedItem);
+      this.items.splice(index, 1);
       this.closeDelete();
     },
 
-    close () {
-        this.dialog = false
-        this.dialogEdit = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+    close() {
+      this.dialog = false;
+      this.clearEditedItem();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.clearEditedItem();
+    },
+    clearEditedItem() {
+      this.editedItem = {};
+    },
 
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+    onlyNumber ($event) {
+   //console.log($event.keyCode); //keyCodes value
+   let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+   if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+      $event.preventDefault();
+   }
+},
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
-      } else {
-        this.items.push(this.editedItem);
+    //get data
+    async fetchData() {
+      try {
+        const headers = {
+          Authorization: `Bearer 29|LLsaDlynLAwnMMuURjsi7R59bCxdIIi3tq6no7va`,
+        };
+        const response = await axios.get(
+          "http://127.0.0.1:8081/api/inventory",
+          { headers }
+        );
+        this.items = response.data.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        this.isLoading = false;
       }
-      this.closeEdit();
-      this.snackbar = true;
+    },
+
+    //post n put data
+    async save() {
+      try {
+        const headers = {
+          Authorization: `Bearer 29|LLsaDlynLAwnMMuURjsi7R59bCxdIIi3tq6no7va`,
+          "Content-Type": "application/json",
+        };
+
+        if (this.formTitle === "Add Warehouse") {
+          console.log("Sending POST request...");
+          console.log(this.editedItem);
+
+          const response = await axios.post(
+            "http://127.0.0.1:8081/api/inventory",
+            this.editedItem,
+            { headers }
+          );
+          axios
+            .get("http://127.0.0.1:8081/api/inventory", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.snackbar1 = true;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+
+          this.editedItem.id = response.data.id;
+        } else {
+          console.log("Sending PUT request...");
+          await axios.put(
+            `http://127.0.0.1:8081/api/inventory/${this.editedItem.id}`,
+            this.editedItem,
+            { headers }
+          );
+          axios
+            .get("http://127.0.0.1:8081/api/inventory", { headers })
+            .then((response) => {
+              this.items = response.data.data;
+              this.snackbar2 = true;
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        }
+
+        console.log("Request successful!");
+      } catch (error) {
+        console.error("Error saving data:", error.response);
+      }
+    },
+
+    //delete data
+    async deleteItem(item) {
+      try {
+        const headers = {
+          Authorization: "Bearer 29|LLsaDlynLAwnMMuURjsi7R59bCxdIIi3tq6no7va",
+        };
+        await axios.delete(`http://127.0.0.1:8081/api/inventory/${item.id}`, {
+          headers,
+        });
+        this.snackbar3 = true;
+        await this.fetchData();
+
+        this.closeDelete();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
     },
   },
   mounted() {
-    axios
-  .get("http://127.0.0.1:8081/api/inventory", {
-    headers: {
-      Authorization: "Bearer 1|zKQqphqq2DB9Ym0hQT6YU6NFoaBBrLdlY3wkv4G7", // Add the token here
-    },
-  })
-  .then((response) => {
-    this.items = response.data.data;
-    console.log(this.items);
-    this.isLoading = false;
-  })
-  .catch((error) => console.log(error));
-
+    this.fetchData();
+    this.isLoading = true;
   },
 };
 </script>
 
 <style>
+/* .v-list-item--link:before{
+  background-color: #1976D2; 
+  z-index: 2;
+}
+.v-list-item__title{
+  z-index: 1;  
+} */
 </style>

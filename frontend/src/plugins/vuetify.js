@@ -15,7 +15,7 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
     icons: {
-        iconfont: 'md' || 'fa' || 'mdi'
+        iconfont: 'md' || 'fa' || 'mdi' 
     },
     theme: {
       dark: storedTheme === 'dark',

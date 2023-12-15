@@ -22,7 +22,7 @@ class SupplierSeeder extends Seeder
                 'email' => 'rian@gmail.com',
                 'nomor_telepon' => '08123456789',
                 'alamat' => 'Jln. Suryanata'
-            ],
+            ],              
             [
                 'nama_supplier' => 'Galih',
                 'email' => 'galih@gmail.com',
